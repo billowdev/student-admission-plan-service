@@ -1,6 +1,7 @@
 import express from "express";
 import { json } from 'body-parser';
 import userController from './user/controllers/user.controller';
+import courseController from "./course/controllers/course.controller";
 
 export const App = () =>{
 
@@ -10,6 +11,8 @@ export const App = () =>{
 	app.route("/users").get(userController.getAllUsers)
 	app.route("/users/login").post(userController.handleLogin)
 	app.route("/users/create").post(userController.handleCreateUser)
+
+	app.route("/courses").get(courseController.handleGetAll)
 		
 
 	app.get("/", (req, res) => {
