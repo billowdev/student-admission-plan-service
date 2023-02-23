@@ -3,7 +3,7 @@ import { Request, Response, Express } from 'express';
 import userService from './../services/user.service';
 
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const handleGetAll = async (req: Request, res: Response) => {
 	const data = userService.handleGetAllUser()
 	res.json({ message: "get all", data });
 }
@@ -26,7 +26,7 @@ export const handleCreateUser = async (req: Request, res: Response) => {
 
 
 export default {
-	getAllUsers,
+	handleGetAll,
 	handleLogin,
 	handleCreateUser
 }

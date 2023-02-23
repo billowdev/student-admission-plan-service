@@ -7,7 +7,7 @@ export const App = () =>{
 	const app = express()
 
 	app.use(json());
-	app.route("/users").get(userController.getAllUsers)
+	app.route("/users").get(userController.handleGetAll)
 	app.route("/users/login").post(userController.handleLogin)
 	app.route("/users/create").post(userController.handleCreateUser)
 		
