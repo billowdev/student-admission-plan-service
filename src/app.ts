@@ -13,6 +13,10 @@ export const App = () =>{
 	app.route("/users/create").post(userController.handleCreateUser)
 
 	app.route("/courses").get(courseController.handleGetAll)
+	app.route("/courses/getOne").get(courseController.handleGetOneCourse)
+	app.route("/courses/create").post(courseController.handleCreateCourse)
+	app.route("/courses/update").patch(courseController.handleUpdateCourse)
+	app.route("/courses/delete").delete(courseController.handleDeleteCourse)
 		
 
 	app.get("/", (req, res) => {
