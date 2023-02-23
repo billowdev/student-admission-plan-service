@@ -1,5 +1,2 @@
 # sapms-service
 
-
-
-
