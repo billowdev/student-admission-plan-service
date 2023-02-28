@@ -1,6 +1,6 @@
 import App from "./src/app"
 const app = App()
-import db from "./src/models"
+import db from "./src/database/models"
 
 db.sequelize.sync({ force: true }).then(() => {
 	app.listen(5000, () => {
