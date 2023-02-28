@@ -1,7 +1,9 @@
 "use strict";
 
 import { resolveSoa } from "dns";
-import { ExtraAdminssionPlanAttributes } from "../extra-admission-plan/types/extra-admission-plan.model";
+
+import { ExtraAdminssionPlanAttributes } from "../modules/extra-admission-plan/types/extra-admission-plan.model";
+
 import { Model, UUIDV4 } from "sequelize";
 
 module.exports = (sequelize: any, DataTypes: any) => {

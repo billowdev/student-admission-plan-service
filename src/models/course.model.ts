@@ -2,7 +2,10 @@
 
 import { resolveSoa } from "dns";
 import { Model, UUIDV4 } from "sequelize";
-import { CourseAttributes } from "../course/types/course.model.tpyes";
+
+import { CourseAttributes } from "../modules/course/types/course.model.tpyes";
+
+
 
 module.exports = (sequelize: any, DataTypes: any) => {
 	class CourseModel extends Model<CourseAttributes> implements CourseAttributes {
