@@ -17,3 +17,4 @@ export interface CourseQueryInterface extends Query, CourseAttributes {
 export interface CourseParamInterface {
 	id: string
 }
+

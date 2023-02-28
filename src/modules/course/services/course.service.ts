@@ -4,6 +4,7 @@ import sequelize from "sequelize";
 import db from "../../../database/models"
 import isAllValuesUndefined from "../../../common/utils/is-all-undefined"
 import { CourseAttributes, CourseQueryInterface } from "../types/course.type";
+import { response } from "express";
 
 const CourseModel = db.CourseModel
 
@@ -57,9 +58,22 @@ export const createCourse = async (course: CourseAttributes): Promise<CourseAttr
 	return response;
 };
 
+export const updateCourse = async (id: string, course: CourseAttributes): Promise<CourseAttributes> => {
+
+	const updatedCourse = await CourseModel.update(
+		{ ...course },
+		{
+			returning: true,
+			where: { id },
+
+		}
+	)
+	return updatedCourse
+}
 
 export default {
 	getAllCourse,
 	getOneCourse,
-	createCourse
+	createCourse,
+	updateCourse
 }

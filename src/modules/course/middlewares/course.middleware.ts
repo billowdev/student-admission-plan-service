@@ -33,7 +33,7 @@ export const validateCourseQueryParams: RequestHandlerParams<{}, {}, {}, CourseQ
 	}
 ];
 
-export function validateCourse(req: Request, res: Response, next: NextFunction): void {
+export function validateCreateCourse(req: Request, res: Response, next: NextFunction): void {
 	const course: CourseAttributes = req.body;
 	const { degree, major, qualification, faculty } = course;
 
@@ -58,3 +58,62 @@ export function validateCourse(req: Request, res: Response, next: NextFunction):
 	// If everything is valid, continue to the next middleware
 	next();
 }
+
+export const validateUpdateBodyCourse = (req: Request, res: Response, next: NextFunction) => {
+	const courseId: string = req.params.id;
+
+	const updates: Partial<CourseAttributes> = req.body;
+
+	// validate course attributes here, e.g.
+	if (updates.degree && typeof updates.degree !== 'string') {
+		return res.status(400).send('Degree must be a string');
+	}
+
+	if (updates.major && typeof updates.major !== 'string') {
+		return res.status(400).send('Degree must be a string');
+	}
+
+	if (updates.qualification && typeof updates.qualification !== 'string') {
+		return res.status(400).send('Degree must be a string');
+	}
+
+	if (updates.faculty && typeof updates.faculty !== 'string') {
+		return res.status(400).send('Degree must be a string');
+	}
+
+	// check if the course exists
+	// ...
+
+	next();
+}
+
+
+export const validateUpdateCourse = [
+	check('id').matches(uuidv4Pattern).withMessage('Invalid courseId'),
+	(req: Request<{}, CourseAttributes, CourseParamInterface, {}>, res: Response, next: NextFunction) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+
+		const updates: Partial<CourseAttributes> = req.body;
+
+		// validate course attributes here, e.g.
+		if (updates.degree && typeof updates.degree !== 'string') {
+			return res.status(400).send('Degree must be a string');
+		}
+
+		if (updates.major && typeof updates.major !== 'string') {
+			return res.status(400).send('Degree must be a string');
+		}
+
+		if (updates.qualification && typeof updates.qualification !== 'string') {
+			return res.status(400).send('Degree must be a string');
+		}
+
+		if (updates.faculty && typeof updates.faculty !== 'string') {
+			return res.status(400).send('Degree must be a string');
+		}
+		next();
+	}
+];
