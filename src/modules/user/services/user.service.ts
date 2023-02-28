@@ -1,5 +1,5 @@
 import argon2 from 'argon2';
-import db from "../../../models"
+import db from "../../../database/models"
 import { UserAttributes } from './../types/user.model.types';
 
 const UserModel = db.UserModel

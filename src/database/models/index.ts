@@ -5,7 +5,7 @@ const path = require("path");
 const basename = path.basename(__filename);
 const Sequelize = require("sequelize");
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../common/config/db.config.ts")[env];
+const config = require(__dirname + "/../../common/config/db.config.ts")[env];
 const db: any = {};
 
 let sequelize: any;
