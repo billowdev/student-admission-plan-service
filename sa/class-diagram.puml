@@ -1,0 +1,120 @@
+@startuml
+
+package "class diagram" {
+
+    class User {
+        - id : uuid
+        - username : string
+        - password : string
+        - name : string
+        - surname : string
+        - phone : string
+        - email : string
+        - role - RoleEnum
+        - faculty : string
+
+        + getOne() : UserEntity
+        + getAll() : UserArrayType
+        + update() : void
+        + delete() : void
+    }
+    note top: บัญชีผู้ใช้
+
+    enum RoleEnum {
+        - USER
+        - ADMIN
+    }
+    note bottom: - สำนักวิชาการและงานทะเบียน\n\t\t- หลักสูตร
+
+    class Course {
+        - id : uuid
+        - major : string
+        - degree : string
+        - studentQualification : string
+        - faculty : string
+
+        + getOne() : CourseEntity
+        + getAll() : CourseArrayType
+        + create() : CourseEntity
+        + update() : void
+        + delete() : void
+    }
+    note bottom: ข้อมูลหลักสูตร
+
+    class ResponsibleQuotaPerson {
+        - id : uuid
+        - year : string
+        - name : string
+        - surname : string
+        - agency : string
+        - phone : string
+        - quota : QuotaEnum
+
+        + getOne() : ResponsibleQuotaPersonEntity
+        + getAll() : ResponsibleQuotaPersonArrayType
+        + create() : ResponsibleQuotaPersonEntity
+        + update() : void
+        + delete() : void
+    }
+    note top: ผู้รับผิดชอบโควตา
+
+    enum QuotaEnum {
+        GOOD_STUDY
+        GOOD_ACTIVITY
+        GOOD_SPORT
+        GOOD_PERSON
+    }
+    note bottom: เรียนดี กิจกรรมดี กีฬา คนดี
+
+    class AdminssionPlan {
+        - id : uuid
+'        รอบโควตา
+        - quotaStatus : boolean
+        - quotaSpecificSubject : string | null
+        - quotaDetail : string | null
+'        - quotaType : QuotaEnum
+'        รอบรับตรง
+        - directStatus : boolean
+        - directSpecificSubject : string | null
+        - directDetail : string | null
+'        รอบความร่วมมือ
+        - cooperationStatus : boolean
+        - cooperationSpecificSubject : string | null
+        - cooperationDetail : string | null
+        - year : string
+        - courseId : uuid
+
+        + getOne() : AdminssionPlanEntity
+        + getAll() : AdminssionPlanArrayType
+        + create() : AdminssionPlanEntity
+        + update() : void
+        + delete() : void
+    }
+    note top: แผนการรับนักศึกษา ภาคปกติ
+
+    class ExtraAdminssionPlan {
+        - id : uuid
+        - qty : number
+        - year : number
+        - courseId : uuid
+
+        + getOne() : ExtraAdminssionPlanEntity
+        + getAll() : ExtraAdminssionPlanArrayType
+        + create() : ExtraAdminssionPlanEntity
+        + update() : void
+        + delete() : void
+    }
+    note top: แผนการรับนักศึกษาภาคพิเศษ (กศ.ป.)
+
+
+
+    ResponsibleQuotaPerson "1" -- QuotaEnum
+
+    User "1" -- "1" RoleEnum
+
+    ExtraAdminssionPlan "1..*" -- "1" Course : "has"
+
+    Course "1" -- "1..*" AdminssionPlan : "have"
+'    QuotaEnum "1" -- "1" AdminssionPlan
+}
+@enduml

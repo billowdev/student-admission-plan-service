@@ -2,7 +2,7 @@
 
 import { resolveSoa } from "dns";
 
-import { ExtraAdminssionPlanAttributes } from "../modules/extra-admission-plan/types/extra-admission-plan.model";
+import { ExtraAdminssionPlanAttributes } from "../../modules/extra-admission-plan/types/extra-admission-plan.model";
 
 import { Model, UUIDV4 } from "sequelize";
 
@@ -42,6 +42,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		},
 		{
 			sequelize,
+			underscored: true,
 			modelName: "ExtraAdminssionPlanModel",
 			tableName: "extra_admission_plans",
 			createdAt: 'created_at',

@@ -3,28 +3,31 @@
 import { resolveSoa } from "dns";
 import { Model, UUIDV4 } from "sequelize";
 
-import { CourseAttributes } from "../modules/course/types/course.model.tpyes";
-
+import { RoleEnum, UserAttributes } from "../../modules/user/types/user.model.types";
 
 
 module.exports = (sequelize: any, DataTypes: any) => {
-	class CourseModel extends Model<CourseAttributes> implements CourseAttributes {
+	class UserModel extends Model<UserAttributes> implements UserAttributes {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
 		 * The `models/index` file will call this method automatically.
 		 */
 		id!: string;
-		major!: string;
-		degree!: string;
-		qualification!: string;
+		email!: string;
+		username!: string;
+		password!: string;
+		name!: string;
+		surname!: string;
+		phone!: string;
+		role!: RoleEnum;
 		faculty!: string;
 		static associate(models: any) {
 			// define association here
 			// User.hasMany(models.Article);
 		}
 	}
-	CourseModel.init(
+	UserModel.init(
 		{
 			id: {
 				type: DataTypes.UUID,
@@ -32,32 +35,50 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				allowNull: false,
 				primaryKey: true,
 			},
-			major: {
+			username: {
 				type: DataTypes.STRING(64),
 				unique: true,
 				allowNull: false,
 			},
-			degree: {
-				type: DataTypes.STRING(100),
+			password: {
+				type: DataTypes.STRING,
 				allowNull: false,
 			},
-			qualification: {
+			email: {
 				type: DataTypes.STRING(120),
 				unique: true,
 				allowNull: true,
 			},
-			faculty: {
+			name: {
 				type: DataTypes.STRING(100),
+				allowNull: true,
+			},
+			surname: {
+				type: DataTypes.STRING(100),
+				allowNull: true,
+			},
+			phone: {
+				type: DataTypes.STRING(10),
+				allowNull: true,
+			},
+			role: {
+				type: DataTypes.ENUM(RoleEnum.ADMIN, RoleEnum.USER),
+				allowNull: false,
+				defaultValue: 'user',
+			},
+			faculty: {
+				type: DataTypes.STRING(80),
 				allowNull: true,
 			},
 		},
 		{
 			sequelize,
-			modelName: "CourseModel",
-			tableName: "courses",
+			underscored: true,
+			modelName: "UserModel",
+			tableName: "users",
 			createdAt: 'created_at',
 			updatedAt: 'updated_at',
 		}
 	);
-	return CourseModel;
+	return UserModel;
 };

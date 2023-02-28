@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 // Import the necessary interfaces and models
-import db from '../models';
+import db from '../database/models';
+import { UserAttributes } from './../modules/user/types/user.model.types';
 const UserModel = db.UserModel
 interface TokenPayload {
   id: number;
