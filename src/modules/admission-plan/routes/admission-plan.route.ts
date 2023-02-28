@@ -1,12 +1,14 @@
 import express from 'express';
 import admissionPlanControllers from '../controllers/admission-plan.controller';
+import { validateAdmissionPlan, validateAdmissionPlanQueryParams } from '../middlewares/admission-plan.middleware';
+import { validateUUID } from './../../../middlewares/validate-uuid.common.middleware';
 
 const router = express.Router();
 
-router.get("/get_all", admissionPlanControllers.handleGetAllAdmissionPlan)
-// router.get("/get_one/:id", validateCourseId, admissionPlanControllers.handleGetOneCourse)
-// router.post("/create", validateCreateCourse, admissionPlanControllers.handleCreateCourse)
-// router.patch("/update/:id", validateUpdateCourse, admissionPlanControllers.handleUpdateCourse)
-// router.delete("/delete/:id", validateCourseId,admissionPlanControllers.handleDeleteCourse)
+router.get("/get_all", validateAdmissionPlanQueryParams, admissionPlanControllers.handleGetAllAdmissionPlan)
+router.get("/get_one/:id", validateUUID ,admissionPlanControllers.handleGetOneAdmissionPlan)
+router.post("/create", validateAdmissionPlan, admissionPlanControllers.handleCreateAdmissionPlan)
+router.patch("/update/:id", admissionPlanControllers.handleUpdateAdmissionPlan)
+router.delete("/delete/:id", validateUUID, admissionPlanControllers.handleDeleteAdmissionPlan)
 
 export default router;
