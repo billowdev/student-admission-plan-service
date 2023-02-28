@@ -1,4 +1,4 @@
-export interface ExtraAdmissionPlanAttributes {
+export interface ExtraAdminssionPlanAttributes {
 	id?: string;
 	qty?: number;
 	year? : number;

@@ -1,11 +1,11 @@
 "use strict";
 
 import { resolveSoa } from "dns";
-import { ExtraAdmissionPlanAttributes } from "../modules/extra-admission-plan/types/extra-admission-plan.model.types";
+import { ExtraAdminssionPlanAttributes } from "../extra-admission-plan/types/extra-admission-plan.model";
 import { Model, UUIDV4 } from "sequelize";
 
 module.exports = (sequelize: any, DataTypes: any) => {
-	class ExtraAdminssionPlanModel extends Model<ExtraAdmissionPlanAttributes> implements ExtraAdmissionPlanAttributes {
+	class ExtraAdminssionPlanModel extends Model<ExtraAdminssionPlanAttributes> implements ExtraAdminssionPlanAttributes {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
