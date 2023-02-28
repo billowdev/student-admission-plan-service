@@ -19,7 +19,7 @@
   },
   "include": [
     "**/*.ts"
-, "src/config/db.config.ts", "src/database/seeders/course-seed.js"  ],
+, "src/config/db.config.ts", "src/database/seeders/_2_course-seed.js"  ],
   "exclude": [
     "node_modules",
     "**/*.d.ts",
