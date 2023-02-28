@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+
 import { CourseParamInterface, CourseQueryInterface } from "../types/course.type";
+
 import courseService from './../services/course.service';
 
 export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface>, res: Response) => {
@@ -10,6 +12,7 @@ export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface
 			qualification: req.query.qualification,
 			faculty: req.query.faculty
 		}
+
 
 		const payload = await courseService.getAllCourse(query)
 		if(!payload) 
@@ -43,10 +46,13 @@ export const handleGetOneCourse = async (req: Request, res: Response) => {
 	}
 };
 
+
+
 export const handleCreateCourse = async (req: Request, res: Response) => {
 	try {
 		const body = req.body;
 		const payload = await courseService.createCourse(body);
+
 		if (!payload) 
 			return res.status(400).json({ error: "Failed to create course" });
 		res.status(201).json({ message: "Created course successfully", payload });
@@ -54,6 +60,7 @@ export const handleCreateCourse = async (req: Request, res: Response) => {
 	} catch (error: unknown) {
 		console.error(`Error creating course: `, error);
 		res.status(400).json({ error: `Error creating course: ${(error as Error).message}` });
+
 	}
 }
 
@@ -62,11 +69,13 @@ export const handleUpdateCourse = async (req: Request, res: Response) => {
 		const course = req.body;
 		const id = req.params.id;
 		const payload = await courseService.updateCourse(id, course);
+
 		if (!payload) 
 			return res.status(400).json({ error: "Failed to update course" });
 		res.status(200).json({ message: "Updated course successfully", payload });
 	} catch (error: unknown) {
 		res.status(400).json({ error: `Error updating course: ${(error as Error).message}` });
+
 	}
 
 }
@@ -75,15 +84,16 @@ export const handleDeleteCourse = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id;
 		const payload = await courseService.deleteCourse(id);
+
 		if (payload === undefined) 
 			res.status(400).json({ msg: "delete course failed" });
 		else
 			res.status(200).json({ msg: "delete course successfully", payload });
+
 	} catch (error) {
 		res.status(400).json({ error: 'Unable to delete course' });
 	}
 }
-
 
 export default {
 	handleGetAll,
