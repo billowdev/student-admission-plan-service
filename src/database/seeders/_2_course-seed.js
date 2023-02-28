@@ -2,7 +2,7 @@ module.exports = {
 	up: async (queryInterface) => {
 	  const coursesData = [
 		{ 
-		  id: "1d28da7c-bb8f-4e41-bfe1-c6957649c7d1",
+		  id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d1",
 		  major: "CS",
 		  degree: "BsC",
 		  qualification: "test",
@@ -11,7 +11,7 @@ module.exports = {
 		  updated_at: new Date()
 		},
 		{ 
-		  id: "1d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
+		  id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
 		  major: "IT",
 		  degree: "BsC",
 		  qualification: "test",
