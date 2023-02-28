@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import courseService from './../services/course.service';
+import courseService from '../services/course.service';
 
 export const handleGetAll = async (req: Request, res: Response) => {
 	//const data = userService.handleGetAllUser()

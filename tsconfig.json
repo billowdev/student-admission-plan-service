@@ -15,7 +15,8 @@
 
     /* Type Checking */
     "strict": true,                                      /* Enable all strict type-checking options. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+    "typeRoots": ["node_modules/@types"]
   },
   "include": [
     "**/*.ts"
@@ -24,5 +25,5 @@
     "node_modules",
     "**/*.d.ts",
     "**/*.spec.ts"
-  ]
+  ],
 }

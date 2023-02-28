@@ -1,28 +1,43 @@
-import config from "./common.config"; // this is important!
+import {
+  DB_DATABASE_DEV,
+  DB_DATABASE_PROD,
+  DB_DATABASE_TEST,
+  DB_HOST_DEV,
+  DB_HOST_PROD,
+  DB_HOST_TEST,
+  DB_PASSWORD_DEV,
+  DB_PASSWORD_PROD,
+  DB_PASSWORD_TEST,
+  DB_USERNAME_DEV,
+  DB_USERNAME_PROD,
+  DB_USERNAME_TEST,
+  DB_DIALECT
+} from "../constants/db.constant";
+// import { DB_DIALECT } from '../constants/db.constant';
 
 module.exports = {
   development: {
-    username: config.database.dev.username,
-    password: config.database.dev.password,
-    database: config.database.dev.name,
-    host: config.database.dev.host,
-    dialect: config.database.dialect,
+    username: DB_USERNAME_DEV,
+    password: DB_PASSWORD_DEV,
+    database: DB_DATABASE_DEV,
+    host: DB_HOST_DEV,
+    dialect: DB_DIALECT,
     sync: { alter: true } // automatic schema updates
   },
   test: {
-    username: config.database.test.username,
-    password: config.database.test.password,
-    database: config.database.test.name,
-    host: config.database.test.host,
-    dialect: config.database.dialect,
+    username: DB_USERNAME_TEST,
+    password: DB_PASSWORD_TEST,
+    database: DB_DATABASE_TEST,
+    host: DB_HOST_TEST,
+    dialect: DB_DIALECT,
     sync: { alter: true } // automatic schema updates
   },
   production: {
-    username: config.database.production.username,
-    password: config.database.production.password,
-    database: config.database.production.name,
-    host: config.database.production.host,
-    dialect: config.database.dialect,
+    username: DB_USERNAME_PROD,
+    password: DB_PASSWORD_PROD,
+    database: DB_DATABASE_PROD,
+    host: DB_HOST_PROD,
+    dialect: DB_DIALECT,
     sync: { alter: false } // disable automatic schema updates
   },
 };

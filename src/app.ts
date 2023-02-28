@@ -1,10 +1,11 @@
 import express from "express";
 import { json } from 'body-parser';
-import userController from './user/controllers/user.controller';
-import courseController from "./course/controllers/course.controller";
-import extraAdmissionPlanController from "./extra-admission-plan/controllers/extra-admission-plan.controller";
+import userController from './modules/user/controllers/user.controller';
+import courseController from "./modules/course/controllers/course.controller";
+import extraAdmissionPlanController from "./modules/extra-admission-plan/controllers/extra-admission-plan.controller";
 
-export const App = () =>{
+
+export const App = () => {
 
 	const app = express()
 
@@ -24,6 +25,7 @@ export const App = () =>{
 	app.get("/", (req, res) => {
 		res.json("HELLO WORLD");
 	})
+
 
 	return app
 }
