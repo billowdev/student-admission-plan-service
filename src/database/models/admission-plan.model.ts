@@ -29,7 +29,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
 		static associate(models: any) {
 			// define association here
-			// User.hasMany(models.Article);
+			AdmissionPlanModel.belongsTo(models.CourseModel, {
+				foreignKey: {
+					name: 'courseId',
+					allowNull: false,
+					field: 'course_id'
+				}
+			});
+
 		}
 	}
 	AdmissionPlanModel.init(
@@ -93,6 +100,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		},
 		{
 			sequelize,
+			underscored: true,
 			modelName: "AdmissionPlanModel",
 			tableName: "admission_plans",
 			createdAt: 'created_at',

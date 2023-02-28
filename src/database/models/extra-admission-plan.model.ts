@@ -42,6 +42,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		},
 		{
 			sequelize,
+			underscored: true,
 			modelName: "ExtraAdminssionPlanModel",
 			tableName: "extra_admission_plans",
 			createdAt: 'created_at',
