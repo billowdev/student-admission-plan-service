@@ -8,9 +8,7 @@ import { CourseAttributes, CourseQueryInterface } from "../types/course.type";
 const CourseModel = db.CourseModel
 
 
-
-
-export const handleGetAllCourse = async (query: CourseQueryInterface) => {
+export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseAttributes[]> => {
 	try {
 		if (isAllValuesUndefined(query)) {
 			return await CourseModel.findAll()
@@ -49,7 +47,14 @@ export const handleGetAllCourse = async (query: CourseQueryInterface) => {
 	}
 }
 
+export const getOneCourse = async (id: string): Promise<CourseAttributes | null> => {
+    const course = await CourseModel.findByPk(id);
+    return course;
+  };
+
+
 
 export default {
-	handleGetAllCourse
+	getAllCourse,
+	getOneCourse
 }
