@@ -41,7 +41,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				allowNull: false,
 			},
 			password: {
-				type: DataTypes.STRING(100),
+				type: DataTypes.STRING,
 				allowNull: false,
 			},
 			email: {
@@ -73,6 +73,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		},
 		{
 			sequelize,
+			underscored: true,
 			modelName: "UserModel",
 			tableName: "users",
 			createdAt: 'created_at',

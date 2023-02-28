@@ -20,7 +20,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		faculty!: string;
 		static associate(models: any) {
 			// define association here
-			// User.hasMany(models.Article);
+			CourseModel.hasMany(models.AdmissionPlanModel);
 		}
 	}
 	CourseModel.init(
@@ -50,6 +50,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		},
 		{
 			sequelize,
+			underscored: true,
 			modelName: "CourseModel",
 			tableName: "courses",
 			createdAt: 'created_at',
