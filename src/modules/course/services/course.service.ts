@@ -48,13 +48,18 @@ export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseA
 }
 
 export const getOneCourse = async (id: string): Promise<CourseAttributes | null> => {
-    const course = await CourseModel.findByPk(id);
-    return course;
-  };
+	const course = await CourseModel.findByPk(id);
+	return course;
+};
 
+export const createCourse = async (course: CourseAttributes): Promise<CourseAttributes> => {
+	const response = await CourseModel.create(course);
+	return response;
+};
 
 
 export default {
 	getAllCourse,
-	getOneCourse
+	getOneCourse,
+	createCourse
 }

@@ -36,17 +36,19 @@ export const handleGetOneCourse = async (req: Request<{}, {}, CourseParamInterfa
 		res.json({ course });
 	} catch (error) {
 		console.error(`Error retrieving course ${id}: `, error);
-		res.status(500).json({ error: 'Unable to retrieve course' });
+		res.status(400).json({ error: 'Unable to retrieve course' });
 	}
 };
 
 export const handleCreateCourse = async (req: Request, res: Response) => {
 	try {
-		//const user = await courseService.createCourse({username, password});
-		res.status(201).json({ Course: "Course" });
+		const course = req.body;
+		const payload = await courseService.createCourse(course);
+		res.status(201).json({ msg: "create course successfully", payload });
   
 	  } catch (error) {
-		res.status(400).json({ error: 'can not create Course' });
+		console.error(`Error create course `, error);
+		res.status(400).json({ error: 'Unable to create course' });
 	  }
 }
 
