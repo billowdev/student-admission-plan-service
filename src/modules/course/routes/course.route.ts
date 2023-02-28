@@ -4,10 +4,10 @@ import { validateCreateCourse, validateCourseId, validateCourseQueryParams, vali
 
 const router = express.Router();
 
-router.get("/", validateCourseQueryParams, courseControllers.handleGetAll)
+router.get("/get-all", validateCourseQueryParams, courseControllers.handleGetAll)
 router.get("/get-one/:id", validateCourseId, courseControllers.handleGetOneCourse)
 router.post("/create", validateCreateCourse, courseControllers.handleCreateCourse)
 router.patch("/update/:id", validateUpdateCourse, courseControllers.handleUpdateCourse)
-router.delete("/delete", courseControllers.handleDeleteCourse)
+router.delete("/delete/:id", validateCourseId,courseControllers.handleDeleteCourse)
 
 export default router;

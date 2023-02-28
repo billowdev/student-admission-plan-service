@@ -14,7 +14,7 @@ export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseA
 		if (isAllValuesUndefined(query)) {
 			return await CourseModel.findAll()
 		}
-		const courses = await CourseModel.findAll({
+		const response = await CourseModel.findAll({
 			where: {
 				[Op.or]: [
 					sequelize.where(
@@ -41,7 +41,7 @@ export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseA
 				]
 			}, raw: true
 		})
-		return courses;
+		return response;
 
 	} catch (error) {
 		throw new Error()
@@ -49,8 +49,8 @@ export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseA
 }
 
 export const getOneCourse = async (id: string): Promise<CourseAttributes | null> => {
-	const course = await CourseModel.findByPk(id);
-	return course;
+	const response = await CourseModel.findByPk(id);
+	return response;
 };
 
 export const createCourse = async (course: CourseAttributes): Promise<CourseAttributes> => {
@@ -60,7 +60,7 @@ export const createCourse = async (course: CourseAttributes): Promise<CourseAttr
 
 export const updateCourse = async (id: string, course: CourseAttributes): Promise<CourseAttributes> => {
 
-	const updatedCourse = await CourseModel.update(
+	const response = await CourseModel.update(
 		{ ...course },
 		{
 			returning: true,
@@ -68,12 +68,24 @@ export const updateCourse = async (id: string, course: CourseAttributes): Promis
 
 		}
 	)
-	return updatedCourse
+	return response
 }
+
+export const deleteCourse = async (id: string): Promise<CourseAttributes> => {
+
+	const response = await CourseModel.destroy(
+		{
+			where: { id }
+		}
+	)
+	return response
+}
+
 
 export default {
 	getAllCourse,
 	getOneCourse,
 	createCourse,
-	updateCourse
+	updateCourse,
+	deleteCourse
 }
