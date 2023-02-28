@@ -1,23 +1,23 @@
 
 import { isAllValuesUndefined } from "../../../common/utils"
-import sequelize,{ Op } from "sequelize";
+import sequelize, { Op } from "sequelize";
 import db from "../../../database/models"
+import { AdmissionPlanAttributes } from 'modules/admission-plan/types/admission-plan.type';
 
 const AdmissionPlanModel = db.AdmissionPlanModel
 
-export const getAll = async (query: any) => {
+export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttributes> => {
 	try {
 		if (isAllValuesUndefined(query)) {
 			return await AdmissionPlanModel.findAll()
 		}
 		const response = await AdmissionPlanModel.findAll({
+			attributes: [
+				{ exclude: ['CourseModelId'] }
+			],
 			where: {
+
 				[Op.or]: [
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('id')),
-						'LIKE',
-						`%${query.id}%`
-					),
 					sequelize.where(
 						sequelize.fn('LOWER', sequelize.col('quota_detail')),
 						'LIKE',
@@ -70,13 +70,22 @@ export const getAll = async (query: any) => {
 						'LIKE',
 						`%${query.year}%`
 					),
-					sequelize.literal(`LOWER(CONCAT_WS(' ', "id", 
-					"quota_detail", "quota_specific_subject", "quota_status",
-					"direct_detail", "direct_specific_subject", "direct_status",
-					"cooperation_detail", "cooperation_specific_subject", "cooperation_status",
-					)) LIKE '%${query.keyword}%'`)
+					sequelize.literal(`LOWER(CONCAT_WS(
+						' ',
+						"quota_status",
+						"quota_specific_subject",
+						"quota_detail",
+						"direct_detail", 
+						"direct_specific_subject",
+						"direct_status",
+						"cooperation_detail", 
+						"cooperation_specific_subject", 
+						"cooperation_status",
+						"year")) LIKE '%${query.keyword}%'`)
 				]
+
 			}, raw: true
+
 		})
 		return response;
 
@@ -85,6 +94,48 @@ export const getAll = async (query: any) => {
 	}
 }
 
+export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
+	const response = await AdmissionPlanModel.findOne({
+		attributes: [
+			{ exclude: ['CourseModelId'] }
+		],
+		where: { id }
+	})
+	return response
+}
+
+export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
+	const response = await AdmissionPlanModel.create(dto);
+	return response;
+};
+
+export const updateAdmissionPlan = async (id: string, admissionPlanDto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
+
+	const response = await AdmissionPlanModel.update(
+		{ ...admissionPlanDto },
+		{
+			returning: true,
+			where: { id },
+
+		}
+	)
+	return response
+}
+
+export const deleteAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
+
+	const response = await AdmissionPlanModel.destroy(
+		{
+			where: { id }
+		}
+	)
+	return response
+}
+
 export default {
-	getAll
+	getAllAdmissionPlan,
+	getOneAdmissionPlan,
+	createAdmissionPlan,
+	updateAdmissionPlan,
+	deleteAdmissionPlan
 }

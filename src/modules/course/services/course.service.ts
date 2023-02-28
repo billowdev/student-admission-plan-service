@@ -3,7 +3,6 @@ import sequelize,{ Op } from "sequelize";
 import db from "../../../database/models"
 import isAllValuesUndefined from "../../../common/utils/is-all-undefined"
 import { CourseAttributes, CourseQueryInterface } from "../types/course.type";
-import { response } from "express";
 
 const CourseModel = db.CourseModel
 
@@ -52,15 +51,15 @@ export const getOneCourse = async (id: string): Promise<CourseAttributes | null>
 	return response;
 };
 
-export const createCourse = async (course: CourseAttributes): Promise<CourseAttributes> => {
-	const response = await CourseModel.create(course);
+export const createCourse = async (dto: CourseAttributes): Promise<CourseAttributes> => {
+	const response = await CourseModel.create(dto);
 	return response;
 };
 
-export const updateCourse = async (id: string, course: CourseAttributes): Promise<CourseAttributes> => {
+export const updateCourse = async (id: string, dto: CourseAttributes): Promise<CourseAttributes> => {
 
 	const response = await CourseModel.update(
-		{ ...course },
+		{ ...dto },
 		{
 			returning: true,
 			where: { id },

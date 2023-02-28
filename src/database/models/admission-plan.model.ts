@@ -33,7 +33,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				foreignKey: {
 					name: 'courseId',
 					allowNull: false,
-					field: 'course_id'
+					field: 'course_id',
 				}
 			});
 
