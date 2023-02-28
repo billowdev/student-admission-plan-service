@@ -4,6 +4,7 @@ import userController from './modules/user/controllers/user.controller';
 import courseController from "./modules/course/controllers/course.controller";
 import extraAdmissionPlanController from "./modules/extra-admission-plan/controllers/extra-admission-plan.controller";
 
+
 export const App = () =>{
 
 	const app = express()

@@ -2,7 +2,9 @@
 
 import { resolveSoa } from "dns";
 import { Model, UUIDV4 } from "sequelize";
+
 import { RoleEnum, UserAttributes } from "../modules/user/types/user.model.types";
+
 
 module.exports = (sequelize: any, DataTypes: any) => {
 	class UserModel extends Model<UserAttributes> implements UserAttributes {
