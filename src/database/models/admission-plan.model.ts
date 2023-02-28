@@ -13,16 +13,16 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		 */
 		id!: string;
 		quotaStatus!: boolean;
-		quotaSpecificSubject!: string | null;
+		quotaSpecificSubject!: string;
 		quotaDetail!: string | null;
 
 		directStatus!: boolean;
-		directSpecificSubject!: string | null;
+		directSpecificSubject!: string;
 		directDetail!: string;
 
 		cooperationStatus!: boolean;
-		cooperationSpecificSubject!: string | null;
-		cooperationDetail!: string | null;
+		cooperationSpecificSubject!: string;
+		cooperationDetail!: string ;
 		year!: number;
 		courseId!: string;
 		//courseId! : string;

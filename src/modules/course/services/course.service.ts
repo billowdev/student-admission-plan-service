@@ -1,6 +1,5 @@
 
-import { Op } from "sequelize";
-import sequelize from "sequelize";
+import sequelize,{ Op } from "sequelize";
 import db from "../../../database/models"
 import isAllValuesUndefined from "../../../common/utils/is-all-undefined"
 import { CourseAttributes, CourseQueryInterface } from "../types/course.type";
