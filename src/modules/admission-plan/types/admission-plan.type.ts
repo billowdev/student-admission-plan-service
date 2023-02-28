@@ -9,21 +9,36 @@ export interface AdmissionPlanAttributes {
 	quotaDetail?: string | null,
 
 	directStatus?: boolean,
-	directSpecificSubject?: string | null,
+	directSpecificSubject?: string,
 	directDetail?: string,
 
 	cooperationStatus?: boolean,
-	cooperationSpecificSubject?: string | null,
-	cooperationDetail?: string | null,
+	cooperationSpecificSubject?: string,
+	cooperationDetail?: string,
 	year?: number,
 	courseId?: string,
 
 }
 
 
-// export interface AdmissionPlanQueryInterface extends Query, AdmissionPlanAttributes {
-// 	keyword?: string
-// }
+export interface AdmissionPlanQueryInterface extends Query {
+	keyword?: string
+
+	id?: string;
+	quotaStatus?: any, // boolean
+	quotaSpecificSubject?: string,
+	quotaDetail?: string,
+
+	directStatus?: any,
+	directSpecificSubject?: string,
+	directDetail?: string,
+
+	cooperationStatus?: any,
+	cooperationSpecificSubject?: string,
+	cooperationDetail?: string,
+	year?: string,
+	courseId?: string,
+}
 
 export interface AdmissionPlanParamInterface {
 	id: string
