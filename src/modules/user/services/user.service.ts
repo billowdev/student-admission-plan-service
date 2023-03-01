@@ -2,7 +2,7 @@ import argon2 from 'argon2';
 import db from "../../../database/models"
 import { UserAttributes } from './../types/user.model.types';
 
-const UserModel = db.UserModel
+const User = db.User
 
 export type UserLoginType = {
 	username: string,
@@ -39,7 +39,7 @@ export const login = async (user: UserLoginType) => {
 
 export const createUser = async (user: any): Promise<any> => {
 	const hashing = await hashPassword(user.password)
-	const response = await UserModel.create({
+	const response = await User.create({
 		username: user.username,
 		password: hashing,
 	});

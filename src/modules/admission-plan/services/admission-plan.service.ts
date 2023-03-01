@@ -4,14 +4,14 @@ import sequelize, { Op } from "sequelize";
 import db from "../../../database/models"
 import { AdmissionPlanAttributes } from 'modules/admission-plan/types/admission-plan.type';
 
-const AdmissionPlanModel = db.AdmissionPlanModel
+const AdmissionPlan = db.AdmissionPlan
 
 export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttributes> => {
 	try {
 		if (isAllValuesUndefined(query)) {
-			return await AdmissionPlanModel.findAll()
+			return await AdmissionPlan.findAll()
 		}
-		const response = await AdmissionPlanModel.findAll({
+		const response = await AdmissionPlan.findAll({
 			attributes: [
 				{ exclude: ['CourseModelId'] }
 			],
@@ -95,7 +95,7 @@ export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttr
 }
 
 export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
-	const response = await AdmissionPlanModel.findOne({
+	const response = await AdmissionPlan.findOne({
 		attributes: [
 			{ exclude: ['CourseModelId'] }
 		],
@@ -105,13 +105,13 @@ export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttr
 }
 
 export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
-	const response = await AdmissionPlanModel.create(dto);
+	const response = await AdmissionPlan.create(dto);
 	return response;
 };
 
 export const updateAdmissionPlan = async (id: string, admissionPlanDto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
 
-	const response = await AdmissionPlanModel.update(
+	const response = await AdmissionPlan.update(
 		{ ...admissionPlanDto },
 		{
 			returning: true,
@@ -124,7 +124,7 @@ export const updateAdmissionPlan = async (id: string, admissionPlanDto: Admissio
 
 export const deleteAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
 
-	const response = await AdmissionPlanModel.destroy(
+	const response = await AdmissionPlan.destroy(
 		{
 			where: { id }
 		}

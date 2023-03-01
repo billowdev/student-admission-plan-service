@@ -7,7 +7,7 @@ import { RoleEnum, UserAttributes } from "../../modules/user/types/user.model.ty
 
 
 module.exports = (sequelize: any, DataTypes: any) => {
-	class UserModel extends Model<UserAttributes> implements UserAttributes {
+	class User extends Model<UserAttributes> implements UserAttributes {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -27,7 +27,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 			// User.hasMany(models.Article);
 		}
 	}
-	UserModel.init(
+	User.init(
 		{
 			id: {
 				type: DataTypes.UUID,
@@ -74,11 +74,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		{
 			sequelize,
 			underscored: true,
-			modelName: "UserModel",
+			modelName: "User",
 			tableName: "users",
 			createdAt: 'created_at',
 			updatedAt: 'updated_at',
 		}
 	);
-	return UserModel;
+	return User;
 };
