@@ -4,15 +4,15 @@ import db from "../../../database/models"
 import isAllValuesUndefined from "../../../common/utils/is-all-undefined"
 import { CourseAttributes, CourseQueryInterface } from "../types/course.type";
 
-const CourseModel = db.CourseModel
+const Course = db.Course
 
 
 export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseAttributes[]> => {
 	try {
 		if (isAllValuesUndefined(query)) {
-			return await CourseModel.findAll()
+			return await Course.findAll()
 		}
-		const response = await CourseModel.findAll({
+		const response = await Course.findAll({
 			where: {
 				[Op.or]: [
 					sequelize.where(
@@ -47,18 +47,18 @@ export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseA
 }
 
 export const getOneCourse = async (id: string): Promise<CourseAttributes | null> => {
-	const response = await CourseModel.findByPk(id);
+	const response = await Course.findByPk(id);
 	return response;
 };
 
 export const createCourse = async (dto: CourseAttributes): Promise<CourseAttributes> => {
-	const response = await CourseModel.create(dto);
+	const response = await Course.create(dto);
 	return response;
 };
 
 export const updateCourse = async (id: string, dto: CourseAttributes): Promise<CourseAttributes> => {
 
-	const response = await CourseModel.update(
+	const response = await Course.update(
 		{ ...dto },
 		{
 			returning: true,
@@ -71,7 +71,7 @@ export const updateCourse = async (id: string, dto: CourseAttributes): Promise<C
 
 export const deleteCourse = async (id: string): Promise<CourseAttributes> => {
 
-	const response = await CourseModel.destroy(
+	const response = await Course.destroy(
 		{
 			where: { id }
 		}

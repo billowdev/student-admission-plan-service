@@ -5,7 +5,7 @@ import { AdmissionPlanAttributes } from "modules/admission-plan/types/admission-
 import { Model, UUIDV4 } from "sequelize";
 
 module.exports = (sequelize: any, DataTypes: any) => {
-	class AdmissionPlanModel extends Model<AdmissionPlanAttributes> implements AdmissionPlanAttributes {
+	class AdmissionPlan extends Model<AdmissionPlanAttributes> implements AdmissionPlanAttributes {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -29,17 +29,19 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
 		static associate(models: any) {
 			// define association here
-			AdmissionPlanModel.belongsTo(models.CourseModel, {
-				foreignKey: {
-					name: 'courseId',
-					allowNull: false,
-					field: 'course_id',
-				}
-			});
+			AdmissionPlan.belongsTo(models.Course,
+			// 	 {
+			// 	foreignKey: {
+			// 		name: 'courseId',
+			// 		allowNull: false,
+			// 		field: 'course_id',
+			// 	}
+			// }
+			);
 
 		}
 	}
-	AdmissionPlanModel.init(
+	AdmissionPlan.init(
 		{
 			id: {
 				type: DataTypes.UUID,
@@ -101,11 +103,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		{
 			sequelize,
 			underscored: true,
-			modelName: "AdmissionPlanModel",
+			modelName: "AdmissionPlan",
 			tableName: "admission_plans",
 			createdAt: 'created_at',
 			updatedAt: 'updated_at',
 		}
 	);
-	return AdmissionPlanModel;
+	return AdmissionPlan;
 };
