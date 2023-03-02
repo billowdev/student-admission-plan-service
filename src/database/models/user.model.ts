@@ -3,7 +3,7 @@
 import { resolveSoa } from "dns";
 import { Model, UUIDV4 } from "sequelize";
 
-import { RoleEnum, UserAttributes } from "../../modules/user/types/user.model.types";
+import { UserRole, UserAttributes } from "../../modules/user/types/user.types";
 
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -20,7 +20,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		name!: string;
 		surname!: string;
 		phone!: string;
-		role!: RoleEnum;
+		role!: UserRole;
 		faculty!: string;
 		static associate(models: any) {
 			// define association here
@@ -62,7 +62,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				allowNull: true,
 			},
 			role: {
-				type: DataTypes.ENUM(RoleEnum.ADMIN, RoleEnum.USER),
+				type: DataTypes.ENUM(UserRole.ADMIN, UserRole.USER),
 				allowNull: false,
 				defaultValue: 'user',
 			},
