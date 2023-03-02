@@ -18,6 +18,18 @@ export interface UserAttributes {
 	updatedAt?: Date;
 }
 
+export interface UserInterface {
+	id?: string;
+	email: string;
+	username: string;
+	password: string;
+	name?: string;
+	surname?: string;
+	phone?: string;
+	role: UserRole;
+	faculty?: string;
+}
+
 export interface UserQueryInterface {
 	email?: string;
 	username?: string;
@@ -26,8 +38,14 @@ export interface UserQueryInterface {
 	phone?: string;
 	role?: UserRole;
 	faculty?: string;
-  }
-  
+}
+
 export type LoginResponse = {
 	token: string;
 }
+
+export type UserIdentifier = {
+	email: string ,
+	username: string ,
+}
+

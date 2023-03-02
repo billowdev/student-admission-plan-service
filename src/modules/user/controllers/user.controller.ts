@@ -1,7 +1,9 @@
 
 import { Request, Response, Express } from 'express';
 import userService from './../services/user.service';
-import { AuthError, UserAlreadyExistsError, UserNotFoundException } from './../../../common/exceptions/user.exception';
+import { AuthError, LoginError, UserAlreadyExistsError, UserNotFoundException } from './../../../common/exceptions/user.exception';
+import { UserIdentifier, UserQueryInterface } from '../types/user.types';
+import { FetchError } from '../../../common/exceptions/app.exception';
 
 export const handleCreateUser = async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -19,24 +21,23 @@ export const handleCreateUser = async (req: Request, res: Response): Promise<voi
 
 
 export const handleLogin = async (req: Request, res: Response): Promise<void> => {
-	const { identifier, password } = req.body;
-  
+	const { username, password } = req.body;
 	try {
-	  const { token } = await userService.login(identifier, password);
-	  res.status(200).json({ token });
+		const { token } = await userService.login(username, password);
+		res.status(200).json({ msg: "login was successfully", token });
 	} catch (error) {
-	  console.error(error);
-  
-	  if (error instanceof AuthError) {
-		res.status(401).json({ message: error.message });
-	  } else if (error instanceof Error) {
-		res.status(500).json({ message: error.message });
-	  } else {
-		res.status(500).json({ message: 'Internal server error' });
-	  }
+		console.error(error);
+
+		if (error instanceof AuthError) {
+			res.status(401).json({ message: error.message });
+		} else if (error instanceof LoginError) {
+			res.status(500).json({ message: error.message });
+		} else {
+			res.status(500).json({ message: 'Internal server error' });
+		}
 	}
-  };
-  
+};
+
 
 export const handleDeleteUser = async (req: Request, res: Response): Promise<void> => {
 	const { id } = req.params;
@@ -73,11 +74,28 @@ export const handleUpdateUser = async (req: Request, res: Response): Promise<voi
 	}
 };
 
+export const handleGetAllUsers = async (req: Request, res: Response): Promise<void> => {
+	const query = req.query as UserQueryInterface;
+
+	try {
+		const users = await userService.getAllUsers(query);
+		res.status(200).json(users);
+	} catch (error) {
+		console.error(error);
+
+		if (error instanceof FetchError) {
+			res.status(error.status).json({ message: error.message });
+		} else {
+			res.status(500).json({ message: 'Internal server error' });
+		}
+	}
+};
 
 
 
 export default {
 	handleLogin,
+	handleGetAllUsers,
 	handleCreateUser,
 	handleDeleteUser,
 	handleUpdateUser

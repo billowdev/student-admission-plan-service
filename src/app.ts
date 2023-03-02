@@ -4,12 +4,14 @@ import userController from './modules/user/controllers/user.controller';
 import coursesRouter from "./modules/course/routes/course.route";
 import admissionPlanRouter from "./modules/admission-plan/routes/admission-plan.route";
 import extraAdmissionPlanRouter from "./modules/extra-admission-plan/routes/extra-admission-plan.route"
-import { UserAttributes } from './modules/user/types/user.types';
+import userRouter from './modules/user/routes/user.route'
+
+import {  UserInterface } from './modules/user/types/user.types';
 
 declare global {
 	namespace Express {
 		interface Request {
-			user?: UserAttributes;
+			user?: UserInterface;
 		}
 	}
 }
@@ -21,11 +23,9 @@ export const App = () => {
 
 	app.use(json());
 	app.use('/courses', coursesRouter);
-	app.use('/admission_plans', admissionPlanRouter);
-	app.use('/extra_admission_plans', extraAdmissionPlanRouter);
-
-	app.route("/users/login").post(userController.handleLogin)
-	app.route("/users/create").post(userController.handleCreateUser)
+	app.use('/admission-plans', admissionPlanRouter);
+	app.use('/extra-admission-plans', extraAdmissionPlanRouter);
+	app.use('/users', userRouter)
 
 	app.get("/", (req, res) => {
 		res.json("HELLO WORLD");

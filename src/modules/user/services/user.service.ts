@@ -1,57 +1,45 @@
-import argon2 from 'argon2';
 import { createAuthError, LoginError, UserCreationError, UserExistsError, UserNotFoundException } from '../../../common/exceptions/user.exception';
 import { hashPassword, verifyPassword } from '../../../common/utils/password-hasher';
 import db from "../../../database/models"
 import { LoginResponse, UserAttributes, UserQueryInterface } from '../types/user.types';
-import jwt from 'jsonwebtoken';
 import { Op } from 'sequelize';
 import { FetchError } from '../../../common/exceptions/app.exception';
+import { createJwtToken } from '../../../middlewares/jwt.middleware.';
 
 const User = db.User
 
-export type UserLoginType = {
-	username: string,
-	password: string
-}
+
 
 export const login = async (identifier: string, password: string): Promise<LoginResponse> => {
 	try {
-	  const user = await User.findOne({
-		where: {
-		  [Op.or]: [{ username: identifier }, { email: identifier }],
-		},
-	  });
-  
-	  if (!user) {
-		const error = createAuthError('Invalid username or password');
-		throw error;
-	  }
-  
-	  const passwordMatch = await verifyPassword(password, user.password);
-  
-	  if (!passwordMatch) {
-		const error = createAuthError('Invalid username or password');
-		throw error;
-	  }
-  
-	  const token = jwt.sign(
-		{
-		  id: user.id,
-		  role: user.role,
-		},
-		process.env.JWT_SECRET as string,
-		{
-		  expiresIn: '1h',
-		},
-	  );
-  
-	  return { token };
+		const user = await User.findOne({
+			where: {
+				[Op.or]: [
+					{ username: { [Op.eq]: identifier } },
+					{ email: { [Op.eq]: identifier } },
+				],
+			}, raw: true
+		});
+		if (!user) {
+			const error = createAuthError('Invalid username or password');
+			throw error;
+		}
+
+		const passwordMatch = await verifyPassword(password, user.password);
+
+		if (!passwordMatch) {
+			const error = createAuthError('Invalid username or password');
+			throw error;
+		}
+
+		const token: string = createJwtToken({ id: user.id, role: user.role })
+		return { token };
 	} catch (error) {
-	  throw new LoginError('Unable to log in');
+		throw new LoginError('Unable to log in');
 	}
-  };
-  
-  export const createUser = async (user: UserAttributes): Promise<UserAttributes> => {
+};
+
+export const createUser = async (user: UserAttributes): Promise<UserAttributes> => {
 	try {
 		const { username, email, password } = user;
 
@@ -117,25 +105,25 @@ export const deleteUser = async (id: string): Promise<void> => {
 
 export const getAllUsers = async (query: UserQueryInterface): Promise<UserAttributes[]> => {
 	try {
-	  if (Object.keys(query).length === 0) {
-		return await User.findAll();
-	  }
-	  const { email, username, name, surname, phone, role, faculty } = query;
-	  const response = await User.findAll({
-		where: {
-		  [Op.and]: [
-			email && { email: { [Op.iLike]: `%${email}%` } },
-			username && { username: { [Op.iLike]: `%${username}%` } },
-			name && { name: { [Op.iLike]: `%${name}%` } },
-			surname && { surname: { [Op.iLike]: `%${surname}%` } },
-			phone && { phone: { [Op.iLike]: `%${phone}%` } },
-			role && { role: { [Op.eq]: role } },
-			faculty && { faculty: { [Op.iLike]: `%${faculty}%` } },
-		  ].filter(Boolean),
-		},
-		raw: true,
-	  });
-	  return response;
+		if (Object.keys(query).length === 0) {
+			return await User.findAll();
+		}
+		const { email, username, name, surname, phone, role, faculty } = query;
+		const response = await User.findAll({
+			where: {
+				[Op.and]: [
+					email && { email: { [Op.iLike]: `%${email}%` } },
+					username && { username: { [Op.iLike]: `%${username}%` } },
+					name && { name: { [Op.iLike]: `%${name}%` } },
+					surname && { surname: { [Op.iLike]: `%${surname}%` } },
+					phone && { phone: { [Op.iLike]: `%${phone}%` } },
+					role && { role: { [Op.eq]: role } },
+					faculty && { faculty: { [Op.iLike]: `%${faculty}%` } },
+				].filter(Boolean),
+			},
+			raw: true,
+		});
+		return response;
 	} catch (error) {
 		throw new FetchError("Unable to fetch users", 500);
 	}
@@ -146,5 +134,6 @@ export default {
 	login,
 	createUser,
 	deleteUser,
-	updateUser
+	updateUser,
+	getAllUsers
 }
