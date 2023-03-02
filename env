@@ -4,6 +4,8 @@ NODE_ENV=development
 CLIENT_URL=localhost
 JWT_EXPRIES=1h
 
+DB_SYNC_FORCE=false
+
 DB_USERNAME_DEV=root
 DB_PASSWORD_DEV=""
 DB_DATABASE_DEV=sapms_db

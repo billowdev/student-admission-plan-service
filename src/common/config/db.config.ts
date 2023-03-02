@@ -23,7 +23,7 @@ module.exports = {
     database: DB_DATABASE_DEV,
     host: DB_HOST_DEV,
     dialect: DB_DIALECT,
-    sync: { alter: true } // automatic schema updates
+    // sync: { alter: true } // automatic schema updates
   },
   test: {
     username: DB_USERNAME_TEST,
@@ -31,7 +31,7 @@ module.exports = {
     database: DB_DATABASE_TEST,
     host: DB_HOST_TEST,
     dialect: DB_DIALECT,
-    sync: { alter: true } // automatic schema updates
+    // sync: { alter: true } // automatic schema updates
   },
   production: {
     username: DB_USERNAME_PROD,
@@ -39,6 +39,6 @@ module.exports = {
     database: DB_DATABASE_PROD,
     host: DB_HOST_PROD,
     dialect: DB_DIALECT,
-    sync: { alter: false } // disable automatic schema updates
+    // sync: { alter: false } // disable automatic schema updates
   },
 };
