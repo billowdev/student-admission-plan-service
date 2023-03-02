@@ -1,6 +1,6 @@
 import { Query } from "express-serve-static-core";
 
-export interface ExtraAdminssionPlanAttributes {
+export interface ExtraAdmissionPlanAttributes {
 	id?: string;
 	qty?: number;
 	year?: number;
@@ -11,13 +11,13 @@ export interface ExtraAdminssionPlanAttributes {
 }
 
 
-export interface ExtraAdminssionPlanQueryInterface extends Query {
+export interface ExtraAdmissionPlanQueryInterface extends Query {
 	qty?: string;
 	year?: string;
 	courseId?: string;
 	keyword?: string
 }
 
-export interface ExtraAdminssionPlanParamInterface {
+export interface ExtraAdmissionPlanParamInterface {
 	id: string
 }
