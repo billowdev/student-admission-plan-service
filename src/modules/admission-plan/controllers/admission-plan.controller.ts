@@ -66,7 +66,7 @@ export const handleUpdateAdmissionPlan = async (req: Request, res: Response) => 
 
 		const payload = await admissionPlanService.updateAdmissionPlan(id, body);
 		if (payload) {
-			res.status(200).json({ msg: "update admission plan was successfully", payload });
+			res.status(200).json({ message: "update admission plan was successfully", payload });
 		} else {
 			res.status(404).json({ error: 'Admission plan not found' });
 		}
@@ -84,7 +84,7 @@ export const handleDeleteAdmissionPlan = async (req: Request, res: Response) => 
 	try {
 		const payload = await admissionPlanService.deleteAdmissionPlan(id);
 		if (payload) {
-			res.status(200).json({ msg: "delete admission plan was successful" });
+			res.status(200).json({ message: "delete admission plan was successful" });
 		} else {
 			res.status(404).json({ error: 'Admission plan not found' });
 		}

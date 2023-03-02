@@ -24,7 +24,7 @@ export const handleLogin = async (req: Request, res: Response): Promise<void> =>
 	const { username, password } = req.body;
 	try {
 		const { token } = await userService.login(username, password);
-		res.status(200).json({ msg: "login was successfully", token });
+		res.status(200).json({ message: "login was successfully", token });
 	} catch (error) {
 		console.error(error);
 
@@ -87,7 +87,7 @@ export const handleGetAllUsers = async (req: Request, res: Response): Promise<vo
 	try {
 	  const users = await userService.getAllUsers(query);
 	  res.status(200).json({
-		msg: 'Successfully retrieved all users',
+		message: 'Successfully retrieved all users',
 		payload: users,
 	  });
 	} catch (error) {

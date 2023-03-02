@@ -27,6 +27,9 @@ export const getOneRQP = async (id: string) => {
 
 export const getAllRQP = async (query: ResponsibleQuotaPersonQueryInterface): Promise<ResponsibleQuotaPersonAttributes[]> => {
 	try {
+		if (isAllValuesUndefined(query)) {
+			return await ResponsibleQuotaPerson.findAll();
+		  }
 		const { year, name, surname, agency, phone, quota, keyword } = query;
 		const searchableFields = ['name', 'year', 'surname', 'agency', 'phone'];
 
