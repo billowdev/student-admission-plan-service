@@ -1,5 +1,5 @@
 import argon2 from 'argon2';
-import { createAuthError, UserNotFoundException } from '../../../common/exceptions/user.exception';
+import { createAuthError, LoginError, UserCreationError, UserExistsError, UserNotFoundException } from '../../../common/exceptions/user.exception';
 import { hashPassword, verifyPassword } from '../../../common/utils/password-hasher';
 import db from "../../../database/models"
 import { LoginResponse, UserAttributes, UserQueryInterface } from '../types/user.types';
@@ -14,50 +14,76 @@ export type UserLoginType = {
 	password: string
 }
 
-export const login = async (username: string, password: string): Promise<LoginResponse> => {
-	const user = await User.findOne({ where: { username } });
-
-	if (!user) {
+export const login = async (identifier: string, password: string): Promise<LoginResponse> => {
+	try {
+	  const user = await User.findOne({
+		where: {
+		  [Op.or]: [{ username: identifier }, { email: identifier }],
+		},
+	  });
+  
+	  if (!user) {
 		const error = createAuthError('Invalid username or password');
 		throw error;
-	}
-
-	const passwordMatch = await verifyPassword(password, user.password);
-
-	if (!passwordMatch) {
+	  }
+  
+	  const passwordMatch = await verifyPassword(password, user.password);
+  
+	  if (!passwordMatch) {
 		const error = createAuthError('Invalid username or password');
 		throw error;
-	}
-
-	const token = jwt.sign(
+	  }
+  
+	  const token = jwt.sign(
 		{
-			id: user.id,
-			role: user.role,
+		  id: user.id,
+		  role: user.role,
 		},
 		process.env.JWT_SECRET as string,
 		{
-			expiresIn: '1h',
+		  expiresIn: '1h',
 		},
-	);
-
-	return { token };
-};
-
-export const createUser = async (user: any): Promise<any> => {
-	try {
-	  const hashedPassword = await hashPassword(user.password);
-	  const response = await User.create({
-		username: user.username,
-		password: hashedPassword,
-	  });
+	  );
   
-	  return response;
+	  return { token };
 	} catch (error) {
-	  console.error(error);
-	  throw new Error('Failed to create user');
+	  throw new LoginError('Unable to log in');
 	}
   };
   
+  export const createUser = async (user: UserAttributes): Promise<UserAttributes> => {
+	try {
+		const { username, email, password } = user;
+
+		// Check if a user with the given email or username already exists
+		const existingUser = await User.findOne({
+			where: {
+				[Op.or]: [
+					{ username: { [Op.eq]: username } },
+					{ email: { [Op.eq]: email } },
+				],
+			},
+		});
+
+		if (existingUser) {
+			throw new UserExistsError('Username or email already exists');
+		}
+
+		const hashedPassword = await hashPassword(password);
+		const response = await User.create({
+			username,
+			email,
+			password: hashedPassword,
+		});
+
+		return response;
+	} catch (error) {
+		console.error(error);
+		throw new UserCreationError('Failed to create user');
+	}
+};
+
+
 export const updateUser = async (id: string, user: UserAttributes): Promise<UserAttributes> => {
 	try {
 		const existingUser = await User.findOne({ where: { id } });
