@@ -49,3 +49,6 @@ npx sequelize-cli db:seed:undo:all
 /admission_plans/update/
 /admission_plans/delete/
 </pre>
+
+
+- npm install swagger-ui-express swagger-jsdoc @types/swagger-ui-express @types/swagger-jsdoc

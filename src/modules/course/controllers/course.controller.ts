@@ -88,9 +88,9 @@ export const handleDeleteCourse = async (req: Request, res: Response) => {
 		const payload = await courseService.deleteCourse(id);
 
 		if (payload === undefined) 
-			res.status(400).json({ msg: "delete course failed" });
+			res.status(400).json({ message: "delete course failed" });
 		else
-			res.status(200).json({ msg: "delete course successfully", payload });
+			res.status(200).json({ message: "delete course successfully", payload });
 
 	} catch (error) {
 		res.status(400).json({ error: 'Unable to delete course' });

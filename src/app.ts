@@ -24,13 +24,22 @@ export const App = () => {
 	const app = express()
 
 	app.use(json());
-
+	// eap = extra-admission-plans
+	// ap = admission-plans
+	// rqp = responsible-quota-perons
+	// u = users
+	// c = course
 	app.use('/users', userRouter)
 	app.use('/admission-plans', admissionPlanRouter);
 	app.use('/extra-admission-plans', extraAdmissionPlanRouter);
 	app.use('/responsible-quota-perons', responsibleQuotaPersonRouter);
 	app.use('/courses', coursesRouter);
 
+	app.use('/u', userRouter)
+	app.use('/ap', admissionPlanRouter);
+	app.use('/eap', extraAdmissionPlanRouter);
+	app.use('/rqp', responsibleQuotaPersonRouter);
+	app.use('/c', coursesRouter);
 
 	app.get("/", (req, res) => {
 		res.end("this is student admission plan service");

@@ -45,7 +45,7 @@ export const handleGetOneExtraAdmissionPlan = async (req: Request, res: Response
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msg: "failed to get extra admission plan"
+            message: "failed to get extra admission plan"
         });
     }
 }
@@ -56,9 +56,9 @@ export const handleCreateExtraAdmissionPlan = async (req: Request, res: Response
 		const body = req.body;
 		const payload = await extraAdmissionPlanService.createExtraAdmissionPlan(body);
 		if (!payload) {
-			return res.status(400).json({ msg: "create extra admission plan was failed", payload });
+			return res.status(400).json({ message: "create extra admission plan was failed", payload });
 		}
-		return res.status(201).json({ msg: "create extra admission plan was successfully", payload });
+		return res.status(201).json({ message: "create extra admission plan was successfully", payload });
 	} catch (error) {
 		console.error(`Error creating extra admission plan:`, error);
 		return res.status(400).json({ error: 'Unable to create extra admission plan' });
@@ -73,9 +73,9 @@ export const handleUpdateExtraAdmissionPlan = async (req: Request, res: Response
 		const { ...dto } = req.body;
 		const payload = await extraAdmissionPlanService.updateExtraAdmissionPlan(id, dto);
 		if (!payload) {
-			return res.status(400).json({ msg: "update extra admission plan failed" });
+			return res.status(400).json({ message: "update extra admission plan failed" });
 		}
-		return res.status(200).json({ msg: "update extra admission plan successfully", payload });
+		return res.status(200).json({ message: "update extra admission plan successfully", payload });
 	} catch (error) {
 		console.error(`Error updating extra admission plan`, error);
 		return res.status(500).json({ error: 'Internal server error' });
