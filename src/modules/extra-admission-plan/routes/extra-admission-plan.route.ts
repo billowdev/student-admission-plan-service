@@ -5,8 +5,8 @@ import { validateUUID } from './../../../middlewares/validate-uuid.common.middle
 
 const router = express.Router();
 
-router.get("/get_all", validateExtraAdmissonPlanQueryParams, extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlan)
-router.get("/get_one/:id", validateUUID, extraAdminssionPlanControllers.handleGetOneExtraAdmissionPlan)
+router.get("/get-all", validateExtraAdmissonPlanQueryParams, extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlan)
+router.get("/get-one/:id", validateUUID, extraAdminssionPlanControllers.handleGetOneExtraAdmissionPlan)
 router.post("/create", validateCreateExtraAdmissionPlan, extraAdminssionPlanControllers.handleCreateExtraAdmissionPlan)
 router.patch("/update/:id", validateUUID, extraAdminssionPlanControllers.handleUpdateExtraAdmissionPlan)
 router.delete("/delete/:id", validateUUID,extraAdminssionPlanControllers.handleDeleteExtraAdmissionPlan)
