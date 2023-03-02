@@ -45,7 +45,6 @@ export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttr
 		}
 
 		const admissionPlans = await AdmissionPlan.findAll({
-			attributes: { exclude: ["CourseModelId"] },
 			where: whereClause,
 			raw: true,
 		});
@@ -57,33 +56,47 @@ export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttr
 };
 
 
-export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
-	const response = await AdmissionPlan.findOne({
-		attributes: [
-			{ exclude: ['CourseModelId'] }
-		],
-		where: { id }
-	})
-	return response
+export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes | null> => {
+	try {
+		const response = await AdmissionPlan.findOne({
+			where: { id }
+		})
+		return response;
+	} catch (error) {
+		console.error(`Error retrieving admission plan ${id}: `, error);
+		throw new Error('Unable to retrieve admission plan');
+	}
 }
+
+
 
 export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
-	const response = await AdmissionPlan.create(dto);
-	return response;
-};
+	try {
+	  const createdAdmissionPlan = await AdmissionPlan.create(dto);
+	  return createdAdmissionPlan.toJSON() as AdmissionPlanAttributes;
+	} catch (error) {
+	  console.error(`Error creating admission plan: ${error}`);
+	  throw new Error('Unable to create admission plan');
+	}
+  };
+  
 
-export const updateAdmissionPlan = async (id: string, admissionPlanDto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
-
-	const response = await AdmissionPlan.update(
-		{ ...admissionPlanDto },
-		{
-			returning: true,
-			where: { id },
-
-		}
-	)
-	return response
+  export const updateAdmissionPlan = async (id: string, admissionPlanDto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes | null> => {
+	try {
+		const [, [updatedAdmissionPlan]] = await AdmissionPlan.update(
+			{ ...admissionPlanDto },
+			{
+				returning: true,
+				where: { id },
+			}
+		);
+		return updatedAdmissionPlan;
+	} catch (error) {
+		console.error(`Error updating admission plan with id ${id}: `, error);
+		return null;
+	}
 }
+
 
 export const deleteAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
 

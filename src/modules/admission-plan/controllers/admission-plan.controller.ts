@@ -20,30 +20,36 @@ export const handleGetAllAdmissionPlan = async (req: Request, res: Response) => 
 };
 
 
-export const handleGetOneAdmissionPlan = async (req: Request, res: Response) => {
+export const handleGetOneAdmissionPlan = async (req: Request, res: Response): Promise<void> => {
 	const id = (req.params as { id: string }).id;
 
 	try {
 		const payload = await admissionPlanService.getOneAdmissionPlan(id);
 		if (!payload) {
-			res.status(404).json({ error: 'get oone admission plan not found' });
+			res.status(404).json({ error: 'Admission plan not found' });
 			return;
 		}
-		res.json({ msg: "get one admission plan was successfully", payload });
+		res.json({ message: "Admission plan retrieved successfully", payload });
 	} catch (error) {
-		console.error(`Error retrieving course ${id}: `, error);
-		res.status(400).json({ error: 'Unable to retrieve course' });
+		console.error(`Error retrieving admission plan ${id}: `, error);
+		res.status(400).json({ error: 'Unable to retrieve admission plan' });
 	}
 }
 
+/** 03-02-2023 08-08AM
+ * added an import statement for admissionPlanService
+ * I renamed the body variable to admissionPlanDto for clarity
+ * changed the response message from "create admission plan was successfully" to
+ * "Admission plan created successfully" for consistency with RESTful API conventions
+ * changed the name of the payload variable to createdAdmissionPlan to make it more clear what it represents
+ */
 export const handleCreateAdmissionPlan = async (req: Request, res: Response) => {
 	try {
-		const body = req.body;
-		const payload = await admissionPlanService.createAdmissionPlan(body);
-		res.status(201).json({ msg: "create admission plan was successfully", payload });
-
+		const admissionPlanDto = req.body;
+		const createdAdmissionPlan = await admissionPlanService.createAdmissionPlan(admissionPlanDto);
+		res.status(201).json({ message: "Admission plan created successfully", payload: createdAdmissionPlan });
 	} catch (error) {
-		console.error(`Error create admission plan `, error);
+		console.error(`Error creating admission plan: `, error);
 		res.status(400).json({ error: 'Unable to create admission plan' });
 	}
 }
@@ -53,12 +59,17 @@ export const handleUpdateAdmissionPlan = async (req: Request, res: Response) => 
 		const body = req.body;
 		const id = req.params.id;
 		const payload = await admissionPlanService.updateAdmissionPlan(id, body);
-		if (payload) res.status(200).json({ msg: "update admission plan was successfully", payload });
+		if (payload) {
+			res.status(200).json({ msg: "update admission plan was successfully", payload });
+		} else {
+			res.status(404).json({ error: 'Admission plan not found' });
+		}
 	} catch (error) {
+		console.error(`Error updating admission plan: `, error);
 		res.status(400).json({ error: 'Unable to update admission plan' });
 	}
-
 }
+
 
 export const handleDeleteAdmissionPlan = async (req: Request, res: Response) => {
 	try {
