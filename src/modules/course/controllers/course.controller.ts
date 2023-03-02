@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CourseAttributes, CourseParamInterface, CourseQueryInterface } from "../types/course.type";
+import { CourseParamInterface, CourseQueryInterface } from "../types/course.type";
 import courseService from './../services/course.service';
 
 export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface>, res: Response) => {
@@ -12,20 +12,23 @@ export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface
 		}
 
 		const payload = await courseService.getAllCourse(query)
-		res.json({
-			message: "get all successfull",
+		if(!payload) 
+			return res.status(400).json({
+				error: "Failed to retrieve all courses",
+			});
+		res.status(200).json({
+			message: "Retrieved all courses successfully",
 			payload
 		});
-	} catch (error) {
+	} catch (error: unknown) {
 		res.status(400).json({
-			msg: "something went wrong !"
+			error: `Error retrieving all courses: ${(error as Error).message}`
 		})
 	}
 }
 
-export const handleGetOneCourse = async (req: Request<{}, {}, CourseParamInterface, {}>, res: Response) => {
-	// const { id } = req.params?.id;
-	const id = (req.params as { id: string }).id;
+export const handleGetOneCourse = async (req: Request, res: Response) => {
+	const {id} = req.params;
 
 	try {
 		const payload = await courseService.getOneCourse(id);
@@ -33,10 +36,10 @@ export const handleGetOneCourse = async (req: Request<{}, {}, CourseParamInterfa
 			res.status(404).json({ error: 'Course not found' });
 			return;
 		}
-		res.json({ msg: "get one course was successfully", payload });
-	} catch (error) {
+		res.status(200).json({ message: "Retrieved course successfully", payload });
+	} catch (error: unknown) {
 		console.error(`Error retrieving course ${id}: `, error);
-		res.status(400).json({ error: 'Unable to retrieve course' });
+		res.status(400).json({ error: `Error retrieving course ${id}: ${(error as Error).message}` });
 	}
 };
 
@@ -44,11 +47,13 @@ export const handleCreateCourse = async (req: Request, res: Response) => {
 	try {
 		const body = req.body;
 		const payload = await courseService.createCourse(body);
-		res.status(201).json({ msg: "create course was successfully", payload });
+		if (!payload) 
+			return res.status(400).json({ error: "Failed to create course" });
+		res.status(201).json({ message: "Created course successfully", payload });
 
-	} catch (error) {
-		console.error(`Error create course`, error);
-		res.status(400).json({ error: 'Unable to create course' });
+	} catch (error: unknown) {
+		console.error(`Error creating course: `, error);
+		res.status(400).json({ error: `Error creating course: ${(error as Error).message}` });
 	}
 }
 
@@ -57,9 +62,11 @@ export const handleUpdateCourse = async (req: Request, res: Response) => {
 		const course = req.body;
 		const id = req.params.id;
 		const payload = await courseService.updateCourse(id, course);
-		if (payload) res.status(200).json({ msg: "update course successfully", payload });
-	} catch (error) {
-		res.status(400).json({ error: 'Unable to update course' });
+		if (!payload) 
+			return res.status(400).json({ error: "Failed to update course" });
+		res.status(200).json({ message: "Updated course successfully", payload });
+	} catch (error: unknown) {
+		res.status(400).json({ error: `Error updating course: ${(error as Error).message}` });
 	}
 
 }
@@ -68,11 +75,15 @@ export const handleDeleteCourse = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id;
 		const payload = await courseService.deleteCourse(id);
-		if (payload) res.status(200).json({ msg: "delete course successfully", payload });
+		if (payload === undefined) 
+			res.status(400).json({ msg: "delete course failed" });
+		else
+			res.status(200).json({ msg: "delete course successfully", payload });
 	} catch (error) {
 		res.status(400).json({ error: 'Unable to delete course' });
 	}
 }
+
 
 export default {
 	handleGetAll,
