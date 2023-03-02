@@ -1,13 +1,18 @@
 import { Request, Response } from "express";
 import responsibleQuotaPersonService from './../services/responsible-quota-person.service';
-import { ResponsibleQuotaPersonQueryInterface } from './../types/responsible-quota-person.types';
 
-export const handleGetAllResponsibleQuotaPerson = async (req: Request, res: Response) => {
-	const data = responsibleQuotaPersonService.getAllResponsibleQuotaPersons(req.query)
-	res.json({ message: "get all successfull" });
-}
+export const handleGetAllRQP = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const query = req.query;
+		const responsibleQuotaPersons = responsibleQuotaPersonService.getAllRQP(query)
+		res.json(responsibleQuotaPersons);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Unable to fetch responsible quota persons' });
+	}
+};
 
-export const handleGetOneResponsibleQuotaPerson = async (req: Request, res: Response) => {
+export const handleGetOneRQP = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
 		const responsibleQuotaPerson = responsibleQuotaPersonService.getOneRQP(id)
@@ -22,7 +27,7 @@ export const handleGetOneResponsibleQuotaPerson = async (req: Request, res: Resp
 	}
 }
 
-export const handleCreateResponsibleQuotaPerson = async (req: Request, res: Response) => {
+export const handleCreateRQP = async (req: Request, res: Response) => {
 	try {
 		const { year, name, surname, agency, phone, quota } = req.body;
 
@@ -36,7 +41,7 @@ export const handleCreateResponsibleQuotaPerson = async (req: Request, res: Resp
 		});
 
 		res.status(201).json({
-			msg:"create responsible quota person was successfully",
+			msg: "create responsible quota person was successfully",
 			payload: newResponsibleQuotaPerson
 		});
 	} catch (error) {
@@ -45,12 +50,10 @@ export const handleCreateResponsibleQuotaPerson = async (req: Request, res: Resp
 	}
 }
 
-export const handleUpdateResponsibleQuotaPerson = async (req: Request, res: Response) => {
+export const handleUpdateRQP = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
-
 		const responsibleQuotaPerson = responsibleQuotaPersonService.updateRQP(id, req.body)
-		// const responsibleQuotaPerson = await ResponsibleQuotaPerson.findByPk(id);
 
 		if (!responsibleQuotaPerson) {
 			res.status(404).json({ message: 'Responsible quota person not found' });
@@ -65,14 +68,14 @@ export const handleUpdateResponsibleQuotaPerson = async (req: Request, res: Resp
 	res.json({ message: "patch Update successfull" });
 }
 
-export const handleDeleteResponsibleQuotaPerson = async (req: Request, res: Response) => {
+export const handleDeleteRQP = async (req: Request, res: Response) => {
 	const data = responsibleQuotaPersonService.deleteRQP(req.params.id)
 	res.json({ message: "delete successfull" });
 }
 export default {
-	handleGetAllResponsibleQuotaPerson,
-	handleGetOneResponsibleQuotaPerson,
-	handleCreateResponsibleQuotaPerson,
-	handleUpdateResponsibleQuotaPerson,
-	handleDeleteResponsibleQuotaPerson
+	handleGetAllRQP,
+	handleGetOneRQP,
+	handleCreateRQP,
+	handleUpdateRQP,
+	handleDeleteRQP
 }
