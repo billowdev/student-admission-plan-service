@@ -30,8 +30,10 @@ export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface
 	}
 }
 
+
 export const handleGetOneCourse = async (req: Request, res: Response) => {
 	const {id} = req.params;
+
 
 	try {
 		const payload = await courseService.getOneCourse(id);
@@ -39,10 +41,12 @@ export const handleGetOneCourse = async (req: Request, res: Response) => {
 			res.status(404).json({ error: 'Course not found' });
 			return;
 		}
+
 		res.status(200).json({ message: "Retrieved course successfully", payload });
 	} catch (error: unknown) {
 		console.error(`Error retrieving course ${id}: `, error);
 		res.status(400).json({ error: `Error retrieving course ${id}: ${(error as Error).message}` });
+
 	}
 };
 
