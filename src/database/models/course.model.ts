@@ -7,7 +7,9 @@ import { Model, UUIDV4 } from "sequelize";
 
 
 module.exports = (sequelize: any, DataTypes: any) => {
+
 	class Course extends Model<CourseAttributes> implements CourseAttributes {
+
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -20,12 +22,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		faculty!: string;
 		static associate(models: any) {
 			// define association here
+
 			Course.hasMany(models.AdmissionPlan);
 			Course.hasMany(models.ExtraAdmissionPlan);
 		
 		}
 	}
 	Course.init(
+
 		{
 			id: {
 				type: DataTypes.UUID,
@@ -53,11 +57,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		{
 			sequelize,
 			underscored: true,
+
 			modelName: "Course",
 			tableName: "courses",
 			createdAt: 'created_at',
 			updatedAt: 'updated_at',
 		}
 	);
+
 	return Course;
+
 };

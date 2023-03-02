@@ -3,11 +3,13 @@
 import { resolveSoa } from "dns";
 import { Model, UUIDV4 } from "sequelize";
 
+
 import { UserRole, UserAttributes } from "../../modules/user/types/user.types";
 
 
 module.exports = (sequelize: any, DataTypes: any) => {
 	class User extends Model<UserAttributes> implements UserAttributes {
+
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -20,13 +22,16 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		name!: string;
 		surname!: string;
 		phone!: string;
+
 		role!: UserRole;
+
 		faculty!: string;
 		static associate(models: any) {
 			// define association here
 			// User.hasMany(models.Article);
 		}
 	}
+
 	User.init(
 		{
 			id: {
@@ -62,6 +67,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				allowNull: true,
 			},
 			role: {
+
 				type: DataTypes.ENUM(UserRole.ADMIN, UserRole.USER),
 				allowNull: false,
 				defaultValue: 'user',
@@ -74,11 +80,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		{
 			sequelize,
 			underscored: true,
+
 			modelName: "User",
+
 			tableName: "users",
 			createdAt: 'created_at',
 			updatedAt: 'updated_at',
 		}
 	);
+
 	return User;
+
 };

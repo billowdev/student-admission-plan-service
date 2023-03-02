@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 // Import the necessary interfaces and models
 import db from '../database/models';
+
 import { JWT_SECRET } from '../common/constants/common.constants';
 import userService from 'modules/user/services/user.service';
 
