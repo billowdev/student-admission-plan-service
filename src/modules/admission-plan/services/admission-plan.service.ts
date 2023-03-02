@@ -6,93 +6,56 @@ import { AdmissionPlanAttributes } from 'modules/admission-plan/types/admission-
 
 const AdmissionPlan = db.AdmissionPlan
 
-export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttributes> => {
+// Added return type to getAllAdmissionPlan() function to return an array of AdmissionPlanAttributes.
+// Simplified where clause of the getAllAdmissionPlan() function to handle all searchable fields dynamically with the help of an array.
+// Replaced multiple occurrences of sequelize.where with an array mapping to simplify code and make it easier to read.
+
+export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttributes[]> => {
 	try {
-		if (isAllValuesUndefined(query)) {
-			return await AdmissionPlan.findAll()
+		let whereClause = {};
+		const searchableFields = [
+			"quota_detail",
+			"quota_specific_subject",
+			"quota_status",
+			"direct_detail",
+			"direct_specific_subject",
+			"direct_status",
+			"cooperation_detail",
+			"cooperation_specific_subject",
+			"cooperation_status",
+			"year",
+		];
+
+		if (!isAllValuesUndefined(query)) {
+			whereClause = {
+				[Op.or]: searchableFields.map((field) => ({
+					[field]: {
+						[Op.like]: `%${query[field]}%`,
+					},
+				})),
+			};
+			if (query.keyword) {
+				whereClause = {
+					...whereClause,
+					[Op.or]: [
+						...searchableFields.map((field) => sequelize.where(sequelize.fn("LOWER", sequelize.col(field)), "LIKE", `%${query.keyword}%`)),
+					],
+				};
+			}
 		}
-		const response = await AdmissionPlan.findAll({
-			attributes: [
-				{ exclude: ['CourseModelId'] }
-			],
-			where: {
 
-				[Op.or]: [
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('quota_detail')),
-						'LIKE',
-						`%${query.quotaDetail}%`
-					),
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('quota_specific_subject')),
-						'LIKE',
-						`%${query.quotaSpecificSubject}%`
-					),
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('quota_status')),
-						'LIKE',
-						`%${query.quotaStatus}%`
-					),
-					//============================================
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('direct_detail')),
-						'LIKE',
-						`%${query.directDetail}%`
-					),
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('direct_specific_subject')),
-						'LIKE',
-						`%${query.directSpecificSubject}%`
-					),
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('direct_status')),
-						'LIKE',
-						`%${query.directStatus}%`
-					),
-					//============================================
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('cooperation_detail')),
-						'LIKE',
-						`%${query.cooperationDetail}%`
-					),
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('cooperation_specific_subject')),
-						'LIKE',
-						`%${query.cooperationSpecificSubject}%`
-					),
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('cooperation_status')),
-						'LIKE',
-						`%${query.cooperationStatus}%`
-					),
-					sequelize.where(
-						sequelize.fn('LOWER', sequelize.col('year')),
-						'LIKE',
-						`%${query.year}%`
-					),
-					sequelize.literal(`LOWER(CONCAT_WS(
-						' ',
-						"quota_status",
-						"quota_specific_subject",
-						"quota_detail",
-						"direct_detail", 
-						"direct_specific_subject",
-						"direct_status",
-						"cooperation_detail", 
-						"cooperation_specific_subject", 
-						"cooperation_status",
-						"year")) LIKE '%${query.keyword}%'`)
-				]
+		const admissionPlans = await AdmissionPlan.findAll({
+			attributes: { exclude: ["CourseModelId"] },
+			where: whereClause,
+			raw: true,
+		});
 
-			}, raw: true
-
-		})
-		return response;
-
+		return admissionPlans;
 	} catch (error) {
-		throw new Error()
+		throw new Error("Unable to fetch admission plans");
 	}
-}
+};
+
 
 export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
 	const response = await AdmissionPlan.findOne({
