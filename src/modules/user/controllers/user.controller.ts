@@ -74,11 +74,39 @@ export const handleUpdateUser = async (req: Request, res: Response): Promise<voi
 	}
 };
 
+
 export const handleGetAllUsers = async (req: Request, res: Response): Promise<void> => {
 	const query = req.query as UserQueryInterface;
-
+  
+	// Validate input
+	if (typeof query !== 'object' || query === null || Object.keys(query).length === 0) {
+	  res.status(400).json({ message: 'Invalid query parameters' });
+	  return;
+	}
+  
 	try {
-		const users = await userService.getAllUsers(query);
+	  const users = await userService.getAllUsers(query);
+	  res.status(200).json({
+		msg: 'Successfully retrieved all users',
+		payload: users,
+	  });
+	} catch (error) {
+	  console.error(error);
+  
+	  if (error instanceof FetchError) {
+		res.status(error.status).json({ message: error.message });
+	  } else {
+		res.status(500).json({ message: "something went wrong!" });
+	  }
+	}
+  };
+  
+
+
+export const handleGetOneUsers = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const id = req.params.id
+		const users = await userService.getOneUser(id);
 		res.status(200).json(users);
 	} catch (error) {
 		console.error(error);
