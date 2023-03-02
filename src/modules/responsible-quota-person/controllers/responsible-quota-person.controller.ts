@@ -4,8 +4,11 @@ import responsibleQuotaPersonService from './../services/responsible-quota-perso
 export const handleGetAllRQP = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const query = req.query;
-		const responsibleQuotaPersons = responsibleQuotaPersonService.getAllRQP(query)
-		res.json(responsibleQuotaPersons);
+		const responsibleQuotaPersons = await responsibleQuotaPersonService.getAllRQP(query)
+		res.status(200).json({
+			message: "get all responsible person was successfully",
+			payload: responsibleQuotaPersons
+		});
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: 'Unable to fetch responsible quota persons' });
@@ -41,7 +44,7 @@ export const handleCreateRQP = async (req: Request, res: Response) => {
 		});
 
 		res.status(201).json({
-			msg: "create responsible quota person was successfully",
+			message: "create responsible quota person was successfully",
 			payload: newResponsibleQuotaPerson
 		});
 	} catch (error) {
@@ -69,9 +72,15 @@ export const handleUpdateRQP = async (req: Request, res: Response) => {
 }
 
 export const handleDeleteRQP = async (req: Request, res: Response) => {
-	const data = responsibleQuotaPersonService.deleteRQP(req.params.id)
-	res.json({ message: "delete successfull" });
+	try {
+		await responsibleQuotaPersonService.deleteRQP(req.params.id);
+		res.status(200).json({ message: "Delete successful" });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: "Unable to delete responsible quota person" });
+	}
 }
+
 export default {
 	handleGetAllRQP,
 	handleGetOneRQP,
