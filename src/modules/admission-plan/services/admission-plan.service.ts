@@ -98,15 +98,18 @@ export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise
 }
 
 
-export const deleteAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes> => {
-
-	const response = await AdmissionPlan.destroy(
-		{
+export const deleteAdmissionPlan = async (id: string): Promise<number> => {
+	try {
+		const response = await AdmissionPlan.destroy({
 			where: { id }
-		}
-	)
-	return response
+		});
+		return response;
+	} catch (error) {
+		console.error(`Error deleting admission plan ${id}: `, error);
+		throw new Error('Unable to delete admission plan');
+	}
 }
+
 
 export default {
 	getAllAdmissionPlan,

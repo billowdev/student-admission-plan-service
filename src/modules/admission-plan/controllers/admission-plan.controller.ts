@@ -72,14 +72,21 @@ export const handleUpdateAdmissionPlan = async (req: Request, res: Response) => 
 
 
 export const handleDeleteAdmissionPlan = async (req: Request, res: Response) => {
+	const id = req.params.id;
 	try {
-		const id = req.params.id;
 		const payload = await admissionPlanService.deleteAdmissionPlan(id);
-		if (payload) res.status(200).json({ msg: "delete admission plan was successfully", payload });
+		if (payload) {
+			res.status(200).json({ msg: "delete admission plan was successful" });
+		} else {
+			res.status(404).json({ error: 'Admission plan not found' });
+		}
 	} catch (error) {
+		console.error(`Error deleting admission plan ${id}: `, error);
 		res.status(400).json({ error: 'Unable to delete admission plan' });
 	}
 }
+
+
 export default {
 	handleGetAllAdmissionPlan,
 	handleGetOneAdmissionPlan,
