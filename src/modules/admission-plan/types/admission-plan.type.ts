@@ -22,22 +22,17 @@ export interface AdmissionPlanAttributes {
 
 
 export interface AdmissionPlanQueryInterface extends Query {
-	keyword?: string
-
-	id?: string;
-	quotaStatus?: any, // boolean
-	quotaSpecificSubject?: string,
-	quotaDetail?: string,
-
-	directStatus?: any,
-	directSpecificSubject?: string,
-	directDetail?: string,
-
-	cooperationStatus?: any,
-	cooperationSpecificSubject?: string,
-	cooperationDetail?: string,
-	year?: string,
-	courseId?: string,
+	quota_detail?: string;
+	quota_specific_subject?: string;
+	quota_status?: string;
+	direct_detail?: string;
+	direct_specific_subject?: string;
+	direct_status?: string;
+	cooperation_detail?: string;
+	cooperation_specific_subject?: string;
+	cooperation_status?: string;
+	year?: string;
+	keyword?: string;
 }
 
 export interface AdmissionPlanParamInterface {
