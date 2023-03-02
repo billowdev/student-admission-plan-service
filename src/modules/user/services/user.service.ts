@@ -6,8 +6,8 @@ import { Op } from 'sequelize';
 import { FetchError } from '../../../common/exceptions/app.exception';
 import { createJwtToken } from '../../../middlewares/jwt.middleware.';
 
-const User = db.User
 
+const User = db.User
 
 
 export const login = async (identifier: string, password: string): Promise<LoginResponse> => {
@@ -121,6 +121,9 @@ export const getAllUsers = async (query: UserQueryInterface): Promise<UserAttrib
 					faculty && { faculty: { [Op.iLike]: `%${faculty}%` } },
 				].filter(Boolean),
 			},
+			attribues: {
+				exclude: ['password']
+			},
 			raw: true,
 		});
 		return response;
@@ -129,11 +132,26 @@ export const getAllUsers = async (query: UserQueryInterface): Promise<UserAttrib
 	}
 };
 
+export const getOneUser = async (id: string): Promise<UserAttributes> => {
+	try {
+		const response = await User.findByPk(id, {
+			attribues: {
+				exclude: ['password']
+			},
+			raw: true
+		})
+		return response
+	} catch (error) {
+		throw new FetchError('Unable to get user', 500)
+	}
+}
+
 
 export default {
 	login,
 	createUser,
 	deleteUser,
 	updateUser,
-	getAllUsers
+	getAllUsers,
+	getOneUser
 }
