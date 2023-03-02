@@ -7,6 +7,7 @@ import { AdmissionPlanAttributes, AdmissionPlanQueryInterface } from 'modules/ad
 
 const AdmissionPlan = db.AdmissionPlan
 
+// search option for a keyword that can be applied to all searchable fields.
 export const getAllAdmissionPlan = async (query: AdmissionPlanQueryInterface): Promise<AdmissionPlanAttributes[]> => {
 	try {
 		let whereClause = {};
