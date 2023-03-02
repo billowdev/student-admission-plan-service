@@ -4,14 +4,13 @@ import jwt from 'jsonwebtoken';
 // Import the necessary interfaces and models
 import db from '../database/models';
 
-const User= db.User
+const User = db.User
 
 interface TokenPayload {
   id: number;
   role: string;
   exp: number;
 }
-
 
 class AuthError extends Error {
   constructor(message: string) {
@@ -20,7 +19,6 @@ class AuthError extends Error {
   }
 }
 
-// Define the middleware function
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
@@ -36,7 +34,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
       const user = await User.findByPk(decodedToken.id);
 
-      if (!user || user.role !== decodedToken.role) {
+      if (!user) {
         throw new AuthError('Unauthorized');
       }
 
@@ -54,25 +52,18 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-// Define the middleware function
-// export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//   try {
-//     // Get the token from the Authorization header
-//     const token = req.headers.authorization?.split(' ')[1];
-//     if (!token) throw new Error('Authorization failed');
+export const roleMiddleware = (role: string) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    if (!("user" in req)) {
+      throw new Error("Request object without user found unexpectedly");
+    }
 
-//     // Verify the token and decode the payload
-//     const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
+    const userRole = req.user!.role;
 
-//     // Find the user by ID and check if they have the required role
-//     const user = await User.findByPk(decodedToken.id);
-//     if (!user || user.role !== decodedToken.role) throw new Error('Authorization failed');
-
-//     // Add the user object to the request object and proceed to the next middleware/route handler
-//     req.user = user;
-//     next();
-//   } catch (error) {
-//     console.error(error);
-//     res.status(401).json({ error: 'Authorization failed' });
-//   }
-// };
+    if (userRole !== role) {
+      res.status(403).json({ message: `Only ${role}s can access this resource` });
+    } else {
+      next();
+    }
+  };
+};
