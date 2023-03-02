@@ -2,16 +2,12 @@
 import { isAllValuesUndefined } from "../../../common/utils"
 import sequelize, { Op } from "sequelize";
 import db from "../../../database/models"
-import { AdmissionPlanAttributes } from 'modules/admission-plan/types/admission-plan.type';
+import { AdmissionPlanAttributes, AdmissionPlanQueryInterface } from 'modules/admission-plan/types/admission-plan.type';
 
 
 const AdmissionPlan = db.AdmissionPlan
 
-// Added return type to getAllAdmissionPlan() function to return an array of AdmissionPlanAttributes.
-// Simplified where clause of the getAllAdmissionPlan() function to handle all searchable fields dynamically with the help of an array.
-// Replaced multiple occurrences of sequelize.where with an array mapping to simplify code and make it easier to read.
-
-export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttributes[]> => {
+export const getAllAdmissionPlan = async (query: AdmissionPlanQueryInterface): Promise<AdmissionPlanAttributes[]> => {
 	try {
 		let whereClause = {};
 		const searchableFields = [
@@ -56,7 +52,6 @@ export const getAllAdmissionPlan = async (query: any): Promise<AdmissionPlanAttr
 	}
 };
 
-
 export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttributes | null> => {
 	try {
 		const response = await AdmissionPlan.findOne({
@@ -73,16 +68,16 @@ export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttr
 
 export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
 	try {
-	  const createdAdmissionPlan = await AdmissionPlan.create(dto);
-	  return createdAdmissionPlan.toJSON() as AdmissionPlanAttributes;
+		const createdAdmissionPlan = await AdmissionPlan.create(dto);
+		return createdAdmissionPlan.toJSON() as AdmissionPlanAttributes;
 	} catch (error) {
-	  console.error(`Error creating admission plan: ${error}`);
-	  throw new Error('Unable to create admission plan');
+		console.error(`Error creating admission plan: ${error}`);
+		throw new Error('Unable to create admission plan');
 	}
-  };
-  
+};
 
-  export const updateAdmissionPlan = async (id: string, admissionPlanDto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes | null> => {
+
+export const updateAdmissionPlan = async (id: string, admissionPlanDto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes | null> => {
 	try {
 		const [, [updatedAdmissionPlan]] = await AdmissionPlan.update(
 			{ ...admissionPlanDto },
