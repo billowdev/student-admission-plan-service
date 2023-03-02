@@ -25,7 +25,7 @@ export const getOneRQP = async (id: string) => {
 }
 
 
-export const getAllResponsibleQuotaPersons = async (query: ResponsibleQuotaPersonQueryInterface): Promise<ResponsibleQuotaPersonAttributes[]> => {
+export const getAllRQP = async (query: ResponsibleQuotaPersonQueryInterface): Promise<ResponsibleQuotaPersonAttributes[]> => {
 	try {
 		const { year, name, surname, agency, phone, quota, keyword } = query;
 		const searchableFields = ['name', 'year', 'surname', 'agency', 'phone'];
@@ -83,7 +83,7 @@ export default {
 	updateRQP,
 	deleteRQP,
 	getOneRQP,
-	getAllResponsibleQuotaPersons
+	getAllRQP
 }
 
 
@@ -144,7 +144,7 @@ export default {
 
 
 
-// export const getAllResponsibleQuotaPersons = async (query: ResponsibleQuotaPersonQueryInterface): Promise<ResponsibleQuotaPersonAttributes[]> => {
+// export const getAllRQP = async (query: ResponsibleQuotaPersonQueryInterface): Promise<ResponsibleQuotaPersonAttributes[]> => {
 // 	try {
 // 		let whereClause = {};
 // 		const {keyword} = query

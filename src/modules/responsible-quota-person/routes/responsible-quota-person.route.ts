@@ -4,11 +4,11 @@ import validateUUID from './../../../middlewares/validate-uuid.common.middleware
 const router = express.Router();
 
 
-router.get("/get-all", responsibleQuotaPersonController.handleGetAllResponsibleQuotaPerson)
-router.get("/get-one/:id", validateUUID, responsibleQuotaPersonController.handleGetOneResponsibleQuotaPerson)
+router.get("/get-all", responsibleQuotaPersonController.handleGetAllRQP)
+router.get("/get-one/:id", validateUUID, responsibleQuotaPersonController.handleGetOneRQP)
 
-router.post("/create", responsibleQuotaPersonController.handleCreateResponsibleQuotaPerson)
-router.patch("/update/:id", responsibleQuotaPersonController.handleUpdateResponsibleQuotaPerson)
-router.delete("/delete/:id", validateUUID,responsibleQuotaPersonController.handleDeleteResponsibleQuotaPerson)
+router.post("/create", responsibleQuotaPersonController.handleCreateRQP)
+router.patch("/update/:id", responsibleQuotaPersonController.handleUpdateRQP)
+router.delete("/delete/:id", validateUUID,responsibleQuotaPersonController.handleDeleteRQP)
 
 export default router;
