@@ -1,6 +1,7 @@
 import App from "./src/app"
 const app = App()
 import db from "./src/database/models"
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,3 +22,4 @@ const startServer = async () => {
 }
 
 startServer();
+

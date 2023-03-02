@@ -1,6 +1,7 @@
 import express from "express";
 import { json } from 'body-parser';
 import userController from './modules/user/controllers/user.controller';
+
 import coursesRouter from "./modules/course/routes/course.route";
 import admissionPlanRouter from "./modules/admission-plan/routes/admission-plan.route";
 import extraAdmissionPlanRouter from "./modules/extra-admission-plan/routes/extra-admission-plan.route"
@@ -23,9 +24,11 @@ export const App = () => {
 
 	app.use(json());
 	app.use('/courses', coursesRouter);
+
 	app.use('/admission-plans', admissionPlanRouter);
 	app.use('/extra-admission-plans', extraAdmissionPlanRouter);
 	app.use('/users', userRouter)
+
 
 	app.get("/", (req, res) => {
 		res.json("HELLO WORLD");

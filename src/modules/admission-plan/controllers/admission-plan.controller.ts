@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import { AdmissionPlanQueryInterface } from "../types/admission-plan.type";
 import admissionPlanService from './../services/admission-plan.service';
 
+
 // Renamed AdmissionPlanService to admissionPlanService to follow camelCase convention.
 // Changed message and error object in the response of the handleGetAllAdmissionPlan() function for consistency.
 export const handleGetAllAdmissionPlan = async (req: Request, res: Response) => {
 	try {
+
 		const payload = await admissionPlanService.getAllAdmissionPlan(req.query);
 		res.status(200).json({
 			message: "Get all admission plans successful",
@@ -33,6 +35,7 @@ export const handleGetOneAdmissionPlan = async (req: Request, res: Response): Pr
 	} catch (error) {
 		console.error(`Error retrieving admission plan ${id}: `, error);
 		res.status(400).json({ error: 'Unable to retrieve admission plan' });
+
 	}
 }
 
@@ -45,11 +48,13 @@ export const handleGetOneAdmissionPlan = async (req: Request, res: Response): Pr
  */
 export const handleCreateAdmissionPlan = async (req: Request, res: Response) => {
 	try {
+
 		const admissionPlanDto = req.body;
 		const createdAdmissionPlan = await admissionPlanService.createAdmissionPlan(admissionPlanDto);
 		res.status(201).json({ message: "Admission plan created successfully", payload: createdAdmissionPlan });
 	} catch (error) {
 		console.error(`Error creating admission plan: `, error);
+
 		res.status(400).json({ error: 'Unable to create admission plan' });
 	}
 }
@@ -58,6 +63,7 @@ export const handleUpdateAdmissionPlan = async (req: Request, res: Response) => 
 	try {
 		const body = req.body;
 		const id = req.params.id;
+
 		const payload = await admissionPlanService.updateAdmissionPlan(id, body);
 		if (payload) {
 			res.status(200).json({ msg: "update admission plan was successfully", payload });
@@ -68,10 +74,12 @@ export const handleUpdateAdmissionPlan = async (req: Request, res: Response) => 
 		console.error(`Error updating admission plan: `, error);
 		res.status(400).json({ error: 'Unable to update admission plan' });
 	}
+
 }
 
 
 export const handleDeleteAdmissionPlan = async (req: Request, res: Response) => {
+
 	const id = req.params.id;
 	try {
 		const payload = await admissionPlanService.deleteAdmissionPlan(id);
@@ -82,6 +90,7 @@ export const handleDeleteAdmissionPlan = async (req: Request, res: Response) => 
 		}
 	} catch (error) {
 		console.error(`Error deleting admission plan ${id}: `, error);
+
 		res.status(400).json({ error: 'Unable to delete admission plan' });
 	}
 }
