@@ -80,20 +80,21 @@ export const updateCourse = async (id: string, dto: CourseAttributes): Promise<C
 		if (!response[1]) {
 			throw new Error('Course not found');
 		}
-		return response[1];
+		return {
+			id,
+			...dto
+		}
 	} catch (error: unknown) {
 		throw new Error('Unable to update course');
 	}
 };
 
-export const deleteCourse = async (id: string): Promise<void> => {
+export const deleteCourse = async (id: string): Promise<CourseAttributes> => {
 	try {
 		const response = await Course.destroy({
 			where: { id },
 		});
-		if (!response) {
-			throw new Error('Course not found');
-		}
+		return response
 	} catch (error: unknown) {
 		throw new Error('Unable to delete course');
 	}
