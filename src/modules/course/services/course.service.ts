@@ -77,10 +77,10 @@ export const updateCourse = async (id: string, dto: CourseAttributes): Promise<C
 				where: { id },
 			}
 		);
-		if (!response[0]) {
+		if (!response[1]) {
 			throw new Error('Course not found');
 		}
-		return response[1][0];
+		return response[1];
 	} catch (error: unknown) {
 		throw new Error('Unable to update course');
 	}

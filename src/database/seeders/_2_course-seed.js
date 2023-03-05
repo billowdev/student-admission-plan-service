@@ -10,15 +10,43 @@ module.exports = {
 		  created_at: new Date(),
 		  updated_at: new Date()
 		},
+	
 		{ 
-		  id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
-		  major: "IT",
-		  degree: "BsC",
-		  qualification: "test",
-		  faculty: "science",
-		  created_at: new Date(),
-		  updated_at: new Date()
-		},
+			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
+			major: "IT",
+			degree: "BsC",
+			qualification: "test",
+			faculty: "science",
+			created_at: new Date(),
+			updated_at: new Date()
+		  },
+		  { 
+			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d3",
+			major: "IT 2",
+			degree: "BsC",
+			qualification: "test",
+			faculty: "science",
+			created_at: new Date(),
+			updated_at: new Date()
+		  },
+		  { 
+			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d4",
+			major: "Course 3",
+			degree: "BsC",
+			qualification: "test",
+			faculty: "science",
+			created_at: new Date(),
+			updated_at: new Date()
+		  },
+		  { 
+			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d5",
+			major: "Course 4",
+			degree: "BsC",
+			qualification: "test",
+			faculty: "science",
+			created_at: new Date(),
+			updated_at: new Date()
+		  },
 	  ];
   
 	  await queryInterface.bulkInsert('courses', coursesData);

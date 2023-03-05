@@ -68,9 +68,9 @@ export const handleCreateCourse = async (req: Request, res: Response) => {
 
 export const handleUpdateCourse = async (req: Request, res: Response) => {
 	try {
-		const course = req.body;
+		const body = req.body;
 		const id = req.params.id;
-		const payload = await courseService.updateCourse(id, course);
+		const payload = await courseService.updateCourse(id, body);
 
 		if (!payload) 
 			return res.status(400).json({ error: "Failed to update course" });
