@@ -65,33 +65,38 @@ module.exports = (sequelize: any, DataTypes: any) => {
 			quotaSpecificSubject: {
 				type: DataTypes.STRING(64),
 				field: "quota_specific_subject",
-				allowNull: true
+				defaultValue: "",
+				allowNull: false
 			},
 			quotaQty: {
 				type: DataTypes.INTEGER,
 				field: "quota_qty",
+				
 				defaultValue: 0,
 			},
 			quotaDetail: {
 				type: DataTypes.STRING(255),
 				field: "quota_detail",
-				allowNull: true
+				defaultValue: "",
+				allowNull: false
 			},
 			directStatus: {
 				type: DataTypes.BOOLEAN,
 				field: "direct_status",
 				defaultValue: false
 			},
-			
+
 			directSpecificSubject: {
 				type: DataTypes.STRING(64),
 				field: "direct_specific_subject",
-				allowNull: true
+				allowNull: false,
+				defaultValue: "",
 			},
 			directDetail: {
 				type: DataTypes.STRING(255),
 				field: "direct_detail",
-				allowNull: true
+				allowNull: false,
+				defaultValue: "",
 			},
 			directQty: {
 				type: DataTypes.INTEGER,
@@ -106,11 +111,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
 			cooperationSpecificSubject: {
 				type: DataTypes.STRING(64),
 				field: "cooperation_specific_subject",
+				defaultValue: "",
 				allowNull: true
 			},
 			cooperationDetail: {
 				type: DataTypes.STRING(255),
 				field: "cooperation_detail",
+				defaultValue: "",
 				allowNull: true
 			},
 			cooperationQty: {

@@ -58,11 +58,10 @@ export const handleGetAllAdmissionPlanByCourseId = async (req: Request, res: Res
 
 export const handleGetAllAdmissionPlanByFaculty = async (req: Request, res: Response): Promise<void> => {
 	const faculty = (req.params as { faculty: string }).faculty;
-	console.log('====================================');
-	console.log(faculty);
-	console.log('====================================');
+	const query = req.query
+
 	try {
-		const payload = await admissionPlanService.getAllAdmissionPlanByFaculty(faculty);
+		const payload = await admissionPlanService.getAllAdmissionPlanByFaculty(faculty, query);
 		if (!payload) {
 			res.status(404).json({ error: 'Admission plan not found' });
 			return;
@@ -70,6 +69,21 @@ export const handleGetAllAdmissionPlanByFaculty = async (req: Request, res: Resp
 		res.status(200).json({ message: "Admission plan retrieved successfully", payload });
 	} catch (error) {
 		console.error(`Error retrieving admission plan ${faculty}: `, error);
+		res.status(400).json({ error: 'Unable to retrieve admission plan' });
+
+	}
+}
+
+export const handleGetYearListAdmissionPlan = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const payload = await admissionPlanService.getYearlistAdmissionPlan();
+		if (!payload) {
+			res.status(404).json({ error: 'Admission plan not found' });
+			return;
+		}
+		res.status(200).json({ message: "Admission plan retrieved successfully", payload });
+	} catch (error) {
+		console.error(`Error retrieving year list of admission plan: `, error);
 		res.status(400).json({ error: 'Unable to retrieve admission plan' });
 
 	}
@@ -139,5 +153,6 @@ export default {
 	handleUpdateAdmissionPlan,
 	handleDeleteAdmissionPlan,
 	handleGetAllAdmissionPlanByFaculty,
-	handleGetAllAdmissionPlanByCourseId
+	handleGetAllAdmissionPlanByCourseId,
+	handleGetYearListAdmissionPlan
 }

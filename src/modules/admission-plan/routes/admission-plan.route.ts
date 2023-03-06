@@ -11,6 +11,9 @@ router.get("/get-all", validateAdmissionPlanQueryParams, admissionPlanController
 router.get("/get-one/:id", validateUUID, admissionPlanControllers.handleGetOneAdmissionPlan)
 router.get("/get-by-course-id/:id", validateUUID, admissionPlanControllers.handleGetAllAdmissionPlanByCourseId)
 router.get("/get-by-faculty/:faculty", admissionPlanControllers.handleGetAllAdmissionPlanByFaculty)
+router.get("/get-exists-year", admissionPlanControllers.handleGetYearListAdmissionPlan)
+
+
 router.post("/create", validateAdmissionPlan, admissionPlanControllers.handleCreateAdmissionPlan)
 router.patch("/update/:id", admissionPlanControllers.handleUpdateAdmissionPlan)
 router.delete("/delete/:id", validateUUID, authMiddleware, admissionPlanControllers.handleDeleteAdmissionPlan)

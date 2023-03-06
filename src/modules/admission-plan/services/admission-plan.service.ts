@@ -3,6 +3,7 @@ import { isAllValuesUndefined } from "../../../common/utils"
 import sequelize, { Op } from "sequelize";
 import db from "../../../database/models"
 import { AdmissionPlanAttributes, AdmissionPlanQueryInterface } from 'modules/admission-plan/types/admission-plan.type';
+import { query } from 'express-validator';
 
 
 const AdmissionPlan = db.AdmissionPlan
@@ -86,16 +87,51 @@ export const getAllAdmissionPlanByCourseId = async (courseId: string): Promise<A
 	}
 }
 
-export const getAllAdmissionPlanByFaculty = async (faculty: string): Promise<AdmissionPlanAttributes | null> => {
+export const getAllAdmissionPlanByFaculty = async (faculty: string, query: any): Promise<AdmissionPlanAttributes | null> => {
 	try {
+		let whereClause = {};
+		const searchableFields = [
+			"quota_detail",
+			"quota_specific_subject",
+			"quota_status",
+			"direct_detail",
+			"direct_specific_subject",
+			"direct_status",
+			"cooperation_detail",
+			"cooperation_specific_subject",
+			"cooperation_status",
+			"year",
+		];
+
+		if (!isAllValuesUndefined(query)) {
+			whereClause = {
+				[Op.or]: searchableFields.map((field) => ({
+					[field]: {
+						[Op.like]: `%${query[field]}%`,
+					},
+				})),
+			};
+			if (query.keyword) {
+				whereClause = {
+					...whereClause,
+					[Op.or]: [
+						...searchableFields.map((field) => sequelize.where(sequelize.fn("LOWER", sequelize.col(field)), "LIKE", `%${query.keyword}%`)),
+					],
+				};
+			}
+		}
+
 		const response = await AdmissionPlan.findAll({
+			where: whereClause,
 			include: [{
 				model: db.Course,
 				where: {
 					faculty: { [Op.like]: `%${faculty}%` },
 				},
 				attributes: { exclude: ['id'] },
-			}]
+				order: [['year', 'DESC']] // Add this line to sort by year in ascending order
+			}],
+
 		});
 
 		return response;
@@ -104,6 +140,22 @@ export const getAllAdmissionPlanByFaculty = async (faculty: string): Promise<Adm
 		throw new Error('Unable to retrieve admission plan');
 	}
 }
+
+export const getYearlistAdmissionPlan = async (): Promise<any> => {
+	try {
+
+		const response = await AdmissionPlan.findAll({
+			attributes: { include: ['id', 'year'] },
+			raw: true
+		});
+		const uniqueYears = Array.from(new Set(response.map((resp: any) => resp.year)));
+		return uniqueYears;
+	} catch (error) {
+		console.error(`Error retrieving year list of admission plan: `, error);
+		throw new Error('Unable to retrieve admission plan');
+	}
+}
+
 
 
 
@@ -160,5 +212,6 @@ export default {
 	updateAdmissionPlan,
 	deleteAdmissionPlan,
 	getAllAdmissionPlanByCourseId,
-	getAllAdmissionPlanByFaculty
+	getAllAdmissionPlanByFaculty,
+	getYearlistAdmissionPlan
 }
