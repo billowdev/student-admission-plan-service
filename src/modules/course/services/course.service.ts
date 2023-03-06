@@ -1,5 +1,5 @@
 
-import sequelize,{ Op } from "sequelize";
+import sequelize, { Op } from "sequelize";
 import db from "../../../database/models"
 import isAllValuesUndefined from "../../../common/utils/is-all-undefined"
 import { CourseAttributes, CourseQueryInterface } from "../types/course.type";
@@ -91,8 +91,16 @@ export const updateCourse = async (id: string, dto: CourseAttributes): Promise<C
 
 export const deleteCourse = async (id: string): Promise<CourseAttributes> => {
 	try {
+		// delete extra admission plaln
+		await db.ExtraAdmissionPlan.destroy({
+			where: {
+				courseId: id
+			}
+		})
 		const response = await Course.destroy({
 			where: { id },
+
+			raw: true
 		});
 		return response
 	} catch (error: unknown) {
