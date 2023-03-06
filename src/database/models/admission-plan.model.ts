@@ -17,15 +17,19 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		quotaStatus!: boolean;
 		quotaSpecificSubject!: string;
 		quotaDetail!: string | null;
+		quotaQty!: number;
 
 		directStatus!: boolean;
 		directSpecificSubject!: string;
 		directDetail!: string;
+		directQty!: number;
 
 		cooperationStatus!: boolean;
 		cooperationSpecificSubject!: string;
-		cooperationDetail!: string ;
+		cooperationDetail!: string;
+		cooperationQty!: number;
 		year!: number;
+		studyGroup!: number;
 		courseId!: string;
 		//courseId! : string;
 
@@ -33,13 +37,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
 			// define association here
 
 			AdmissionPlan.belongsTo(models.Course,
-			// 	 {
-			// 	foreignKey: {
-			// 		name: 'courseId',
-			// 		allowNull: false,
-			// 		field: 'course_id',
-			// 	}
-			// }
+				// 	 {
+				// 	foreignKey: {
+				// 		name: 'courseId',
+				// 		allowNull: false,
+				// 		field: 'course_id',
+				// 	}
+				// }
 			);
 
 		}
@@ -63,6 +67,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				field: "quota_specific_subject",
 				allowNull: true
 			},
+			quotaQty: {
+				type: DataTypes.INTEGER,
+				field: "quota_qty",
+				defaultValue: 0,
+			},
 			quotaDetail: {
 				type: DataTypes.STRING(255),
 				field: "quota_detail",
@@ -73,6 +82,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				field: "direct_status",
 				defaultValue: false
 			},
+			
 			directSpecificSubject: {
 				type: DataTypes.STRING(64),
 				field: "direct_specific_subject",
@@ -82,6 +92,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				type: DataTypes.STRING(255),
 				field: "direct_detail",
 				allowNull: true
+			},
+			directQty: {
+				type: DataTypes.INTEGER,
+				field: "direct_qty",
+				defaultValue: 0,
 			},
 			cooperationStatus: {
 				type: DataTypes.BOOLEAN,
@@ -98,18 +113,30 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				field: "cooperation_detail",
 				allowNull: true
 			},
+			cooperationQty: {
+				type: DataTypes.INTEGER,
+				field: "cooperation_qty",
+				defaultValue: 0,
+			},
 			year: {
 				type: DataTypes.INTEGER,
-				allowNull: true,
+				allowNull: false,
 			},
+			studyGroup: {
+				type: DataTypes.INTEGER,
+				defaultValue: 1,
+			},
+			courseId: {
+				type: DataTypes.UUID,
+				allowNull: false,
+				field: 'course_id'
+			}
 
 		},
 		{
 			sequelize,
 			underscored: true,
-
 			modelName: "AdmissionPlan",
-
 			tableName: "admission_plans",
 			createdAt: 'created_at',
 			updatedAt: 'updated_at',

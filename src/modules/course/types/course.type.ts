@@ -5,7 +5,7 @@ export interface CourseAttributes {
 	id?: string;
 	major?: string;
 	degree: string;
-	qualification?: string;
+	detail?: string;
 	faculty?: string;
   }
   

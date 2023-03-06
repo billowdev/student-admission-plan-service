@@ -19,10 +19,10 @@ export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseA
 		}
 
 		// Destructure the query object for readability
-		const { major, degree, faculty, qualification, keyword } = query;
+		const { major, degree, faculty, detail, keyword } = query;
 
 		// Add input validation to ensure the query object has all the required fields
-		if (!major || !degree || !faculty || !qualification || !keyword) {
+		if (!major || !degree || !faculty || !detail || !keyword) {
 			throw new Error('Invalid query parameters');
 		}
 
@@ -33,8 +33,8 @@ export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseA
 					sequelize.where(sequelize.fn('LOWER', sequelize.col('major')), 'LIKE', `%${major}%`),
 					sequelize.where(sequelize.fn('LOWER', sequelize.col('degree')), 'LIKE', `%${degree}%`),
 					sequelize.where(sequelize.fn('LOWER', sequelize.col('faculty')), 'LIKE', `%${faculty}%`),
-					sequelize.where(sequelize.fn('LOWER', sequelize.col('qualification')), 'LIKE', `%${qualification}%`),
-					sequelize.literal(`LOWER(CONCAT_WS(' ', "major", "degree", "faculty", "qualification")) LIKE '%${keyword}%'`)
+					sequelize.where(sequelize.fn('LOWER', sequelize.col('detail')), 'LIKE', `%${detail}%`),
+					sequelize.literal(`LOWER(CONCAT_WS(' ', "major", "degree", "faculty", "detail")) LIKE '%${keyword}%'`)
 				]
 			},
 			raw: true

@@ -18,7 +18,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		id!: string;
 		major!: string;
 		degree!: string;
-		qualification!: string;
+		detail!: string;
 		faculty!: string;
 		static associate(models: any) {
 			// define association here
@@ -45,7 +45,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				type: DataTypes.STRING(100),
 				allowNull: false,
 			},
-			qualification: {
+			detail: {
 				type: DataTypes.STRING(120),
 				allowNull: true,
 			},

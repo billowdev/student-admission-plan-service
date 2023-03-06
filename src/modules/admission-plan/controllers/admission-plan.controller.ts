@@ -39,6 +39,42 @@ export const handleGetOneAdmissionPlan = async (req: Request, res: Response): Pr
 	}
 }
 
+export const handleGetAllAdmissionPlanByCourseId = async (req: Request, res: Response): Promise<void> => {
+	const id = (req.params as { id: string }).id;
+
+	try {
+		const payload = await admissionPlanService.getAllAdmissionPlanByCourseId(id);
+		if (!payload) {
+			res.status(404).json({ error: 'Admission plan not found' });
+			return;
+		}
+		res.json({ message: "Admission plan retrieved successfully", payload });
+	} catch (error) {
+		console.error(`Error retrieving admission plan ${id}: `, error);
+		res.status(400).json({ error: 'Unable to retrieve admission plan' });
+
+	}
+}
+
+export const handleGetAllAdmissionPlanByFaculty = async (req: Request, res: Response): Promise<void> => {
+	const faculty = (req.params as { faculty: string }).faculty;
+	console.log('====================================');
+	console.log(faculty);
+	console.log('====================================');
+	try {
+		const payload = await admissionPlanService.getAllAdmissionPlanByFaculty(faculty);
+		if (!payload) {
+			res.status(404).json({ error: 'Admission plan not found' });
+			return;
+		}
+		res.status(200).json({ message: "Admission plan retrieved successfully", payload });
+	} catch (error) {
+		console.error(`Error retrieving admission plan ${faculty}: `, error);
+		res.status(400).json({ error: 'Unable to retrieve admission plan' });
+
+	}
+}
+
 /** 03-02-2023 08-08AM
  * added an import statement for admissionPlanService
  * I renamed the body variable to admissionPlanDto for clarity
@@ -101,5 +137,7 @@ export default {
 	handleGetOneAdmissionPlan,
 	handleCreateAdmissionPlan,
 	handleUpdateAdmissionPlan,
-	handleDeleteAdmissionPlan
+	handleDeleteAdmissionPlan,
+	handleGetAllAdmissionPlanByFaculty,
+	handleGetAllAdmissionPlanByCourseId
 }

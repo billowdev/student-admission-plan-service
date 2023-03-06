@@ -22,7 +22,7 @@ export const validateCourseId = [
 export const validateCourseQueryParams: RequestHandlerParams<{}, {}, {}, CourseQueryInterface> = [
 	query('major').optional().isString(),
 	query('degree').optional().isString(),
-	query('qualification').optional().isString(),
+	query('detail').optional().isString(),
 	query('faculty').optional().isString(),
 	(req: RequestHandlerParams<{}, {}, {}, CourseQueryInterface>, res: any, next: any) => {
 		const errors = validationResult(req);
@@ -35,7 +35,7 @@ export const validateCourseQueryParams: RequestHandlerParams<{}, {}, {}, CourseQ
 
 export function validateCreateCourse(req: Request, res: Response, next: NextFunction): void {
 	const course: CourseAttributes = req.body;
-	const { degree, major, qualification, faculty } = course;
+	const { degree, major, detail, faculty } = course;
 
 	// Check that the degree field is not empty
 	if (!degree) {
@@ -46,8 +46,8 @@ export function validateCreateCourse(req: Request, res: Response, next: NextFunc
 		res.status(400).json({ message: "major field is required" });
 		return;
 	}
-	if (!qualification) {
-		res.status(400).json({ message: "qualification field is required" });
+	if (!detail) {
+		res.status(400).json({ message: "detail field is required" });
 		return;
 	}
 	if (!faculty) {
@@ -79,7 +79,7 @@ export const validateUpdateCourse = [
 			return res.status(400).send('Degree must be a string');
 		}
 
-		if (updates.qualification && typeof updates.qualification !== 'string') {
+		if (updates.detail && typeof updates.detail !== 'string') {
 			return res.status(400).send('Degree must be a string');
 		}
 

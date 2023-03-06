@@ -44,6 +44,10 @@ export const getAllAdmissionPlan = async (query: AdmissionPlanQueryInterface): P
 
 		const admissionPlans = await AdmissionPlan.findAll({
 			where: whereClause,
+			include: [{
+				model: db.Course,
+				attributes: { exclude: ['id'] },
+			}],
 			raw: true,
 		});
 
@@ -65,10 +69,52 @@ export const getOneAdmissionPlan = async (id: string): Promise<AdmissionPlanAttr
 	}
 }
 
+export const getAllAdmissionPlanByCourseId = async (courseId: string): Promise<AdmissionPlanAttributes | null> => {
+	try {
+		const response = await AdmissionPlan.findAll({
+			where: { courseId },
+			include: [{
+				model: db.Course,
+				attributes: { exclude: ['id'] },
+			}]
+		});
+
+		return response;
+	} catch (error) {
+		console.error(`Error retrieving admission plan by course id ${courseId}: `, error);
+		throw new Error('Unable to retrieve admission plan');
+	}
+}
+
+export const getAllAdmissionPlanByFaculty = async (faculty: string): Promise<AdmissionPlanAttributes | null> => {
+	try {
+		const response = await AdmissionPlan.findAll({
+			include: [{
+				model: db.Course,
+				where: {
+					faculty: { [Op.like]: `%${faculty}%` },
+				},
+				attributes: { exclude: ['id'] },
+			}]
+		});
+
+		return response;
+	} catch (error) {
+		console.error(`Error retrieving admission plan by faculty ${faculty}: `, error);
+		throw new Error('Unable to retrieve admission plan');
+	}
+}
+
+
 
 
 export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
 	try {
+		const exists = await AdmissionPlan.findOne({
+			where: { year: dto.year, courseId: dto.courseId },
+			raw: true
+		})
+		if (exists) throw new Error('Unable to create admission plan cause duplicate year')
 		const createdAdmissionPlan = await AdmissionPlan.create(dto);
 		return createdAdmissionPlan.toJSON() as AdmissionPlanAttributes;
 	} catch (error) {
@@ -112,5 +158,7 @@ export default {
 	getOneAdmissionPlan,
 	createAdmissionPlan,
 	updateAdmissionPlan,
-	deleteAdmissionPlan
+	deleteAdmissionPlan,
+	getAllAdmissionPlanByCourseId,
+	getAllAdmissionPlanByFaculty
 }
