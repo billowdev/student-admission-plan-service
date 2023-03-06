@@ -4,17 +4,10 @@ import { CourseParamInterface, CourseQueryInterface } from "../types/course.type
 
 import courseService from './../services/course.service';
 
-export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface>, res: Response) => {
+export const handleGetAll = async (req: Request, res: Response) => {
 	try {
-		const query: CourseQueryInterface = {
-			major: req.query.major,
-			degree: req.query.degree,
-			qualification: req.query.qualification,
-			faculty: req.query.faculty
-		}
-
-
-		const payload = await courseService.getAllCourse(query)
+	
+		const payload = await courseService.getAllCourse(req.query)
 		if(!payload) 
 			return res.status(400).json({
 				error: "Failed to retrieve all courses",
