@@ -7,7 +7,7 @@ module.exports = {
     database: process.env.DB_DATABASE_DEV,
     host: process.env.DB_HOST_DEV,
     dialect:  process.env.DB_DIALECT,
-    sync: { alter: true } // automatic schema updates
+    // sync: { alter: true } // automatic schema updates
   },
   test: {
     username: process.env.DB_USERNAME_TEST,
@@ -15,7 +15,7 @@ module.exports = {
     database: process.env.DB_DATABASE_TEST,
     host: process.env.DB_HOST_TEST,
     dialect:  process.env.DB_DIALECT,
-    sync: { alter: true } // automatic schema updates
+    // sync: { alter: true } // automatic schema updates
   },
   production: {
     username: process.env.DB_USERNAME_PROD,
@@ -23,6 +23,6 @@ module.exports = {
     database: process.env.DB_DATABASE_PROD,
     host: process.env.DB_HOST_PROD,
     dialect:  process.env.DB_DIALECT,
-    sync: { alter: false } // disable automatic schema updates
+    // sync: { alter: false } // disable automatic schema updates
   },
 };

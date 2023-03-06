@@ -1,5 +1,5 @@
 
-import sequelize,{ Op } from "sequelize";
+import sequelize, { Op } from "sequelize";
 import db from "../../../database/models"
 import isAllValuesUndefined from "../../../common/utils/is-all-undefined"
 import { CourseAttributes, CourseQueryInterface } from "../types/course.type";
@@ -77,23 +77,32 @@ export const updateCourse = async (id: string, dto: CourseAttributes): Promise<C
 				where: { id },
 			}
 		);
-		if (!response[0]) {
+		if (!response[1]) {
 			throw new Error('Course not found');
 		}
-		return response[1][0];
+		return {
+			id,
+			...dto
+		}
 	} catch (error: unknown) {
 		throw new Error('Unable to update course');
 	}
 };
 
-export const deleteCourse = async (id: string): Promise<void> => {
+export const deleteCourse = async (id: string): Promise<CourseAttributes> => {
 	try {
+		// delete extra admission plaln
+		await db.ExtraAdmissionPlan.destroy({
+			where: {
+				courseId: id
+			}
+		})
 		const response = await Course.destroy({
 			where: { id },
+
+			raw: true
 		});
-		if (!response) {
-			throw new Error('Course not found');
-		}
+		return response
 	} catch (error: unknown) {
 		throw new Error('Unable to delete course');
 	}

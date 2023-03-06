@@ -33,7 +33,7 @@ export const login = async (identifier: string, password: string): Promise<Login
 			throw error;
 		}
 
-		const token: string = createJwtToken({ id: user.id, role: user.role })
+		const token: string = createJwtToken({ id: user.id, role: user.role, name: user.name })
 		return { token };
 	} catch (error) {
 		throw new LoginError('Unable to log in');
@@ -107,7 +107,11 @@ export const deleteUser = async (id: string): Promise<void> => {
 export const getAllUsers = async (query: UserQueryInterface): Promise<UserAttributes[]> => {
 	try {
 		if (Object.keys(query).length === 0) {
-			return await User.findAll();
+			return await User.findAll({
+				attributes: {
+					exclude: ['password']
+				}
+			});
 		}
 		const { email, username, name, surname, phone, role, faculty } = query;
 		const response = await User.findAll({

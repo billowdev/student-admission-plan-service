@@ -29,11 +29,11 @@ export const handleLogin = async (req: Request, res: Response): Promise<void> =>
 		console.error(error);
 
 		if (error instanceof AuthError) {
-			res.status(401).json({ message: error.message });
+			res.status(401).json({ message: error.message, token: "" });
 		} else if (error instanceof LoginError) {
-			res.status(500).json({ message: error.message });
+			res.status(500).json({ message: error.message, token: "" });
 		} else {
-			res.status(500).json({ message: 'Internal server error' });
+			res.status(500).json({ message: 'Internal server error', token: "" });
 		}
 	}
 };
@@ -76,31 +76,31 @@ export const handleUpdateUser = async (req: Request, res: Response): Promise<voi
 
 
 export const handleGetAllUsers = async (req: Request, res: Response): Promise<void> => {
-	const query = req.query as UserQueryInterface;
-  
+	const query = req.query;
+
 	// Validate input
-	if (typeof query !== 'object' || query === null || Object.keys(query).length === 0) {
-	  res.status(400).json({ message: 'Invalid query parameters' });
-	  return;
-	}
-  
+	// if (typeof query !== 'object' || query === null || Object.keys(query).length === 0) {
+	//   res.status(400).json({ message: 'Invalid query parameters' });
+	//   return;
+	// }
+
 	try {
-	  const users = await userService.getAllUsers(query);
-	  res.status(200).json({
-		message: 'Successfully retrieved all users',
-		payload: users,
-	  });
+		const users = await userService.getAllUsers(query);
+		res.status(200).json({
+			message: 'Successfully retrieved all users',
+			payload: users,
+		});
 	} catch (error) {
-	  console.error(error);
-  
-	  if (error instanceof FetchError) {
-		res.status(error.status).json({ message: error.message });
-	  } else {
-		res.status(500).json({ message: "something went wrong!" });
-	  }
+		console.error(error);
+
+		if (error instanceof FetchError) {
+			res.status(error.status).json({ message: error.message });
+		} else {
+			res.status(500).json({ message: "something went wrong!" });
+		}
 	}
-  };
-  
+};
+
 
 
 export const handleGetOneUsers = async (req: Request, res: Response): Promise<void> => {
