@@ -173,6 +173,114 @@ module.exports = {
 				created_at: new Date(),
 				updated_at: new Date()
 			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d0",
+				major: "สาขาวิชาเทคโนโลยีโยธา",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาเทคโนโลยีโยธา เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d1",
+				major: "สาขาวิชาสถาปัตยกรรม",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาสถาปัตยกรรม เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d2",
+				major: "สาขาวิชาเทคโนโลยีเครื่องกล",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาเทคโนโลยีเครื่องกล เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d3",
+				major: "สาขาวิชาเทคโนโลยีการผลิต",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาเทคโนโลยีการผลิต เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d4",
+				major: "สาขาวิชาไฟฟ้า",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาไฟฟ้า เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d5",
+				major: "สาขาวิชาอิเล็กทรอนิกส์",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาอิเล็กทรอนิกส์ เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d0",
+				major: "สาขาวิชาเทคโนโลยีโยธา",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีโยธา เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d1",
+				major: "สาขาวิชาเทคโนโลยีสถาปัตยกรรม",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีสถาปัตยกรรม เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d2",
+				major: "สาขาวิชาเทคโนโลยีเครื่องกล",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีเครื่องกล เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d3",
+				major: "สาขาวิชาเทคโนโลยีการผลิต",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีการผลิต เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d4",
+				major: "สาขาวิชาไฟฟ้า",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาไฟฟ้า เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d5",
+				major: "สาขาวิชาอิเล็กทรอนิกส์",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาอิเล็กทรอนิกส์ เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
 		];
 
 		await queryInterface.bulkInsert('courses', coursesData);
