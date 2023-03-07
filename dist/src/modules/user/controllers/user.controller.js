@@ -32,13 +32,13 @@ const handleLogin = async (req, res) => {
     catch (error) {
         console.error(error);
         if (error instanceof user_exception_1.AuthError) {
-            res.status(401).json({ message: error.message });
+            res.status(401).json({ message: error.message, token: "" });
         }
         else if (error instanceof user_exception_1.LoginError) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message, token: "" });
         }
         else {
-            res.status(500).json({ message: 'Internal server error' });
+            res.status(500).json({ message: 'Internal server error', token: "" });
         }
     }
 };
@@ -81,10 +81,10 @@ exports.handleUpdateUser = handleUpdateUser;
 const handleGetAllUsers = async (req, res) => {
     const query = req.query;
     // Validate input
-    if (typeof query !== 'object' || query === null || Object.keys(query).length === 0) {
-        res.status(400).json({ message: 'Invalid query parameters' });
-        return;
-    }
+    // if (typeof query !== 'object' || query === null || Object.keys(query).length === 0) {
+    //   res.status(400).json({ message: 'Invalid query parameters' });
+    //   return;
+    // }
     try {
         const users = await user_service_1.default.getAllUsers(query);
         res.status(200).json({

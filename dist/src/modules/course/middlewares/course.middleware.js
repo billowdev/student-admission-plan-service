@@ -17,7 +17,7 @@ exports.validateCourseId = [
 exports.validateCourseQueryParams = [
     (0, express_validator_1.query)('major').optional().isString(),
     (0, express_validator_1.query)('degree').optional().isString(),
-    (0, express_validator_1.query)('qualification').optional().isString(),
+    (0, express_validator_1.query)('detail').optional().isString(),
     (0, express_validator_1.query)('faculty').optional().isString(),
     (req, res, next) => {
         const errors = (0, express_validator_1.validationResult)(req);
@@ -29,7 +29,7 @@ exports.validateCourseQueryParams = [
 ];
 function validateCreateCourse(req, res, next) {
     const course = req.body;
-    const { degree, major, qualification, faculty } = course;
+    const { degree, major, detail, faculty } = course;
     // Check that the degree field is not empty
     if (!degree) {
         res.status(400).json({ message: "degree field is required" });
@@ -39,8 +39,8 @@ function validateCreateCourse(req, res, next) {
         res.status(400).json({ message: "major field is required" });
         return;
     }
-    if (!qualification) {
-        res.status(400).json({ message: "qualification field is required" });
+    if (!detail) {
+        res.status(400).json({ message: "detail field is required" });
         return;
     }
     if (!faculty) {
@@ -66,7 +66,7 @@ exports.validateUpdateCourse = [
         if (updates.major && typeof updates.major !== 'string') {
             return res.status(400).send('Degree must be a string');
         }
-        if (updates.qualification && typeof updates.qualification !== 'string') {
+        if (updates.detail && typeof updates.detail !== 'string') {
             return res.status(400).send('Degree must be a string');
         }
         if (updates.faculty && typeof updates.faculty !== 'string') {
