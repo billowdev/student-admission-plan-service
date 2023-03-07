@@ -35,6 +35,13 @@ export const App = () => {
 	app.use('/responsible-quota-perons', responsibleQuotaPersonRouter);
 	app.use('/courses', coursesRouter);
 
+	const ENDPOINT = "/api/v1";
+	app.use(ENDPOINT + '/users', userRouter)
+	app.use(ENDPOINT + '/admission-plans', admissionPlanRouter);
+	app.use(ENDPOINT + '/extra-admission-plans', extraAdmissionPlanRouter);
+	app.use(ENDPOINT + '/responsible-quota-perons', responsibleQuotaPersonRouter);
+	app.use(ENDPOINT + '/courses', coursesRouter);
+
 	app.use('/u', userRouter)
 	app.use('/ap', admissionPlanRouter);
 	app.use('/eap', extraAdmissionPlanRouter);
