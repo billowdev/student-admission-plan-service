@@ -162,12 +162,10 @@ export const getYearlistAdmissionPlan = async (): Promise<any> => {
 
 export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
 	try {
-		const exists = await AdmissionPlan.findOne({
-			where: { year: dto.year, courseId: dto.courseId },
-			raw: true
-		})
-		if (exists) throw new Error('Unable to create admission plan cause duplicate year')
-		const createdAdmissionPlan = await AdmissionPlan.create(dto);
+		const createdAdmissionPlan = await AdmissionPlan.create(dto, { raw: true, returning: true });
+		// console.log('====================================');
+		// console.log(createdAdmissionPlan.toJSON() as AdmissionPlanAttributes);
+		// console.log('====================================');
 		return createdAdmissionPlan.toJSON() as AdmissionPlanAttributes;
 	} catch (error) {
 		console.error(`Error creating admission plan: ${error}`);
@@ -196,6 +194,17 @@ export const updateAdmissionPlan = async (id: string, admissionPlanDto: Admissio
 	}
 }
 
+export const checkIsYearExist = async (year: string, courseId: string): Promise<any> => {
+	try {
+		const exists = await AdmissionPlan.findOne({
+			where: { year, courseId },
+			raw: true
+		})
+		if (exists) return true;
+	} catch (error) {
+		return false
+	}
+}
 
 export const deleteAdmissionPlan = async (id: string): Promise<number> => {
 	try {
@@ -217,5 +226,6 @@ export default {
 	deleteAdmissionPlan,
 	getAllAdmissionPlanByCourseId,
 	getAllAdmissionPlanByFaculty,
-	getYearlistAdmissionPlan
+	getYearlistAdmissionPlan,
+	checkIsYearExist
 }

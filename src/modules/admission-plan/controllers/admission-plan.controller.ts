@@ -96,28 +96,43 @@ export const handleGetYearListAdmissionPlan = async (req: Request, res: Response
  * "Admission plan created successfully" for consistency with RESTful API conventions
  * changed the name of the payload variable to createdAdmissionPlan to make it more clear what it represents
  */
+// export const handleCreateAdmissionPlan = async (req: Request, res: Response) => {
+// 	try {
+
+// 		const { year, courseId } = req.body;
+// 		const exists = await admissionPlanService.checkIsYearExist(year, courseId)
+// 		if (exists) res.status(409).json({ 'message': 'duplicated' });
+// 		const admissionPlanDto = req.body;
+// 		const createdAdmissionPlan = await admissionPlanService.createAdmissionPlan(admissionPlanDto);
+// 		res.status(201).json({ message: "Admission plan created successfully", payload: createdAdmissionPlan });
+// 	} catch (error) {
+// 		res.status(400).json({ error: 'Unable to create admission plan' });
+// 	}
+// }
+
 export const handleCreateAdmissionPlan = async (req: Request, res: Response) => {
 	try {
+	  const { year, courseId } = req.body;
+	  const exists = await admissionPlanService.checkIsYearExist(year, courseId);
+	  if (exists) {
+		return res.status(409).json({ message: 'duplicated' });
+	  }
+	  const admissionPlanDto = req.body;
+	  const createdAdmissionPlan = await admissionPlanService.createAdmissionPlan(admissionPlanDto);
 
-		const admissionPlanDto = req.body;
-		const createdAdmissionPlan = await admissionPlanService.createAdmissionPlan(admissionPlanDto);
-		res.status(201).json({ message: "Admission plan created successfully", payload: createdAdmissionPlan });
+	  return res.status(201).json({ message: 'Admission plan created successfully', payload: createdAdmissionPlan });
 	} catch (error) {
-		console.error(`Error creating admission plan: `, error);
-
-		res.status(400).json({ error: 'Unable to create admission plan' });
+	  return res.status(400).json({ error: 'Unable to create admission plan' });
 	}
-}
+  };
 
+  
 export const handleUpdateAdmissionPlan = async (req: Request, res: Response) => {
 	try {
 		const body = req.body;
 		const id = req.params.id;
 
 		const payload = await admissionPlanService.updateAdmissionPlan(id, body);
-		console.log('====================================');
-		console.log(payload);
-		console.log('====================================');
 		if (payload) {
 			res.status(200).json({ message: "update admission plan was successfully", payload });
 		} else {

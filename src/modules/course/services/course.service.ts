@@ -50,35 +50,6 @@ export const getAllCourse = async (query: any): Promise<CourseAttributes[]> => {
 		console.error(`Error retrieving all course `, error);
 		throw new Error('Unable to retrieve all course');
 	}
-	// try {
-	// 	if (isAllValuesUndefined(query)) {
-	// 		return await Course.findAll()
-	// 	}
-
-	// 	// Destructure the query object for readability
-	// 	const { major, degree, faculty, detail, keyword } = query;
-
-	// 	// Use destructuring assignment to simplify the code
-	// 	const response = await Course.findAll({
-	// 		where: {
-	// 			[Op.or]: [
-	// 				sequelize.where(sequelize.fn('LOWER', sequelize.col('major')), 'LIKE', `%${major}%`),
-	// 				sequelize.where(sequelize.fn('LOWER', sequelize.col('degree')), 'LIKE', `%${degree}%`),
-	// 				sequelize.where(sequelize.fn('LOWER', sequelize.col('faculty')), 'LIKE', `%${faculty}%`),
-	// 				sequelize.where(sequelize.fn('LOWER', sequelize.col('detail')), 'LIKE', `%${detail}%`),
-	// 				sequelize.literal(`LOWER(CONCAT_WS(' ', "major", "degree", "faculty", "detail")) LIKE '%${keyword}%'`)
-	// 			]
-	// 		},
-	// 		raw: true
-	// 	});
-
-	// 	return response;
-	// } catch (error) {
-	// 	console.log('====================================');
-	// 	console.log(error);
-	// 	console.log('====================================');
-	// 	throw new Error('Unable to get all courses');
-	// }
 };
 
 
@@ -87,6 +58,25 @@ export const getAllCourse = async (query: any): Promise<CourseAttributes[]> => {
 export const getOneCourse = async (id: string): Promise<CourseAttributes | null> => {
 	try {
 		const response = await Course.findByPk(id);
+		if (!response) {
+			throw new Error('Course not found');
+		}
+		return response;
+	} catch (error: unknown) {
+		throw new Error('Unable to retrieve course');
+	}
+};
+
+export const getCourseByFaculty = async (faculty: string): Promise<CourseAttributes | null> => {
+	try {
+	
+		const response = await Course.findAll({
+			where: {
+				faculty: {
+					[Op.like]: `%${faculty}%`,
+				}
+			}
+		});
 		if (!response) {
 			throw new Error('Course not found');
 		}
@@ -154,5 +144,6 @@ export default {
 	getOneCourse,
 	createCourse,
 	updateCourse,
-	deleteCourse
+	deleteCourse,
+	getCourseByFaculty
 }

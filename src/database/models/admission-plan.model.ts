@@ -28,7 +28,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		cooperationSpecificSubject!: string;
 		cooperationDetail!: string;
 		cooperationQty!: number;
-		year!: number;
+		year!: string;
 		studyGroup!: number;
 		courseId!: string;
 		//courseId! : string;
@@ -126,7 +126,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				defaultValue: 0,
 			},
 			year: {
-				type: DataTypes.INTEGER,
+				type: DataTypes.STRING(4),
 				allowNull: false,
 			},
 			studyGroup: {

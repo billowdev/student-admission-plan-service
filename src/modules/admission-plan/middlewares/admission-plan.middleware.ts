@@ -53,10 +53,10 @@ export function validateAdmissionPlan(req: Request, res: Response, next: NextFun
 		return;
 	}
 	// ==================== quota ===========================
-	if (quotaStatus && typeof quotaStatus !== 'boolean') {
-		res.status(400).json({ message: "quotaStatus field is required" });
-		return;
-	}
+	// if (quotaStatus && typeof quotaStatus !== 'boolean') {
+	// 	res.status(400).json({ message: "quotaStatus field is required" });
+	// 	return;
+	// }
 	
 	
 	if (!quotaQty && typeof quotaQty !== "number") {
@@ -64,10 +64,10 @@ export function validateAdmissionPlan(req: Request, res: Response, next: NextFun
 		return;
 	}
 	// ==================== direct ===========================
-	if (!directStatus && typeof directStatus !== "boolean" ) {
-		res.status(400).json({ message: "directStatus field is required" });
-		return;
-	}
+	// if (!directStatus && typeof directStatus !== "boolean" ) {
+	// 	res.status(400).json({ message: "directStatus field is required" });
+	// 	return;
+	// }
 
 
 	if (!directQty && typeof directQty !== "number") {
@@ -75,10 +75,10 @@ export function validateAdmissionPlan(req: Request, res: Response, next: NextFun
 		return;
 	}
 	// ==================== cooperation ===========================
-	if (!cooperationStatus && typeof cooperationStatus !== "boolean") {
-		res.status(400).json({ message: "cooperationStatus field is required" });
-		return;
-	}
+	// if (!cooperationStatus && typeof cooperationStatus !== "boolean") {
+	// 	res.status(400).json({ message: "cooperationStatus field is required" });
+	// 	return;
+	// }
 
 
 	if (!cooperationQty && typeof cooperationQty !== "number") {

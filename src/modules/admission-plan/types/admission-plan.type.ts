@@ -18,7 +18,7 @@ export interface AdmissionPlanAttributes {
 	cooperationSpecificSubject?: string,
 	cooperationDetail?: string,
 	cooperationQty?: number;
-	year?: number,
+	year?: string,
 	studyGroup?: number,
 	courseId?: string,
 
