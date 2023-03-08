@@ -4,7 +4,7 @@ module.exports = {
 			{
 				id: "4d28da7c-bb8f-4e41-bfe1-c6957649c7d1",
 				qty: 50,
-				year: 2565,
+				year: "2565",
 				course_id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d1",
 				created_at: new Date(),
 				updated_at: new Date()
@@ -12,7 +12,7 @@ module.exports = {
 			{
 				id: "4d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
 				qty: 50,
-				year: 2565,
+				year: "2565",
 				course_id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
 				created_at: new Date(),
 				updated_at: new Date()

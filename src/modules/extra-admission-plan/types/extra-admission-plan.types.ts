@@ -3,7 +3,7 @@ import { Query } from "express-serve-static-core";
 export interface ExtraAdmissionPlanAttributes {
 	id?: string;
 	qty?: number;
-	year?: number;
+	year?: string;
 	courseId?: string;
 
 	createdAt?: Date;

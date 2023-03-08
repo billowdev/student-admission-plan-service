@@ -69,18 +69,26 @@ export const getOneCourse = async (id: string): Promise<CourseAttributes | null>
 
 export const getCourseByFaculty = async (faculty: string): Promise<CourseAttributes | null> => {
 	try {
-	
-		const response = await Course.findAll({
-			where: {
-				faculty: {
-					[Op.like]: `%${faculty}%`,
+		if (faculty) {
+			const response = await Course.findAll({
+				where: {
+					faculty: {
+						[Op.like]: `%${faculty}%`,
+					}
 				}
+			});
+			if (!response) {
+				throw new Error('Course not found');
 			}
-		});
-		if (!response) {
-			throw new Error('Course not found');
+			return response;
+		} else {
+			const response = await Course.findAll();
+			if (!response) {
+				throw new Error('Course not found');
+			}
+			return response;
 		}
-		return response;
+
 	} catch (error: unknown) {
 		throw new Error('Unable to retrieve course');
 	}

@@ -19,7 +19,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		 */
         id!: string;
         qty!: number;
-        year! : number;
+        year! : string;
         //courseId! : string;
 		static associate(models: any) {
 			// define association here
@@ -47,7 +47,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				allowNull: true,
 			},
 			year: {
-				type: DataTypes.INTEGER,
+				type: DataTypes.STRING(4),
 				allowNull: true,
 			},
 			
