@@ -178,14 +178,18 @@ export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise
 
 export const updateAdmissionPlan = async (id: string, admissionPlanDto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes | null> => {
 	try {
-		const [, [updatedAdmissionPlan]] = await AdmissionPlan.update(
+		const testFind = await AdmissionPlan.findOne({
+			where: { id },
+			raw: true
+		})
+		const response = await AdmissionPlan.update(
 			{ ...admissionPlanDto },
 			{
 				returning: true,
 				where: { id },
 			}
 		);
-		return updatedAdmissionPlan;
+		return response;
 	} catch (error) {
 		console.error(`Error updating admission plan with id ${id}: `, error);
 		return null;

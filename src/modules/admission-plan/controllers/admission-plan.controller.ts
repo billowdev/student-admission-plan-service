@@ -115,6 +115,9 @@ export const handleUpdateAdmissionPlan = async (req: Request, res: Response) => 
 		const id = req.params.id;
 
 		const payload = await admissionPlanService.updateAdmissionPlan(id, body);
+		console.log('====================================');
+		console.log(payload);
+		console.log('====================================');
 		if (payload) {
 			res.status(200).json({ message: "update admission plan was successfully", payload });
 		} else {
