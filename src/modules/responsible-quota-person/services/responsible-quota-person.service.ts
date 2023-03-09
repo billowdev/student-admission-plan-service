@@ -9,19 +9,42 @@ const { Op } = require('sequelize');
 
 // RQP = ResponsibleQuotaPerson
 export const createRQP = async (createDto: ResponsibleQuotaPersonAttributes) => {
-	return
+	try {
+		const response = await ResponsibleQuotaPerson.create(createDto);
+		return response;
+	} catch (error: unknown) {
+		throw new Error('Unable to create rqp');
+	}
 }
 
 export const updateRQP = async (id: string, updateDto: ResponsibleQuotaPersonAttributes) => {
-	return
+	try {
+		const response = await ResponsibleQuotaPerson.update({...updateDto}, {id});
+		return response;
+	} catch (error: unknown) {
+		throw new Error('Unable to update rqp');
+	}
 }
 
 export const deleteRQP = async (id: string) => {
-	return
+	try {
+		const response = await ResponsibleQuotaPerson.destroy({where:{id}});
+		return response;
+	} catch (error: unknown) {
+		throw new Error('Unable to delete responsible quota person');
+	}
 }
 
 export const getOneRQP = async (id: string) => {
-	return
+	try {
+		const response = await ResponsibleQuotaPerson.findOne({
+			where: { id },
+		})
+		return response
+	} catch (error) {
+		console.error(error);
+		throw new Error("failed to get responsible quota person");
+	}
 }
 
 
