@@ -11,44 +11,52 @@ const ExtraAdmissionPlan = db.ExtraAdmissionPlan
 
 export const getAllExtraAdmissionPlan = async (
 	query: ExtraAdmissionPlanQueryInterface
-  ): Promise<ExtraAdmissionPlanAttributes[]> => {
+): Promise<ExtraAdmissionPlanAttributes[]> => {
 	try {
-	  if (isAllValuesUndefined(query)) {
-		return await ExtraAdmissionPlan.findAll();
-	  }
-	  const { qty, year, courseId, keyword } = query;
-	  const response = await ExtraAdmissionPlan.findAll({
-		where: {
-		  [Op.or]: [
-			sequelize.where(sequelize.fn("LOWER", sequelize.col("qty")), "LIKE", `%${qty}%`),
-			sequelize.where(sequelize.fn("LOWER", sequelize.col("year")), "LIKE", `%${year}%`),
-			sequelize.where(
-			  sequelize.fn("LOWER", sequelize.col("courseId")),
-			  "LIKE",
-			  `%${courseId}%`
-			),
-			sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${keyword}%'`),
-		  ],
-		},
-		raw: true,
-	  });
-	  return response;
+		if (isAllValuesUndefined(query)) {
+			return await ExtraAdmissionPlan.findAll({
+				attributes: {
+					exclude: ['CourseId'],
+				}
+			});
+		}
+		const { qty, year, courseId, keyword } = query;
+		const response = await ExtraAdmissionPlan.findAll({
+			where: {
+				[Op.or]: [
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("qty")), "LIKE", `%${qty}%`),
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("year")), "LIKE", `%${year}%`),
+					sequelize.where(
+						sequelize.fn("LOWER", sequelize.col("courseId")),
+						"LIKE",
+						`%${courseId}%`
+					),
+					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${keyword}%'`),
+				],
+				
+			},
+			attributes: {
+				exclude: ['CourseId'],
+			},
+			raw: true,
+		});
+		return response;
 	} catch (error) {
-	  throw error;
+		throw error;
 	}
-  };
+};
 
 export const getOneExtraAdmissionPlan = async (id: string) => {
 	try {
-        const response = await ExtraAdmissionPlan.findOne({
-            where: { id }
-        })
-        if(!response) return null
-        return response
-    } catch (error) {
-        console.error(error);
-        throw new Error("failed to get extra admission plan");
-    }
+		const response = await ExtraAdmissionPlan.findOne({
+			where: { id }
+		})
+		if (!response) return null
+		return response
+	} catch (error) {
+		console.error(error);
+		throw new Error("failed to get extra admission plan");
+	}
 }
 
 export const createExtraAdmissionPlan = async (dto: ExtraAdmissionPlanAttributes) => {
