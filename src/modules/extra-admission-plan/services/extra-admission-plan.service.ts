@@ -17,6 +17,7 @@ export const getAllExtraAdmissionPlan = async (
 			return await ExtraAdmissionPlan.findAll({
 				attributes: {
 					exclude: ['CourseId'],
+					model: db.Course,
 				}
 			});
 		}
@@ -37,6 +38,7 @@ export const getAllExtraAdmissionPlan = async (
 			},
 			attributes: {
 				exclude: ['CourseId'],
+				model: db.Course,
 			},
 			raw: true,
 		});
@@ -49,7 +51,8 @@ export const getAllExtraAdmissionPlan = async (
 export const getOneExtraAdmissionPlan = async (id: string) => {
 	try {
 		const response = await ExtraAdmissionPlan.findOne({
-			where: { id }
+			where: { id },
+			model: db.Course,
 		})
 		if (!response) return null
 		return response

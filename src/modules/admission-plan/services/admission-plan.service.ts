@@ -163,9 +163,6 @@ export const getYearlistAdmissionPlan = async (): Promise<any> => {
 export const createAdmissionPlan = async (dto: AdmissionPlanAttributes): Promise<AdmissionPlanAttributes> => {
 	try {
 		const createdAdmissionPlan = await AdmissionPlan.create(dto, { raw: true, returning: true });
-		// console.log('====================================');
-		// console.log(createdAdmissionPlan.toJSON() as AdmissionPlanAttributes);
-		// console.log('====================================');
 		return createdAdmissionPlan.toJSON() as AdmissionPlanAttributes;
 	} catch (error) {
 		console.error(`Error creating admission plan: ${error}`);
