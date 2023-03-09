@@ -4,36 +4,35 @@ import { ExtraAdmissionPlanQueryInterface } from "../types/extra-admission-plan.
 import Sequelize from 'sequelize';
 
 export const handleGetAllExtraAdmissionPlan = async (
-	req: Request<{}, {}, {}, ExtraAdmissionPlanQueryInterface>,
+	req: Request,
 	res: Response
-  ) => {
+) => {
 	try {
-	  const { qty, year, courseId, keyword } = req.query;
-	  const query: ExtraAdmissionPlanQueryInterface = { qty, year, courseId, keyword };
-	  const payload = await extraAdmissionPlanService.getAllExtraAdmissionPlan(query);
-	  res.json({
-		message: "get all extra admission plan was successful",
-		payload,
-	  });
+		const { qty, year, keyword } = req.query;
+		const payload = await extraAdmissionPlanService.getAllExtraAdmissionPlan({ qty, year, keyword });
+		res.json({
+			message: "get all extra admission plan was successful",
+			payload,
+		});
 	} catch (error: any) {
-	  if (error instanceof Sequelize.ValidationError) {
-		res.status(400).json({ message: error.message });
-	  } else {
-		res.status(500).json({ message: "failed to get extra admission plans" });
-	  }
+		if (error instanceof Sequelize.ValidationError) {
+			res.status(400).json({ message: error.message });
+		} else {
+			res.status(500).json({ message: "failed to get extra admission plans" });
+		}
 	}
-  };
+};
 
 export const handleGetOneExtraAdmissionPlan = async (req: Request, res: Response) => {
 	try {
-        const { id } = req.params
-        const payload = await extraAdmissionPlanService.getOneExtraAdmissionPlan(id)
-        if (!payload) {
-            res.status(404).json({
-                message: "extra admission plan not found",
-            });
-            return;
-        }
+		const { id } = req.params
+		const payload = await extraAdmissionPlanService.getOneExtraAdmissionPlan(id)
+		if (!payload) {
+			res.status(404).json({
+				message: "extra admission plan not found",
+			});
+			return;
+		}
 		let headersSent = false;
 		if (!headersSent) {
 			res.status(200).json({
@@ -42,12 +41,12 @@ export const handleGetOneExtraAdmissionPlan = async (req: Request, res: Response
 			});
 			headersSent = true;
 		}
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: "failed to get extra admission plan"
-        });
-    }
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({
+			message: "failed to get extra admission plan"
+		});
+	}
 }
 
 

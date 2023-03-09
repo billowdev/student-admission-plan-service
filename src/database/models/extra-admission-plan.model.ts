@@ -50,6 +50,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				type: DataTypes.STRING(4),
 				allowNull: true,
 			},
+			courseId: {
+				type: DataTypes.UUID,
+				allowNull: false,
+				field: 'course_id'
+			}
 			
 		},
 		{

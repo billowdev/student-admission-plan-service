@@ -10,15 +10,62 @@ const ExtraAdmissionPlan = db.ExtraAdmissionPlan
 
 
 export const getAllExtraAdmissionPlan = async (
-	query: ExtraAdmissionPlanQueryInterface
+	query: any
 ): Promise<ExtraAdmissionPlanAttributes[]> => {
 	try {
 		if (isAllValuesUndefined(query)) {
 			return await ExtraAdmissionPlan.findAll({
-				attributes: {
-					exclude: ['CourseId'],
+				include: [{
 					model: db.Course,
-				}
+					attributes: { exclude: ['id'] },
+					order: [['year', 'ASC']] 
+				}],
+			});
+		}
+		const { qty, year, keyword } = query;
+		const response = await ExtraAdmissionPlan.findAll({
+			where: {
+				[Op.or]: [
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("qty")), "LIKE", `%${qty}%`),
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("year")), "LIKE", `%${year}%`),
+					// sequelize.where(
+					// 	sequelize.fn("LOWER", sequelize.col("courseId")),
+					// 	"LIKE",
+					// 	`%${courseId}%`
+					// ),
+					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${keyword}%'`),
+				],
+
+			},
+			include: [{
+				model: db.Course,
+				attributes: { exclude: ['id'] },
+				order: [['year', 'ASC']] // Add this line to sort by year in ascending order
+			}],
+			
+			raw: true,
+		});
+		return response;
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const getAllExtraAdmissionPlanByFaculty = async (
+	faculty: String,
+	query: any
+): Promise<ExtraAdmissionPlanAttributes[]> => {
+	try {
+		if (isAllValuesUndefined(query)) {
+			return await ExtraAdmissionPlan.findAll({
+				atrributes: { exclude: ["CourseId"] },
+				include: [{
+					model: db.Course,
+					where: {
+						faculty: { [Op.like]: `%${faculty}%` },
+					},
+					order: [['year', 'ASC']]
+				}],
 			});
 		}
 		const { qty, year, courseId, keyword } = query;
@@ -34,12 +81,16 @@ export const getAllExtraAdmissionPlan = async (
 					),
 					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${keyword}%'`),
 				],
-				
+
 			},
-			attributes: {
-				exclude: ['CourseId'],
+			include: [{
 				model: db.Course,
-			},
+				where: {
+					faculty: { [Op.like]: `%${faculty}%` },
+				},
+				order: [['year', 'ASC']]
+			}],
+			atrributes: { exclude: ["CourseId"] },
 			raw: true,
 		});
 		return response;
@@ -61,6 +112,23 @@ export const getOneExtraAdmissionPlan = async (id: string) => {
 		throw new Error("failed to get extra admission plan");
 	}
 }
+
+export const getYearlistExtraAdmissionPlan = async (): Promise<any> => {
+	try {
+
+		const response = await ExtraAdmissionPlan.findAll({
+			attributes: { include: ['id', 'year'] },
+			raw: true
+		});
+		const uniqueYears = Array.from(new Set(response.map((resp: any) => resp.year)));
+		return uniqueYears;
+	} catch (error) {
+		console.error(`Error retrieving year list of admission plan: `, error);
+		throw new Error('Unable to retrieve admission plan');
+	}
+}
+
+
 
 export const createExtraAdmissionPlan = async (dto: ExtraAdmissionPlanAttributes) => {
 	try {
@@ -121,5 +189,6 @@ export default {
 	getOneExtraAdmissionPlan,
 	createExtraAdmissionPlan,
 	updateExtraAdmissionPlan,
-	deleteExtraAdmissionPlan
+	deleteExtraAdmissionPlan,
+	getAllExtraAdmissionPlanByFaculty
 }
