@@ -42,8 +42,7 @@ export const getAllExtraAdmissionPlan = async (
 				attributes: { exclude: ['id'] },
 				order: [['year', 'ASC']] // Add this line to sort by year in ascending order
 			}],
-			
-			raw: true,
+		
 		});
 		return response;
 	} catch (error) {
@@ -59,39 +58,35 @@ export const getAllExtraAdmissionPlanByFaculty = async (
 		if (isAllValuesUndefined(query)) {
 			return await ExtraAdmissionPlan.findAll({
 				atrributes: { exclude: ["CourseId"] },
-				include: [{
+				include: {
 					model: db.Course,
+					attributes: { exclude: ['id'] },
 					where: {
 						faculty: { [Op.like]: `%${faculty}%` },
 					},
 					order: [['year', 'ASC']]
-				}],
+				},
 			});
 		}
-		const { qty, year, courseId, keyword } = query;
+		const { qty, year, keyword } = query;
 		const response = await ExtraAdmissionPlan.findAll({
 			where: {
 				[Op.or]: [
 					sequelize.where(sequelize.fn("LOWER", sequelize.col("qty")), "LIKE", `%${qty}%`),
 					sequelize.where(sequelize.fn("LOWER", sequelize.col("year")), "LIKE", `%${year}%`),
-					sequelize.where(
-						sequelize.fn("LOWER", sequelize.col("courseId")),
-						"LIKE",
-						`%${courseId}%`
-					),
 					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${keyword}%'`),
 				],
 
 			},
-			include: [{
+			include: {
 				model: db.Course,
+				attributes: { exclude: ['id'] },
 				where: {
 					faculty: { [Op.like]: `%${faculty}%` },
 				},
 				order: [['year', 'ASC']]
-			}],
+			},
 			atrributes: { exclude: ["CourseId"] },
-			raw: true,
 		});
 		return response;
 	} catch (error) {
@@ -169,6 +164,7 @@ export const updateExtraAdmissionPlan = async (id: string, { qty, year, courseId
 
 
 
+
 export const deleteExtraAdmissionPlan = async (id: string) => {
 	try {
 		const extraAdmissionPlan = await ExtraAdmissionPlan.findByPk(id);
@@ -190,5 +186,6 @@ export default {
 	createExtraAdmissionPlan,
 	updateExtraAdmissionPlan,
 	deleteExtraAdmissionPlan,
-	getAllExtraAdmissionPlanByFaculty
+	getAllExtraAdmissionPlanByFaculty,
+	getYearlistExtraAdmissionPlan
 }

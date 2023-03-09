@@ -23,6 +23,24 @@ export const handleGetAllExtraAdmissionPlan = async (
 	}
 };
 
+export const handleGetAllExtraAdmissionPlanByFaculty = async (req: Request, res: Response): Promise<void> => {
+	const faculty = (req.params as { faculty: string }).faculty;
+	const query = req.query
+
+	try {
+		const payload = await extraAdmissionPlanService.getAllExtraAdmissionPlanByFaculty(faculty, query);
+		if (!payload) {
+			res.status(404).json({ error: 'extra admission plan not found' });
+			return;
+		}
+		res.status(200).json({ message: "extra admission plan retrieved successfully", payload });
+	} catch (error) {
+		console.error(`Error retrieving extra admission plan ${faculty}: `, error);
+		res.status(400).json({ error: 'Unable to retrieve extra admission plan' });
+
+	}
+}
+
 export const handleGetOneExtraAdmissionPlan = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params
@@ -65,6 +83,20 @@ export const handleCreateExtraAdmissionPlan = async (req: Request, res: Response
 };
 
 
+export const handleGetYearListExtraAdmissionPlan = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const payload = await extraAdmissionPlanService.getYearlistExtraAdmissionPlan();
+		if (!payload) {
+			res.status(404).json({ error: 'Admission plan not found' });
+			return;
+		}
+		res.status(200).json({ message: "Admission plan retrieved successfully", payload });
+	} catch (error) {
+		console.error(`Error retrieving year list of admission plan: `, error);
+		res.status(400).json({ error: 'Unable to retrieve admission plan' });
+
+	}
+}
 
 export const handleUpdateExtraAdmissionPlan = async (req: Request, res: Response) => {
 	try {
@@ -104,5 +136,7 @@ export default {
 	handleGetOneExtraAdmissionPlan,
 	handleCreateExtraAdmissionPlan,
 	handleUpdateExtraAdmissionPlan,
-	handleDeleteExtraAdmissionPlan
+	handleDeleteExtraAdmissionPlan,
+	handleGetAllExtraAdmissionPlanByFaculty,
+	handleGetYearListExtraAdmissionPlan
 }

@@ -17,6 +17,14 @@ module.exports = {
 				created_at: new Date(),
 				updated_at: new Date()
 			},
+			{
+				id: "4d28da7c-bb8f-4e41-bfe1-c6957649c7d3",
+				qty: 50,
+				year: "2565",
+				course_id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d1",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
 		];
 
 		await queryInterface.bulkInsert('extra_admission_plans', extraAdmissionPlanData);

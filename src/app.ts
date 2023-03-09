@@ -48,6 +48,12 @@ export const App = () => {
 	app.use('/rqp', responsibleQuotaPersonRouter);
 	app.use('/c', coursesRouter);
 
+	app.use(ENDPOINT + '/u', userRouter)
+	app.use(ENDPOINT + '/ap', admissionPlanRouter);
+	app.use(ENDPOINT + '/eap', extraAdmissionPlanRouter);
+	app.use(ENDPOINT + '/rqp', responsibleQuotaPersonRouter);
+	app.use(ENDPOINT + '/c', coursesRouter);
+
 	app.get("/", (req, res) => {
 		res.end("this is student admission plan service");
 	})
