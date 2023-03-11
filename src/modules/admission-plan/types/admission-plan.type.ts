@@ -8,6 +8,18 @@ export interface AdmissionPlanAttributes {
 	quotaSpecificSubject?: string | null,
 	quotaDetail?: string | null,
 	quotaQty?: number,
+	quotaGoodStudyQty?: number,
+	quotaGoodPersonQty?: number,
+	// quota of good activity Music quantity
+	// IM = international music
+	quotaGoodActivityIMQty?: number,
+	// quota of good activity Language institute quantity
+	// LI = Language institute
+	quotaGoodActivityLIQty?: number,
+	// quota of good activity Student Development Division quantity
+	// SDD = Student Development Division
+	quotaGoodActivitySDDQty?: number,
+	quotaGoodSportQty?: number,
 
 	directStatus?: boolean,
 	directSpecificSubject?: string,
