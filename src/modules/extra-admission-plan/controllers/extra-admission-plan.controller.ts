@@ -23,6 +23,26 @@ export const handleGetAllExtraAdmissionPlan = async (
 	}
 };
 
+export const handleGetAllExtraAdmissionPlanGroupByFaculty = async (
+	req: Request,
+	res: Response
+) => {
+	try {
+		const { qty, year, keyword } = req.query;
+		const payload = await extraAdmissionPlanService.getAllExtraAdmissionPlanGroupByFaculty({ qty, year, keyword });
+		res.json({
+			message: "get all extra admission plan group by faculty was successful",
+			payload,
+		});
+	} catch (error: any) {
+		if (error instanceof Sequelize.ValidationError) {
+			res.status(400).json({ message: error.message });
+		} else {
+			res.status(500).json({ message: "failed to get extra admission plans group by faculty" });
+		}
+	}
+};
+
 export const handleGetAllExtraAdmissionPlanByFaculty = async (req: Request, res: Response): Promise<void> => {
 	const faculty = (req.params as { faculty: string }).faculty;
 	const query = req.query
@@ -138,5 +158,6 @@ export default {
 	handleUpdateExtraAdmissionPlan,
 	handleDeleteExtraAdmissionPlan,
 	handleGetAllExtraAdmissionPlanByFaculty,
-	handleGetYearListExtraAdmissionPlan
+	handleGetYearListExtraAdmissionPlan,
+	handleGetAllExtraAdmissionPlanGroupByFaculty
 }

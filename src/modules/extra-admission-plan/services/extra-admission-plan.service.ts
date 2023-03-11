@@ -1,9 +1,9 @@
 import db from "../../../database/models"
 import { query } from 'express-validator';
-import { ExtraAdmissionPlanQueryInterface } from "../types/extra-admission-plan.types";
+import { ExtraAdmissionPlanGroupByType, ExtraAdmissionPlanQueryInterface, ExtraAdmissionPlanType } from "../types/extra-admission-plan.types";
 import { isAllValuesUndefined } from "../../../common/utils";
 import sequelize, { Op, where } from "sequelize";
-import { ExtraAdmissionPlanAttributes } from './../types/extra-admission-plan.types';
+import { ExtraAdmissionPlanAttributes, ExtraAdmissionPlanInstance } from './../types/extra-admission-plan.types';
 import courseService from "../../course/services/course.service";
 
 const ExtraAdmissionPlan = db.ExtraAdmissionPlan
@@ -18,7 +18,7 @@ export const getAllExtraAdmissionPlan = async (
 				include: [{
 					model: db.Course,
 					attributes: { exclude: ['id'] },
-					order: [['year', 'ASC']] 
+					order: [['year', 'ASC']]
 				}],
 			});
 		}
@@ -42,11 +42,71 @@ export const getAllExtraAdmissionPlan = async (
 				attributes: { exclude: ['id'] },
 				order: [['year', 'ASC']] // Add this line to sort by year in ascending order
 			}],
-		
+
 		});
 		return response;
 	} catch (error) {
 		throw error;
+	}
+};
+
+export const getAllExtraAdmissionPlanGroupByFaculty = async (
+	query: any
+): Promise<{ [key: string]: ExtraAdmissionPlanAttributes[] }> => {
+	try {
+		if (isAllValuesUndefined(query)) {
+			const response = await ExtraAdmissionPlan.findAll({
+				include: [{
+					model: db.Course,
+					attributes: { exclude: ['id'] },
+					order: [['year', 'ASC']]
+				}],
+			});
+			const groupedByFaculty: ExtraAdmissionPlanGroupByType = response.reduce((result: ExtraAdmissionPlanGroupByType, item: ExtraAdmissionPlanInstance) => {
+				const faculty = item.Course['dataValues'].faculty
+
+				if (!result[faculty]) {
+					result[faculty] = [];
+				}
+				result[faculty].push(item);
+				return result;
+			}, {});
+
+			return groupedByFaculty;
+		}
+
+		const { qty, year, keyword } = query;
+		const response = await ExtraAdmissionPlan.findAll({
+			where: {
+				[Op.or]: [
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("qty")), "LIKE", `%${qty}%`),
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("year")), "LIKE", `%${year}%`),
+					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${keyword}%'`),
+				],
+
+			},
+			include: [{
+				model: db.Course,
+				attributes: { exclude: ['id'] },
+				order: [['year', 'ASC']]
+			}],
+
+		});
+
+		const groupedByFaculty: ExtraAdmissionPlanGroupByType = response.reduce((result: ExtraAdmissionPlanGroupByType, item: ExtraAdmissionPlanInstance) => {
+			const faculty = item.Course['dataValues'].faculty
+
+			if (!result[faculty]) {
+				result[faculty] = [];
+			}
+			result[faculty].push(item);
+			return result;
+		}, {});
+
+		return groupedByFaculty;
+
+	} catch (error) {
+		throw new Error();
 	}
 };
 
@@ -187,5 +247,6 @@ export default {
 	updateExtraAdmissionPlan,
 	deleteExtraAdmissionPlan,
 	getAllExtraAdmissionPlanByFaculty,
-	getYearlistExtraAdmissionPlan
+	getYearlistExtraAdmissionPlan,
+	getAllExtraAdmissionPlanGroupByFaculty
 }
