@@ -12,7 +12,6 @@ router.get("/get-exists-year", extraAdminssionPlanControllers.handleGetYearListE
 router.get("/get-exists-faculty", extraAdminssionPlanControllers.handleGetFacultyListExtraAdmissionPlan)
 
 
-
 router.get("/get-one/:id", validateUUID, extraAdminssionPlanControllers.handleGetOneExtraAdmissionPlan)
 router.post("/create", validateCreateExtraAdmissionPlan, extraAdminssionPlanControllers.handleCreateExtraAdmissionPlan)
 router.patch("/update/:id", validateUUID, extraAdminssionPlanControllers.handleUpdateExtraAdmissionPlan)

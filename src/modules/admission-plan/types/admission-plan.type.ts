@@ -1,5 +1,6 @@
 
 import { Query } from "express-serve-static-core";
+import { Model } from "sequelize";
 // export interface UserEnum
 
 export interface AdmissionPlanAttributes {
@@ -57,3 +58,7 @@ export interface AdmissionPlanParamInterface {
 	id: string
 }
 
+export interface AdmissionPlanInstance extends Model<AdmissionPlanAttributes>, AdmissionPlanAttributes {
+	dataValues: AdmissionPlanAttributes;
+	Course: any;
+}

@@ -2,7 +2,7 @@
 import { isAllValuesUndefined } from "../../../common/utils"
 import sequelize, { Op } from "sequelize";
 import db from "../../../database/models"
-import { AdmissionPlanAttributes, AdmissionPlanQueryInterface } from 'modules/admission-plan/types/admission-plan.type';
+import { AdmissionPlanAttributes, AdmissionPlanInstance, AdmissionPlanQueryInterface } from 'modules/admission-plan/types/admission-plan.type';
 import { query } from 'express-validator';
 
 
@@ -53,6 +53,66 @@ export const getAllAdmissionPlan = async (query: AdmissionPlanQueryInterface): P
 		});
 
 		return admissionPlans;
+	} catch (error) {
+		throw new Error("Unable to fetch admission plans");
+	}
+};
+
+
+export const getAllAdmissionPlanGroupByFaculty = async (query: AdmissionPlanQueryInterface): Promise<any> => {
+	try {
+		let whereClause = {};
+		const searchableFields = [
+			"quota_detail",
+			"quota_specific_subject",
+			"quota_status",
+			"direct_detail",
+			"direct_specific_subject",
+			"direct_status",
+			"cooperation_detail",
+			"cooperation_specific_subject",
+			"cooperation_status",
+			"year",
+		];
+
+		if (!isAllValuesUndefined(query)) {
+			whereClause = {
+				[Op.or]: searchableFields.map((field) => ({
+					[field]: {
+						[Op.like]: `%${query[field]}%`,
+					},
+				})),
+			};
+			if (query.keyword) {
+				whereClause = {
+					...whereClause,
+					[Op.or]: [
+						...searchableFields.map((field) => sequelize.where(sequelize.fn("LOWER", sequelize.col(field)), "LIKE", `%${query.keyword}%`)),
+					],
+				};
+			}
+		}
+
+		const admissionPlans = await AdmissionPlan.findAll({
+			where: whereClause,
+			include: [{
+				model: db.Course,
+				attributes: { exclude: ['id'] },
+			}],
+			// raw: true,
+		});
+
+		const groupedByFaculty: AdmissionPlanInstance = admissionPlans.reduce((result: any, item: any) => {
+			const faculty = item['dataValues'].Course['dataValues'].faculty
+			if (!result[faculty]) {
+				result[faculty] = [];
+			}
+			result[faculty].push(item);
+			return result;
+		}, {});
+
+		return groupedByFaculty;
+		
 	} catch (error) {
 		throw new Error("Unable to fetch admission plans");
 	}
@@ -156,6 +216,24 @@ export const getYearlistAdmissionPlan = async (): Promise<any> => {
 	}
 }
 
+export const getFacultylistAdmissionPlan = async (): Promise<any> => {
+	try {
+
+		const response = await AdmissionPlan.findAll({
+			include: {
+				model: db.Course,
+				attributes: { include: ['id', 'faculty'] },
+			},
+			raw: true
+		});
+		const uniqueFaculty = Array.from(new Set(response.map((resp: any) => resp['Course.faculty'])));
+		return uniqueFaculty;
+	} catch (error) {
+		console.error(`Error retrieving faculty list of extra admission plan: `, error);
+		throw new Error('Unable to retrieve extra admission plan');
+	}
+}
+
 
 
 
@@ -224,5 +302,7 @@ export default {
 	getAllAdmissionPlanByCourseId,
 	getAllAdmissionPlanByFaculty,
 	getYearlistAdmissionPlan,
-	checkIsYearExist
+	checkIsYearExist,
+	getFacultylistAdmissionPlan,
+	getAllAdmissionPlanGroupByFaculty
 }
