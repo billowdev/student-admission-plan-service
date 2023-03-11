@@ -9,6 +9,7 @@ router.get("/get-all", extraAdminssionPlanControllers.handleGetAllExtraAdmission
 router.get("/get-group-by-faculty", extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlanGroupByFaculty)
 router.get("/get-by-faculty/:faculty", extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlanByFaculty)
 router.get("/get-exists-year", extraAdminssionPlanControllers.handleGetYearListExtraAdmissionPlan)
+router.get("/get-exists-faculty", extraAdminssionPlanControllers.handleGetFacultyListExtraAdmissionPlan)
 
 
 

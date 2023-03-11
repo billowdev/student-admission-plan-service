@@ -178,10 +178,29 @@ export const getYearlistExtraAdmissionPlan = async (): Promise<any> => {
 		const uniqueYears = Array.from(new Set(response.map((resp: any) => resp.year)));
 		return uniqueYears;
 	} catch (error) {
-		console.error(`Error retrieving year list of admission plan: `, error);
-		throw new Error('Unable to retrieve admission plan');
+		console.error(`Error retrieving year list of extra admission plan: `, error);
+		throw new Error('Unable to retrieve extra admission plan');
 	}
 }
+
+export const getFacultylistExtraAdmissionPlan = async (): Promise<any> => {
+	try {
+
+		const response = await ExtraAdmissionPlan.findAll({
+			include: {
+				model: db.Course,
+				attributes: { include: ['id', 'faculty'] },
+			},
+			raw: true
+		});
+		const uniqueFaculty = Array.from(new Set(response.map((resp: any) => resp['Course.faculty'])));
+		return uniqueFaculty;
+	} catch (error) {
+		console.error(`Error retrieving faculty list of extra admission plan: `, error);
+		throw new Error('Unable to retrieve extra admission plan');
+	}
+}
+
 
 
 
@@ -248,5 +267,6 @@ export default {
 	deleteExtraAdmissionPlan,
 	getAllExtraAdmissionPlanByFaculty,
 	getYearlistExtraAdmissionPlan,
-	getAllExtraAdmissionPlanGroupByFaculty
+	getAllExtraAdmissionPlanGroupByFaculty,
+	getFacultylistExtraAdmissionPlan
 }
