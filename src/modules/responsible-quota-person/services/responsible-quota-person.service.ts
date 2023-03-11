@@ -19,10 +19,23 @@ export const createRQP = async (createDto: ResponsibleQuotaPersonAttributes) => 
 
 export const updateRQP = async (id: string, updateDto: ResponsibleQuotaPersonAttributes) => {
 	try {
-		const response = await ResponsibleQuotaPerson.update({...updateDto}, {id});
-		return response;
-	} catch (error: unknown) {
-		throw new Error('Unable to update rqp');
+		const data = await ResponsibleQuotaPerson.findOne({
+			where: { id }
+		})
+		if (!data) {
+			throw new Error('Extra admission plan not found')
+		}
+		const [rowsUpdated] = await ResponsibleQuotaPerson.update(
+			{ ...updateDto},
+			{ where: { id } }
+		)
+		if (rowsUpdated === 0) {
+			return null;
+		}
+		return await ResponsibleQuotaPerson.findByPk(id);
+	} catch (error) {
+		console.error(`Error updating extra admission plan`, error);
+		throw new Error('Failed to update extra admission plan');
 	}
 }
 
