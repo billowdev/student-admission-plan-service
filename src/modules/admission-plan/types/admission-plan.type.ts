@@ -7,7 +7,6 @@ export interface AdmissionPlanAttributes {
 	quotaStatus?: boolean,
 	quotaSpecificSubject?: string | null,
 	quotaDetail?: string | null,
-	quotaQty?: number,
 	quotaGoodStudyQty?: number,
 	quotaGoodPersonQty?: number,
 	// quota of good activity Music quantity
@@ -41,7 +40,6 @@ export interface AdmissionPlanQueryInterface extends Query {
 	quota_detail?: string;
 	quota_specific_subject?: string;
 	quota_status?: string;
-	quota_qty?: string;
 	direct_detail?: string;
 	direct_specific_subject?: string;
 	direct_status?: string;

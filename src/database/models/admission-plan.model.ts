@@ -17,7 +17,19 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		quotaStatus!: boolean;
 		quotaSpecificSubject!: string;
 		quotaDetail!: string | null;
-		quotaQty!: number;
+	
+		quotaGoodStudyQty!: number
+		quotaGoodPersonQty!: number
+		// quota of good activity Music quantity
+		// IM = international music
+		quotaGoodActivityIMQty!: number
+		// quota of good activity Language institute quantity
+		// LI = Language institute
+		quotaGoodActivityLIQty!: number
+		// quota of good activity Student Development Division quantity
+		// SDD = Student Development Division
+		quotaGoodActivitySDDQty!: number
+		quotaGoodSportQty!: number
 
 		directStatus!: boolean;
 		directSpecificSubject!: string;
@@ -37,13 +49,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
 			// define association here
 
 			AdmissionPlan.belongsTo(models.Course,
-				// 	 {
-				// 	foreignKey: {
-				// 		name: 'courseId',
-				// 		allowNull: false,
-				// 		field: 'course_id',
-				// 	}
-				// }
+				{
+					foreignKey: {
+						name: 'courseId',
+						allowNull: false,
+						field: 'course_id',
+					}
+				}
 			);
 
 		}
@@ -68,10 +80,35 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				defaultValue: "",
 				allowNull: false
 			},
-			quotaQty: {
+	
+			quotaGoodStudyQty: {
 				type: DataTypes.INTEGER,
-				field: "quota_qty",
-				
+				field: "quota_good_study_qty",
+				defaultValue: 0,
+			},
+			quotaGoodPersonQty: {
+				type: DataTypes.INTEGER,
+				field: "quota_good_person_qty",
+				defaultValue: 0,
+			},
+			quotaGoodActivityIMQty: {
+				type: DataTypes.INTEGER,
+				field: "quota_good_activity_im_qty",
+				defaultValue: 0,
+			},
+			quotaGoodActivityLIQty: {
+				type: DataTypes.INTEGER,
+				field: "quota_good_activity_li_qty",
+				defaultValue: 0,
+			},
+			quotaGoodActivitySDDQty: {
+				type: DataTypes.INTEGER,
+				field: "quota_good_activity_sdd_qty",
+				defaultValue: 0,
+			},
+			quotaGoodSportQty: {
+				type: DataTypes.INTEGER,
+				field: "quota_good_sport_qty",
 				defaultValue: 0,
 			},
 			quotaDetail: {

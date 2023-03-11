@@ -33,7 +33,12 @@ export const validateAdmissionPlanQueryParams: RequestHandlerParams<{}, {}, {}, 
 export function validateAdmissionPlan(req: Request, res: Response, next: NextFunction): void {
 	const body: AdmissionPlanAttributes = req.body;
 	const {
-		quotaStatus, quotaQty,
+		quotaStatus, quotaGoodStudyQty,
+		quotaGoodPersonQty,
+		quotaGoodActivityIMQty,
+		quotaGoodActivityLIQty,
+		quotaGoodActivitySDDQty,
+		quotaGoodSportQty,
 		directStatus, directQty,
 		cooperationStatus, cooperationQty,
 		year, courseId, studyGroup,
@@ -59,8 +64,28 @@ export function validateAdmissionPlan(req: Request, res: Response, next: NextFun
 	// }
 	
 	
-	if (!quotaQty && typeof quotaQty !== "number") {
-		res.status(400).json({ message: "quotaQty field is required" });
+	if (!quotaGoodStudyQty && typeof quotaGoodStudyQty !== "number") {
+		res.status(400).json({ message: "quotaGoodStudyQty field is required" });
+		return;
+	}
+	if (!quotaGoodPersonQty && typeof quotaGoodPersonQty !== "number") {
+		res.status(400).json({ message: "quotaGoodPersonQty field is required" });
+		return;
+	}
+	if (!quotaGoodActivityIMQty && typeof quotaGoodActivityIMQty !== "number") {
+		res.status(400).json({ message: "quotaGoodActivityIMQty field is required" });
+		return;
+	}
+	if (!quotaGoodActivityLIQty && typeof quotaGoodActivityLIQty !== "number") {
+		res.status(400).json({ message: "quotaGoodActivityLIQty field is required" });
+		return;
+	}
+	if (!quotaGoodActivitySDDQty && typeof quotaGoodActivitySDDQty !== "number") {
+		res.status(400).json({ message: "quotaGoodActivitySDDQty field is required" });
+		return;
+	}
+	if (!quotaGoodSportQty && typeof quotaGoodSportQty !== "number") {
+		res.status(400).json({ message: "quotaGoodSportQty field is required" });
 		return;
 	}
 	// ==================== direct ===========================
@@ -114,8 +139,23 @@ export const validateUpdateCourse = [
 		if (updates.quotaDetail && typeof updates.quotaDetail !== 'string') {
 			return res.status(400).send('quotaSpecificSubject must be a string');
 		}
-		if (updates.quotaQty && typeof updates.quotaQty !== 'number') {
-			return res.status(400).send('quotaQty must be a number');
+		if (updates.quotaGoodStudyQty && typeof updates.quotaGoodStudyQty !== 'number') {
+			return res.status(400).send('quotaGoodStudyQty must be a number');
+		}
+		if (updates.quotaGoodPersonQty && typeof updates.quotaGoodPersonQty !== 'number') {
+			return res.status(400).send('quotaGoodPersonQty must be a number');
+		}
+		if (updates.quotaGoodActivityIMQty && typeof updates.quotaGoodActivityIMQty !== 'number') {
+			return res.status(400).send('quotaGoodActivityIMQty must be a number');
+		}
+		if (updates.quotaGoodActivityLIQty && typeof updates.quotaGoodActivityLIQty !== 'number') {
+			return res.status(400).send('quotaGoodActivityLIQty must be a number');
+		}
+		if (updates.quotaGoodActivitySDDQty && typeof updates.quotaGoodActivitySDDQty !== 'number') {
+			return res.status(400).send('quotaGoodActivitySDDQty must be a number');
+		}
+		if (updates.quotaGoodSportQty && typeof updates.quotaGoodSportQty !== 'number') {
+			return res.status(400).send('quotaGoodSportQty must be a number');
 		}
 		// =========== direct
 
