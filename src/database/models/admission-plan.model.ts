@@ -49,13 +49,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
 			// define association here
 
 			AdmissionPlan.belongsTo(models.Course,
-				{
-					foreignKey: {
-						name: 'courseId',
-						allowNull: false,
-						field: 'course_id',
-					}
-				}
+				// {
+				// 	foreignKey: {
+				// 		name: 'courseId',
+				// 		allowNull: false,
+				// 		field: 'course_id',
+				// 	}
+				// }
 			);
 
 		}
