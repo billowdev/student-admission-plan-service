@@ -14,7 +14,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		id!: string;
-		year!: number;
+		year!: string;
 		name!: string;
 		surname!: string;
 		agency!: string;
@@ -35,7 +35,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				primaryKey: true,
 			},
 			year: {
-				type: DataTypes.INTEGER,
+				type: DataTypes.STRING(4),
 				allowNull: true,
 			},
 			name: {

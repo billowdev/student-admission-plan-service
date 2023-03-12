@@ -12,39 +12,47 @@ const Course = db.Course
  * @param {CourseQueryInterface} query - Query parameters to filter courses
  * @returns {Promise<CourseAttributes[]>} - Promise that resolves to an array of CourseAttributes objects
  */
-export const getAllCourse = async (query: CourseQueryInterface): Promise<CourseAttributes[]> => {
+export const getAllCourse = async (query: any): Promise<CourseAttributes[]> => {
 	try {
-		if (isAllValuesUndefined(query)) {
-			return await Course.findAll()
+		let whereClause = {};
+		const searchableFields = [
+			"major",
+			"degree",
+			"faculty",
+			"detail"
+		];
+
+		if (!isAllValuesUndefined(query)) {
+			whereClause = {
+				[Op.or]: searchableFields.map((field) => ({
+					[field]: {
+						[Op.like]: `%${query[field]}%`,
+					},
+				})),
+			};
+			if (query.keyword) {
+				whereClause = {
+					...whereClause,
+					[Op.or]: [
+						...searchableFields.map((field) => sequelize.where(sequelize.fn("LOWER", sequelize.col(field)), "LIKE", `%${query.keyword}%`)),
+					],
+				};
+			}
 		}
 
-		// Destructure the query object for readability
-		const { major, degree, faculty, qualification, keyword } = query;
-
-		// Add input validation to ensure the query object has all the required fields
-		if (!major || !degree || !faculty || !qualification || !keyword) {
-			throw new Error('Invalid query parameters');
-		}
-
-		// Use destructuring assignment to simplify the code
 		const response = await Course.findAll({
-			where: {
-				[Op.or]: [
-					sequelize.where(sequelize.fn('LOWER', sequelize.col('major')), 'LIKE', `%${major}%`),
-					sequelize.where(sequelize.fn('LOWER', sequelize.col('degree')), 'LIKE', `%${degree}%`),
-					sequelize.where(sequelize.fn('LOWER', sequelize.col('faculty')), 'LIKE', `%${faculty}%`),
-					sequelize.where(sequelize.fn('LOWER', sequelize.col('qualification')), 'LIKE', `%${qualification}%`),
-					sequelize.literal(`LOWER(CONCAT_WS(' ', "major", "degree", "faculty", "qualification")) LIKE '%${keyword}%'`)
-				]
-			},
+			where: whereClause,
 			raw: true
 		});
 
 		return response;
 	} catch (error) {
-		throw new Error('Unable to get all courses');
+		console.error(`Error retrieving all course `, error);
+		throw new Error('Unable to retrieve all course');
 	}
 };
+
+
 
 
 export const getOneCourse = async (id: string): Promise<CourseAttributes | null> => {
@@ -54,6 +62,33 @@ export const getOneCourse = async (id: string): Promise<CourseAttributes | null>
 			throw new Error('Course not found');
 		}
 		return response;
+	} catch (error: unknown) {
+		throw new Error('Unable to retrieve course');
+	}
+};
+
+export const getCourseByFaculty = async (faculty: string): Promise<CourseAttributes | null> => {
+	try {
+		if (faculty) {
+			const response = await Course.findAll({
+				where: {
+					faculty: {
+						[Op.like]: `%${faculty}%`,
+					}
+				}
+			});
+			if (!response) {
+				throw new Error('Course not found');
+			}
+			return response;
+		} else {
+			const response = await Course.findAll();
+			if (!response) {
+				throw new Error('Course not found');
+			}
+			return response;
+		}
+
 	} catch (error: unknown) {
 		throw new Error('Unable to retrieve course');
 	}
@@ -117,5 +152,6 @@ export default {
 	getOneCourse,
 	createCourse,
 	updateCourse,
-	deleteCourse
+	deleteCourse,
+	getCourseByFaculty
 }

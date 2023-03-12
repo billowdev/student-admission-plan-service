@@ -38,33 +38,66 @@ const Course = models_1.default.Course;
  */
 const getAllCourse = async (query) => {
     try {
-        if ((0, is_all_undefined_1.default)(query)) {
-            return await Course.findAll();
+        let whereClause = {};
+        const searchableFields = [
+            "major",
+            "degree",
+            "faculty",
+            "detail"
+        ];
+        if (!(0, is_all_undefined_1.default)(query)) {
+            whereClause = {
+                [sequelize_1.Op.or]: searchableFields.map((field) => ({
+                    [field]: {
+                        [sequelize_1.Op.like]: `%${query[field]}%`,
+                    },
+                })),
+            };
+            if (query.keyword) {
+                whereClause = {
+                    ...whereClause,
+                    [sequelize_1.Op.or]: [
+                        ...searchableFields.map((field) => sequelize_1.default.where(sequelize_1.default.fn("LOWER", sequelize_1.default.col(field)), "LIKE", `%${query.keyword}%`)),
+                    ],
+                };
+            }
         }
-        // Destructure the query object for readability
-        const { major, degree, faculty, qualification, keyword } = query;
-        // Add input validation to ensure the query object has all the required fields
-        if (!major || !degree || !faculty || !qualification || !keyword) {
-            throw new Error('Invalid query parameters');
-        }
-        // Use destructuring assignment to simplify the code
         const response = await Course.findAll({
-            where: {
-                [sequelize_1.Op.or]: [
-                    sequelize_1.default.where(sequelize_1.default.fn('LOWER', sequelize_1.default.col('major')), 'LIKE', `%${major}%`),
-                    sequelize_1.default.where(sequelize_1.default.fn('LOWER', sequelize_1.default.col('degree')), 'LIKE', `%${degree}%`),
-                    sequelize_1.default.where(sequelize_1.default.fn('LOWER', sequelize_1.default.col('faculty')), 'LIKE', `%${faculty}%`),
-                    sequelize_1.default.where(sequelize_1.default.fn('LOWER', sequelize_1.default.col('qualification')), 'LIKE', `%${qualification}%`),
-                    sequelize_1.default.literal(`LOWER(CONCAT_WS(' ', "major", "degree", "faculty", "qualification")) LIKE '%${keyword}%'`)
-                ]
-            },
+            where: whereClause,
             raw: true
         });
         return response;
     }
     catch (error) {
-        throw new Error('Unable to get all courses');
+        console.error(`Error retrieving all course `, error);
+        throw new Error('Unable to retrieve all course');
     }
+    // try {
+    // 	if (isAllValuesUndefined(query)) {
+    // 		return await Course.findAll()
+    // 	}
+    // 	// Destructure the query object for readability
+    // 	const { major, degree, faculty, detail, keyword } = query;
+    // 	// Use destructuring assignment to simplify the code
+    // 	const response = await Course.findAll({
+    // 		where: {
+    // 			[Op.or]: [
+    // 				sequelize.where(sequelize.fn('LOWER', sequelize.col('major')), 'LIKE', `%${major}%`),
+    // 				sequelize.where(sequelize.fn('LOWER', sequelize.col('degree')), 'LIKE', `%${degree}%`),
+    // 				sequelize.where(sequelize.fn('LOWER', sequelize.col('faculty')), 'LIKE', `%${faculty}%`),
+    // 				sequelize.where(sequelize.fn('LOWER', sequelize.col('detail')), 'LIKE', `%${detail}%`),
+    // 				sequelize.literal(`LOWER(CONCAT_WS(' ', "major", "degree", "faculty", "detail")) LIKE '%${keyword}%'`)
+    // 			]
+    // 		},
+    // 		raw: true
+    // 	});
+    // 	return response;
+    // } catch (error) {
+    // 	console.log('====================================');
+    // 	console.log(error);
+    // 	console.log('====================================');
+    // 	throw new Error('Unable to get all courses');
+    // }
 };
 exports.getAllCourse = getAllCourse;
 const getOneCourse = async (id) => {
@@ -96,10 +129,13 @@ const updateCourse = async (id, dto) => {
             returning: true,
             where: { id },
         });
-        if (!response[0]) {
+        if (!response[1]) {
             throw new Error('Course not found');
         }
-        return response[1][0];
+        return {
+            id,
+            ...dto
+        };
     }
     catch (error) {
         throw new Error('Unable to update course');
@@ -108,12 +144,17 @@ const updateCourse = async (id, dto) => {
 exports.updateCourse = updateCourse;
 const deleteCourse = async (id) => {
     try {
+        // delete extra admission plaln
+        await models_1.default.ExtraAdmissionPlan.destroy({
+            where: {
+                courseId: id
+            }
+        });
         const response = await Course.destroy({
             where: { id },
+            raw: true
         });
-        if (!response) {
-            throw new Error('Course not found');
-        }
+        return response;
     }
     catch (error) {
         throw new Error('Unable to delete course');

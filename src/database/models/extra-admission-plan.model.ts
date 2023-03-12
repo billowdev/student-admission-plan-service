@@ -17,10 +17,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		 * This method is not a part of Sequelize lifecycle.
 		 * The `models/index` file will call this method automatically.
 		 */
-        id!: string;
-        qty!: number;
-        year! : number;
-        //courseId! : string;
+		id!: string;
+		qty!: number;
+		year!: string;
+		courseId!: string;
 		static associate(models: any) {
 			// define association here
 
@@ -47,16 +47,20 @@ module.exports = (sequelize: any, DataTypes: any) => {
 				allowNull: true,
 			},
 			year: {
-				type: DataTypes.INTEGER,
+				type: DataTypes.STRING(4),
 				allowNull: true,
 			},
-			
+			courseId: {
+				type: DataTypes.UUID,
+				allowNull: false,
+				field: 'course_id'
+			}
+
 		},
 		{
 			sequelize,
 			underscored: true,
 			modelName: "ExtraAdmissionPlan",
-
 			tableName: "extra_admission_plans",
 			createdAt: 'created_at',
 			updatedAt: 'updated_at',

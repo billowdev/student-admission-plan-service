@@ -4,18 +4,11 @@ import { CourseParamInterface, CourseQueryInterface } from "../types/course.type
 
 import courseService from './../services/course.service';
 
-export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface>, res: Response) => {
+export const handleGetAll = async (req: Request, res: Response) => {
 	try {
-		const query: CourseQueryInterface = {
-			major: req.query.major,
-			degree: req.query.degree,
-			qualification: req.query.qualification,
-			faculty: req.query.faculty
-		}
 
-
-		const payload = await courseService.getAllCourse(query)
-		if(!payload) 
+		const payload = await courseService.getAllCourse(req.query)
+		if (!payload)
 			return res.status(400).json({
 				error: "Failed to retrieve all courses",
 			});
@@ -32,7 +25,7 @@ export const handleGetAll = async (req: Request<{}, {}, {}, CourseQueryInterface
 
 
 export const handleGetOneCourse = async (req: Request, res: Response) => {
-	const {id} = req.params;
+	const { id } = req.params;
 
 
 	try {
@@ -50,12 +43,31 @@ export const handleGetOneCourse = async (req: Request, res: Response) => {
 	}
 };
 
+export const handleGetAllCourseByFaculty = async (req: Request, res: Response) => {
+	const { faculty } = req.params;
+	try {
+		const payload = await courseService.getCourseByFaculty(faculty);
+
+		if (!payload) {
+			res.status(404).json({ error: 'Course not found' });
+			return;
+		}
+
+		res.status(200).json({ message: "Retrieved course by faculty successfully", payload });
+	} catch (error: unknown) {
+		console.error(`Error retrieving course ${faculty}: `, error);
+		res.status(400).json({ error: `Error retrieving course ${faculty}: ${(error as Error).message}` });
+
+	}
+};
+
+
 export const handleCreateCourse = async (req: Request, res: Response) => {
 	try {
 		const body = req.body;
 		const payload = await courseService.createCourse(body);
 
-		if (!payload) 
+		if (!payload)
 			return res.status(400).json({ error: "Failed to create course" });
 		res.status(201).json({ message: "Created course successfully", payload });
 
@@ -72,7 +84,7 @@ export const handleUpdateCourse = async (req: Request, res: Response) => {
 		const id = req.params.id;
 		const payload = await courseService.updateCourse(id, body);
 
-		if (!payload) 
+		if (!payload)
 			return res.status(400).json({ error: "Failed to update course" });
 		res.status(200).json({ message: "Updated course successfully", payload });
 	} catch (error: unknown) {
@@ -86,7 +98,7 @@ export const handleDeleteCourse = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id;
 		const payload = await courseService.deleteCourse(id);
-		if (payload) 
+		if (payload)
 			res.status(200).json({ message: "delete course successfully", payload });
 		else
 			res.status(400).json({ message: "delete course failed" });
@@ -101,5 +113,6 @@ export default {
 	handleGetOneCourse,
 	handleCreateCourse,
 	handleUpdateCourse,
-	handleDeleteCourse
+	handleDeleteCourse,
+	handleGetAllCourseByFaculty
 }

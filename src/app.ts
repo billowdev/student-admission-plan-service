@@ -35,11 +35,24 @@ export const App = () => {
 	app.use('/responsible-quota-perons', responsibleQuotaPersonRouter);
 	app.use('/courses', coursesRouter);
 
+	const ENDPOINT = "/api/v1";
+	app.use(ENDPOINT + '/users', userRouter)
+	app.use(ENDPOINT + '/admission-plans', admissionPlanRouter);
+	app.use(ENDPOINT + '/extra-admission-plans', extraAdmissionPlanRouter);
+	app.use(ENDPOINT + '/responsible-quota-perons', responsibleQuotaPersonRouter);
+	app.use(ENDPOINT + '/courses', coursesRouter);
+
 	app.use('/u', userRouter)
 	app.use('/ap', admissionPlanRouter);
 	app.use('/eap', extraAdmissionPlanRouter);
 	app.use('/rqp', responsibleQuotaPersonRouter);
 	app.use('/c', coursesRouter);
+
+	app.use(ENDPOINT + '/u', userRouter)
+	app.use(ENDPOINT + '/ap', admissionPlanRouter);
+	app.use(ENDPOINT + '/eap', extraAdmissionPlanRouter);
+	app.use(ENDPOINT + '/rqp', responsibleQuotaPersonRouter);
+	app.use(ENDPOINT + '/c', coursesRouter);
 
 	app.get("/", (req, res) => {
 		res.end("this is student admission plan service");

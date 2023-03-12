@@ -20,6 +20,38 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: true
       },
+      quota_good_study_qty: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      quota_good_person_qty: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      quota_good_activity_im_qty: {
+        type: DataTypes.INTEGER,
+        field: "quota_good_activity_im_qty",
+        defaultValue: 0,
+      },
+      quota_good_activity_li_qty: {
+        type: DataTypes.INTEGER,
+        field: "quota_good_activity_li_qty",
+        defaultValue: 0,
+      },
+      quota_good_activity_sdd_qty: {
+        type: DataTypes.INTEGER,
+        field: "quota_good_activity_sdd_qty",
+        defaultValue: 0,
+      },
+      quota_good_sport_qty: {
+        type: DataTypes.INTEGER,
+        field: "quota_good_sport_qty",
+        defaultValue: 0,
+      },
+      direct_qty: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       direct_status: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
@@ -43,6 +75,10 @@ module.exports = {
       cooperation_detail: {
         type: Sequelize.STRING(255),
         allowNull: true
+      },
+      cooperation_qty: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       year: {
         type: Sequelize.INTEGER,

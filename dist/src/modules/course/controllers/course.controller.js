@@ -7,13 +7,7 @@ exports.handleDeleteCourse = exports.handleUpdateCourse = exports.handleCreateCo
 const course_service_1 = __importDefault(require("./../services/course.service"));
 const handleGetAll = async (req, res) => {
     try {
-        const query = {
-            major: req.query.major,
-            degree: req.query.degree,
-            qualification: req.query.qualification,
-            faculty: req.query.faculty
-        };
-        const payload = await course_service_1.default.getAllCourse(query);
+        const payload = await course_service_1.default.getAllCourse(req.query);
         if (!payload)
             return res.status(400).json({
                 error: "Failed to retrieve all courses",
@@ -62,9 +56,9 @@ const handleCreateCourse = async (req, res) => {
 exports.handleCreateCourse = handleCreateCourse;
 const handleUpdateCourse = async (req, res) => {
     try {
-        const course = req.body;
+        const body = req.body;
         const id = req.params.id;
-        const payload = await course_service_1.default.updateCourse(id, course);
+        const payload = await course_service_1.default.updateCourse(id, body);
         if (!payload)
             return res.status(400).json({ error: "Failed to update course" });
         res.status(200).json({ message: "Updated course successfully", payload });
@@ -78,10 +72,10 @@ const handleDeleteCourse = async (req, res) => {
     try {
         const id = req.params.id;
         const payload = await course_service_1.default.deleteCourse(id);
-        if (payload === undefined)
-            res.status(400).json({ message: "delete course failed" });
-        else
+        if (payload)
             res.status(200).json({ message: "delete course successfully", payload });
+        else
+            res.status(400).json({ message: "delete course failed" });
     }
     catch (error) {
         res.status(400).json({ error: 'Unable to delete course' });

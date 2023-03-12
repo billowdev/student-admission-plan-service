@@ -33,10 +33,15 @@ export const validateAdmissionPlanQueryParams: RequestHandlerParams<{}, {}, {}, 
 export function validateAdmissionPlan(req: Request, res: Response, next: NextFunction): void {
 	const body: AdmissionPlanAttributes = req.body;
 	const {
-		quotaStatus, quotaSpecificSubject, quotaDetail,
-		directStatus, directSpecificSubject, directDetail,
-		cooperationStatus, cooperationSpecificSubject, cooperationDetail,
-		year, courseId
+		quotaStatus, quotaGoodStudyQty,
+		quotaGoodPersonQty,
+		quotaGoodActivityIMQty,
+		quotaGoodActivityLIQty,
+		quotaGoodActivitySDDQty,
+		quotaGoodSportQty,
+		directStatus, directQty,
+		cooperationStatus, cooperationQty,
+		year, courseId, studyGroup,
 	} = body;
 
 	// Check that the degree field is not empty
@@ -44,53 +49,65 @@ export function validateAdmissionPlan(req: Request, res: Response, next: NextFun
 		res.status(400).json({ message: "year field is required" });
 		return;
 	}
-	if (year && typeof year !== 'number') {
-		res.status(400).json({ message: "year field must be numberr" });
-		return
+	if (!studyGroup) {
+		res.status(400).json({ message: "studyGroup field is required" });
+		return;
 	}
-
 	if (!courseId) {
 		res.status(400).json({ message: "courseId field is required" });
 		return;
 	}
 	// ==================== quota ===========================
-	if (!quotaStatus) {
-		res.status(400).json({ message: "quotaStatus field is required" });
+	// if (quotaStatus && typeof quotaStatus !== 'boolean') {
+	// 	res.status(400).json({ message: "quotaStatus field is required" });
+	// 	return;
+	// }
+	
+	
+	if (!quotaGoodStudyQty && typeof quotaGoodStudyQty !== "number") {
+		res.status(400).json({ message: "quotaGoodStudyQty field is required" });
 		return;
 	}
-	if (!quotaSpecificSubject) {
-		res.status(400).json({ message: "quotaSpecificSubject field is required" });
+	if (!quotaGoodPersonQty && typeof quotaGoodPersonQty !== "number") {
+		res.status(400).json({ message: "quotaGoodPersonQty field is required" });
 		return;
 	}
-	if (!quotaDetail) {
-		res.status(400).json({ message: "quotaDetail field is required" });
+	if (!quotaGoodActivityIMQty && typeof quotaGoodActivityIMQty !== "number") {
+		res.status(400).json({ message: "quotaGoodActivityIMQty field is required" });
 		return;
 	}
-
+	if (!quotaGoodActivityLIQty && typeof quotaGoodActivityLIQty !== "number") {
+		res.status(400).json({ message: "quotaGoodActivityLIQty field is required" });
+		return;
+	}
+	if (!quotaGoodActivitySDDQty && typeof quotaGoodActivitySDDQty !== "number") {
+		res.status(400).json({ message: "quotaGoodActivitySDDQty field is required" });
+		return;
+	}
+	if (!quotaGoodSportQty && typeof quotaGoodSportQty !== "number") {
+		res.status(400).json({ message: "quotaGoodSportQty field is required" });
+		return;
+	}
 	// ==================== direct ===========================
-	if (!directStatus) {
-		res.status(400).json({ message: "directStatus field is required" });
-		return;
-	}
-	if (!directSpecificSubject) {
-		res.status(400).json({ message: "directSpecificSubject field is required" });
-		return;
-	}
-	if (!directDetail) {
-		res.status(400).json({ message: "directDetail field is required" });
+	// if (!directStatus && typeof directStatus !== "boolean" ) {
+	// 	res.status(400).json({ message: "directStatus field is required" });
+	// 	return;
+	// }
+
+
+	if (!directQty && typeof directQty !== "number") {
+		res.status(400).json({ message: "directQty field is required" });
 		return;
 	}
 	// ==================== cooperation ===========================
-	if (!cooperationStatus) {
-		res.status(400).json({ message: "cooperationStatus field is required" });
-		return;
-	}
-	if (!cooperationSpecificSubject) {
-		res.status(400).json({ message: "cooperationSpecificSubject field is required" });
-		return;
-	}
-	if (!cooperationDetail) {
-		res.status(400).json({ message: "cooperationDetail field is required" });
+	// if (!cooperationStatus && typeof cooperationStatus !== "boolean") {
+	// 	res.status(400).json({ message: "cooperationStatus field is required" });
+	// 	return;
+	// }
+
+
+	if (!cooperationQty && typeof cooperationQty !== "number") {
+		res.status(400).json({ message: "cooperationQty field is required" });
 		return;
 	}
 	// If everything is valid, continue to the next middleware
@@ -122,6 +139,24 @@ export const validateUpdateCourse = [
 		if (updates.quotaDetail && typeof updates.quotaDetail !== 'string') {
 			return res.status(400).send('quotaSpecificSubject must be a string');
 		}
+		if (updates.quotaGoodStudyQty && typeof updates.quotaGoodStudyQty !== 'number') {
+			return res.status(400).send('quotaGoodStudyQty must be a number');
+		}
+		if (updates.quotaGoodPersonQty && typeof updates.quotaGoodPersonQty !== 'number') {
+			return res.status(400).send('quotaGoodPersonQty must be a number');
+		}
+		if (updates.quotaGoodActivityIMQty && typeof updates.quotaGoodActivityIMQty !== 'number') {
+			return res.status(400).send('quotaGoodActivityIMQty must be a number');
+		}
+		if (updates.quotaGoodActivityLIQty && typeof updates.quotaGoodActivityLIQty !== 'number') {
+			return res.status(400).send('quotaGoodActivityLIQty must be a number');
+		}
+		if (updates.quotaGoodActivitySDDQty && typeof updates.quotaGoodActivitySDDQty !== 'number') {
+			return res.status(400).send('quotaGoodActivitySDDQty must be a number');
+		}
+		if (updates.quotaGoodSportQty && typeof updates.quotaGoodSportQty !== 'number') {
+			return res.status(400).send('quotaGoodSportQty must be a number');
+		}
 		// =========== direct
 
 		if (updates.directStatus && typeof updates.directStatus !== 'number') {
@@ -133,7 +168,9 @@ export const validateUpdateCourse = [
 		if (updates.directDetail && typeof updates.directDetail !== 'string') {
 			return res.status(400).send('quotaSpecificSubject must be a string');
 		}
-
+		if (updates.directQty && typeof updates.directQty !== 'number') {
+			return res.status(400).send('directQty must be a number');
+		}
 		// =========== cooperation
 		if (updates.cooperationStatus && typeof updates.cooperationStatus !== 'number') {
 			return res.status(400).send('cooperationStatus must be a number');
@@ -143,6 +180,9 @@ export const validateUpdateCourse = [
 		}
 		if (updates.cooperationDetail && typeof updates.cooperationDetail !== 'string') {
 			return res.status(400).send('quotaSpecificSubject must be a string');
+		}
+		if (updates.cooperationQty && typeof updates.cooperationQty !== 'number') {
+			return res.status(400).send('directQty must be a number');
 		}
 		next();
 	}

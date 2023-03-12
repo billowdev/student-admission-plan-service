@@ -12,13 +12,17 @@ module.exports = (sequelize, DataTypes) => {
         quotaStatus;
         quotaSpecificSubject;
         quotaDetail;
+        quotaQty;
         directStatus;
         directSpecificSubject;
         directDetail;
+        directQty;
         cooperationStatus;
         cooperationSpecificSubject;
         cooperationDetail;
+        cooperationQty;
         year;
+        studyGroup;
         courseId;
         //courseId! : string;
         static associate(models) {
@@ -41,12 +45,19 @@ module.exports = (sequelize, DataTypes) => {
         quotaSpecificSubject: {
             type: DataTypes.STRING(64),
             field: "quota_specific_subject",
-            allowNull: true
+            defaultValue: "",
+            allowNull: false
+        },
+        quotaQty: {
+            type: DataTypes.INTEGER,
+            field: "quota_qty",
+            defaultValue: 0,
         },
         quotaDetail: {
             type: DataTypes.STRING(255),
             field: "quota_detail",
-            allowNull: true
+            defaultValue: "",
+            allowNull: false
         },
         directStatus: {
             type: DataTypes.BOOLEAN,
@@ -56,12 +67,19 @@ module.exports = (sequelize, DataTypes) => {
         directSpecificSubject: {
             type: DataTypes.STRING(64),
             field: "direct_specific_subject",
-            allowNull: true
+            allowNull: false,
+            defaultValue: "",
         },
         directDetail: {
             type: DataTypes.STRING(255),
             field: "direct_detail",
-            allowNull: true
+            allowNull: false,
+            defaultValue: "",
+        },
+        directQty: {
+            type: DataTypes.INTEGER,
+            field: "direct_qty",
+            defaultValue: 0,
         },
         cooperationStatus: {
             type: DataTypes.BOOLEAN,
@@ -71,17 +89,33 @@ module.exports = (sequelize, DataTypes) => {
         cooperationSpecificSubject: {
             type: DataTypes.STRING(64),
             field: "cooperation_specific_subject",
+            defaultValue: "",
             allowNull: true
         },
         cooperationDetail: {
             type: DataTypes.STRING(255),
             field: "cooperation_detail",
+            defaultValue: "",
             allowNull: true
+        },
+        cooperationQty: {
+            type: DataTypes.INTEGER,
+            field: "cooperation_qty",
+            defaultValue: 0,
         },
         year: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
         },
+        studyGroup: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+        },
+        courseId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+            field: 'course_id'
+        }
     }, {
         sequelize,
         underscored: true,

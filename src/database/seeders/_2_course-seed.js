@@ -1,58 +1,420 @@
 module.exports = {
 	up: async (queryInterface) => {
-	  const coursesData = [
-		{ 
-		  id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d1",
-		  major: "CS",
-		  degree: "BsC",
-		  qualification: "test",
-		  faculty: "science",
-		  created_at: new Date(),
-		  updated_at: new Date()
-		},
-	
-		{ 
-			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
-			major: "IT",
-			degree: "BsC",
-			qualification: "test",
-			faculty: "science",
-			created_at: new Date(),
-			updated_at: new Date()
-		  },
-		  { 
-			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d3",
-			major: "IT 2",
-			degree: "BsC",
-			qualification: "test",
-			faculty: "science",
-			created_at: new Date(),
-			updated_at: new Date()
-		  },
-		  { 
-			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d4",
-			major: "Course 3",
-			degree: "BsC",
-			qualification: "test",
-			faculty: "science",
-			created_at: new Date(),
-			updated_at: new Date()
-		  },
-		  { 
-			id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d5",
-			major: "Course 4",
-			degree: "BsC",
-			qualification: "test",
-			faculty: "science",
-			created_at: new Date(),
-			updated_at: new Date()
-		  },
-	  ];
-  
-	  await queryInterface.bulkInsert('courses', coursesData);
+		const coursesData = [
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d1",
+				major: "คณิตศาสตร์",
+				degree: "วท.บ. 4 ปี",
+				detail: "คณิตศาสตร์ เรียน ...",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d2",
+				major: "วิทยาการข้อมูล",
+				degree: "วท.บ. 4 ปี",
+				detail: "วิทยาการข้อมูล",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d3",
+				major: "วิทยาการคอมพิวเตอร์",
+				degree: "วท.บ. 4 ปี",
+				detail: "วิทยาการคอมพิวเตอร์",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d4",
+				major: "เทคโนโลยีคอมพิวเตอร์และดิจิทัล",
+				degree: "วท.บ. 4 ปี",
+				detail: "เทคโนโลยีคอมพิวเตอร์และดิจิทัล",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d5",
+				major: "ฟิสิกส์",
+				degree: "วท.บ. 4 ปี",
+				detail: "ฟิสิกส์",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d6",
+				major: "ชีววิทยา",
+				degree: "วท.บ. 4 ปี",
+				detail: "ชีววิทยา",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d7",
+				major: "วิทยาศาสตร์สิ่งแวดล้อม",
+				degree: "วท.บ. 4 ปี",
+				detail: "วิทยาศาสตร์สิ่งแวดล้อม",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d8",
+				major: "เคมี",
+				degree: "วท.บ. 4 ปี",
+				detail: "เคมี",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c7d9",
+				major: "สาธารณสุขศาสตร์",
+				degree: "ส.บ. 4 ปี",
+				detail: "สาธารณสุขศาสตร์",
+				faculty: "คณะวิทยาศาสตร์และเทคโนโลยี",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d1",
+				major: "นิติศาสตร์",
+				degree: "น.บ. 4 ปี",
+				detail: "นิติศาสตร์ เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d2",
+				major: "ภาษาอังกฤษ",
+				degree: "ศศ.บ. 4 ปี",
+				detail: "ภาษาอังกฤษ เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d3",
+				major: "ภาษาอังกฤษเพื่อการสื่อสารทางธุรกิจ",
+				degree: "ศศ.บ. 4 ปี",
+				detail: "ภาษาอังกฤษเพื่อการสื่อสารทางธุรกิจ เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d4",
+				major: "ภาษาไทยเพื่อการสื่อสาร",
+				degree: "ศศ.บ. 4 ปี",
+				detail: "ภาษาไทยเพื่อการสื่อสาร เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d5",
+				major: "การท่องเที่ยว",
+				degree: "ศศ.บ. 4 ปี",
+				detail: "การท่องเที่ยว เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d6",
+				major: "การพัฒนาชุมชน",
+				degree: "ศศ.บ. 4 ปี",
+				detail: "การพัฒนาชุมชน  เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d7",
+				major: "ภาษาจีน",
+				degree: "ศศ.บ. 4 ปี",
+				detail: "ภาษาจีน  เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d8",
+				major: "รัฐศาสตร์",
+				degree: "ร.บ. 4 ปี",
+				detail: "รัฐศาสตร์  เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c1d9",
+				major: "ดนตรี",
+				degree: "ศป.บ. 4 ปี",
+				detail: "ดนตรี เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957649c2d0",
+				major: "ทัศนศิลป์",
+				degree: "ศป.บ. 4 ปี",
+				detail: "ทัศนศิลป์ เรียน ...",
+				faculty: "คณะมนุษยศาสตร์และสังคมศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			// คณะเทคโนโลยีอุตสาหกรรม
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d0",
+				major: "สาขาวิชาเทคโนโลยีโยธา",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาเทคโนโลยีโยธา เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d1",
+				major: "สาขาวิชาสถาปัตยกรรม",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาสถาปัตยกรรม เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d2",
+				major: "สาขาวิชาเทคโนโลยีเครื่องกล",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาเทคโนโลยีเครื่องกล เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d3",
+				major: "สาขาวิชาเทคโนโลยีการผลิต",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาเทคโนโลยีการผลิต เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d4",
+				major: "สาขาวิชาไฟฟ้า",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาไฟฟ้า เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c1d5",
+				major: "สาขาวิชาอิเล็กทรอนิกส์",
+				degree: "ทล.บ. 4 ปี",
+				detail: "สาขาวิชาอิเล็กทรอนิกส์ เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d0",
+				major: "สาขาวิชาเทคโนโลยีโยธา",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีโยธา เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d1",
+				major: "สาขาวิชาเทคโนโลยีสถาปัตยกรรม",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีสถาปัตยกรรม เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d2",
+				major: "สาขาวิชาเทคโนโลยีเครื่องกล",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีเครื่องกล เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d3",
+				major: "สาขาวิชาเทคโนโลยีการผลิต",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาเทคโนโลยีการผลิต เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d4",
+				major: "สาขาวิชาไฟฟ้า",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาไฟฟ้า เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957641c2d5",
+				major: "สาขาวิชาอิเล็กทรอนิกส์",
+				degree: "ทล.บ. 4 ปี เทียบโอน",
+				detail: "สาขาวิชาอิเล็กทรอนิกส์ เรียน ...",
+				faculty: "คณะเทคโนโลยีอุตสาหกรรม",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			// คณะครุศาสตร์
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d1",
+				major: "พลศึกษา",
+				degree: "ค.บ. 4 ปี",
+				detail: "พลศึกษา เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d2",
+				major: "คณิตศาสตร์",
+				degree: "ค.บ. 4 ปี",
+				detail: "คณิตศาสตร์ เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d3",
+				major: "ฟิสิกส์",
+				degree: "ค.บ. 4 ปี",
+				detail: "ฟิสิกส์ เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d4",
+				major: "วิทยาศาสตร์ทั่วไป",
+				degree: "ค.บ. 4 ปี",
+				detail: "วิทยาศาสตร์ทั่วไป เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d5",
+				major: "สังคมศึกษา",
+				degree: "ค.บ. 4 ปี",
+				detail: "สังคมศึกษา เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d6",
+				major: "ภาษาอังกฤษ",
+				degree: "ค.บ. 4 ปี",
+				detail: "ภาษาอังกฤษ เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d7",
+				major: "คหกรรมศาสตร์",
+				degree: "ค.บ. 4 ปี",
+				detail: "คหกรรมศาสตร์ เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d8",
+				major: "ภาษาไทย",
+				degree: "ค.บ. 4 ปี",
+				detail: "ภาษาไทย เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c1d9",
+				major: "นวัตกรรมและคอมพิวเตอร์ศึกษา",
+				degree: "ค.บ. 4 ปี",
+				detail: "นวัตกรรมและคอมพิวเตอร์ศึกษา เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c2d1",
+				major: "การศึกษาปฐมวัย",
+				degree: "ค.บ. 4 ปี",
+				detail: "การศึกษาปฐมวัย เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c2d2",
+				major: "อุตสาหกรรมศิลป์",
+				degree: "ค.บ. 4 ปี",
+				detail: "อุตสาหกรรมศิลป์ เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c2d3",
+				major: "เคมี",
+				degree: "ค.บ. 4 ปี",
+				detail: "เคมี เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c2d4",
+				major: "การศึกษาพิเศษและภาษาอังกฤษ",
+				degree: "ค.บ. 4 ปี",
+				detail: "การศึกษาพิเศษและภาษาอังกฤษ เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				id: "2d28da7c-bb8f-4e41-bfe1-c6957642c2d5",
+				major: "การประถมศึกษา",
+				degree: "ค.บ. 4 ปี",
+				detail: "การประถมศึกษา เรียน ...",
+				faculty: "คณะครุศาสตร์",
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+		];
+
+		await queryInterface.bulkInsert('courses', coursesData);
 	},
-  
+
 	down: async (queryInterface) => {
-	  await queryInterface.bulkDelete('courses', {});
+		await queryInterface.bulkDelete('courses', {});
 	},
-  };
+};

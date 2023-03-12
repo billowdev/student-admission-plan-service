@@ -5,7 +5,13 @@ import { validateUUID } from './../../../middlewares/validate-uuid.common.middle
 
 const router = express.Router();
 
-router.get("/get-all", validateExtraAdmissonPlanQueryParams, extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlan)
+router.get("/get-all", extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlan)
+router.get("/get-group-by-faculty", extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlanGroupByFaculty)
+router.get("/get-by-faculty/:faculty", extraAdminssionPlanControllers.handleGetAllExtraAdmissionPlanByFaculty)
+router.get("/get-exists-year", extraAdminssionPlanControllers.handleGetYearListExtraAdmissionPlan)
+router.get("/get-exists-faculty", extraAdminssionPlanControllers.handleGetFacultyListExtraAdmissionPlan)
+
+
 router.get("/get-one/:id", validateUUID, extraAdminssionPlanControllers.handleGetOneExtraAdmissionPlan)
 router.post("/create", validateCreateExtraAdmissionPlan, extraAdminssionPlanControllers.handleCreateExtraAdmissionPlan)
 router.patch("/update/:id", validateUUID, extraAdminssionPlanControllers.handleUpdateExtraAdmissionPlan)

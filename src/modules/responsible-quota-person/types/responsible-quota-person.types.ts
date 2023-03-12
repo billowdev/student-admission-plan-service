@@ -10,7 +10,7 @@ export enum QuotaType {
 
 export interface ResponsibleQuotaPersonAttributes {
 	id?: string;
-	year?: number;
+	year?: string;
 	name?: string;
 	surname?: string;
 	agency?: string;

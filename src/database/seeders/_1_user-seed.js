@@ -1,13 +1,9 @@
-const argon2 = require('argon2');
-async function hashPassword(password) {
-	const hash = await argon2.hash(password);
-	return hash;
-}
+const bcrypt = require('bcrypt');
 
 module.exports = {
 
 	up: async (queryInterface) => {
-		const passwordHashing = (await hashPassword("1234")).toString()
+		const passwordHashing = (await bcrypt.hash("1234", 10)).toString()
 		const usersData = [
 			{
 				id: "1d28da7c-bb8f-4e41-bfe1-c6957649c7d1",
