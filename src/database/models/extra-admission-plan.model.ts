@@ -24,7 +24,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		static associate(models: any) {
 			// define association here
 
-			ExtraAdmissionPlan.belongsTo(models.Course);
+			ExtraAdmissionPlan.belongsTo(models.Course, {
+				foreignKey: {
+					name: 'courseId',
+					allowNull: false,
+					field: 'course_id',
+				}
+			});
 		}
 	}
 	ExtraAdmissionPlan.init(
