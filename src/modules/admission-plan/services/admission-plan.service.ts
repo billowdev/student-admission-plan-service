@@ -112,7 +112,7 @@ export const getAllAdmissionPlanGroupByFaculty = async (query: AdmissionPlanQuer
 		}, {});
 
 		return groupedByFaculty;
-		
+
 	} catch (error) {
 		throw new Error("Unable to fetch admission plans");
 	}
@@ -203,9 +203,8 @@ export const getAllAdmissionPlanByFaculty = async (faculty: string, query: any):
 
 export const getYearlistAdmissionPlan = async (): Promise<any> => {
 	try {
-
 		const response = await AdmissionPlan.findAll({
-			attributes: { include: ['id', 'year'] },
+			attributes: { include: ['year'] },
 			raw: true
 		});
 		const uniqueYears = Array.from(new Set(response.map((resp: any) => resp.year)));
