@@ -204,14 +204,12 @@ export const getAllAdmissionPlanByFaculty = async (faculty: string, query: any):
 export const getYearlistAdmissionPlan = async (): Promise<any> => {
 	try {
 		const response = await AdmissionPlan.findAll({
-			attributes: { include: ['year'] },
 			raw: true
 		});
 		const uniqueYears = Array.from(new Set(response.map((resp: any) => resp.year)));
 		return uniqueYears;
 	} catch (error) {
-		console.error(`Error retrieving year list of admission plan: `, error);
-		throw new Error('Unable to retrieve admission plan');
+		throw new Error('Unable to retrieve year list of admission plan');
 	}
 }
 
@@ -221,7 +219,6 @@ export const getFacultylistAdmissionPlan = async (): Promise<any> => {
 		const response = await AdmissionPlan.findAll({
 			include: {
 				model: db.Course,
-				attributes: { include: ['id', 'faculty'] },
 			},
 			raw: true
 		});

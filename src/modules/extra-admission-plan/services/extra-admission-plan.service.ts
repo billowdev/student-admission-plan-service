@@ -172,7 +172,6 @@ export const getYearlistExtraAdmissionPlan = async (): Promise<any> => {
 	try {
 
 		const response = await ExtraAdmissionPlan.findAll({
-			attributes: { include: ['id', 'year'] },
 			raw: true
 		});
 		const uniqueYears = Array.from(new Set(response.map((resp: any) => resp.year)));
@@ -189,7 +188,6 @@ export const getFacultylistExtraAdmissionPlan = async (): Promise<any> => {
 		const response = await ExtraAdmissionPlan.findAll({
 			include: {
 				model: db.Course,
-				attributes: { include: ['id', 'faculty'] },
 			},
 			raw: true
 		});
