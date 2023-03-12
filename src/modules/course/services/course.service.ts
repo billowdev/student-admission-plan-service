@@ -131,7 +131,8 @@ export const deleteCourse = async (id: string): Promise<CourseAttributes> => {
 			where: {
 				courseId: id
 			}
-		})
+		});
+		
 		const response = await Course.destroy({
 			where: { id },
 

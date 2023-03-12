@@ -22,15 +22,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
 		faculty!: string;
 		static associate(models: any) {
 			// define association here
-
-			Course.hasMany(models.ExtraAdmissionPlan, {
-				foreignKey: 'courseId',
-				sourceKey: 'id',
-			  });
-			  Course.hasMany(models.AdmissionPlan, {
-				foreignKey: 'courseId',
-				sourceKey: 'id',
-			  });
+			Course.hasMany(models.ExtraAdmissionPlan);
+			  Course.hasMany(models.AdmissionPlan);
 			// Course.hasMany(models.AdmissionPlan);
 			// Course.hasMany(models.ExtraAdmissionPlan);
 		
