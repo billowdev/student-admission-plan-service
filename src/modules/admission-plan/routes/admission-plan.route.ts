@@ -3,7 +3,8 @@ import admissionPlanControllers from '../controllers/admission-plan.controller';
 import { validateAdmissionPlan, validateAdmissionPlanQueryParams } from '../middlewares/admission-plan.middleware';
 import { validateUUID } from './../../../middlewares/validate-uuid.common.middleware';
 
-import { authMiddleware } from '../../../middlewares/auth.middleware';
+import { authMiddleware, roleMiddleware } from '../../../middlewares/auth.middleware';
+import { UserRole } from '../../../modules/user/types/user.types';
 
 const router = express.Router();
 
@@ -17,8 +18,8 @@ router.get("/get-exists-year", admissionPlanControllers.handleGetYearListAdmissi
 router.get("/get-exists-faculty", admissionPlanControllers.handleGetFacultyListAdmissionPlan)
 
 router.post("/create", validateAdmissionPlan, admissionPlanControllers.handleCreateAdmissionPlan)
-router.patch("/update/:id", admissionPlanControllers.handleUpdateAdmissionPlan)
-router.delete("/delete/:id", validateUUID, authMiddleware, admissionPlanControllers.handleDeleteAdmissionPlan)
+router.patch("/update/:id", validateUUID, authMiddleware, admissionPlanControllers.handleUpdateAdmissionPlan)
+router.delete("/delete/:id", validateUUID, authMiddleware, roleMiddleware(UserRole.ADMIN), admissionPlanControllers.handleDeleteAdmissionPlan)
 
 
 export default router;
