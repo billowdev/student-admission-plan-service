@@ -129,11 +129,14 @@ export const deleteCourse = async (id: string): Promise<CourseAttributes> => {
 				courseId: id
 			}
 		});
-		
+		await db.AdmissionPlan.destroy({
+			where: {
+				courseId: id
+			}
+		});
+	
 		const response = await Course.destroy({
 			where: { id },
-
-			raw: true
 		});
 		return response
 	} catch (error: unknown) {
