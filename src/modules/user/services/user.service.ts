@@ -62,11 +62,10 @@ export const createUser = async (user: UserAttributes): Promise<UserAttributes> 
 		}
 
 		const hashedPassword = await hashPassword(password);
+		
 		const response = await User.create({
-			username,
-			email,
-			password: hashedPassword,
-		});
+			...user
+		}, { password: hashedPassword });
 
 		return response;
 	} catch (error) {
@@ -94,6 +93,7 @@ export const updateUser = async (id: string, user: UserAttributes): Promise<User
 				exclude: ['password']
 			}
 		});
+		delete updatedUser['dataValues']['password']
 		return updatedUser
 	} catch (error) {
 		throw error;

@@ -41,15 +41,18 @@ export const handleLogin = async (req: Request, res: Response) => {
 export const handleDeleteUser = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
-		await userService.deleteUser(id);
-		res.status(200).json({ message: `User with id ${id} has been deleted successfully` });
+		const user: any = req.user
+		if (user.id === id) {
+			res.status(400).json({ message: `User with id ${id} has been deleted failed` });
+		} else {
+			await userService.deleteUser(id);
+			res.status(200).json({ message: `User with id ${id} has been deleted successfully` });
+		}
 	} catch (error) {
-		console.error(error);
-
 		if (error instanceof UserNotFoundException) {
 			res.status(404).json({ message: error.message });
 		} else {
-			res.status(500).json({ message: 'Internal server error' });
+			res.status(400).json({ message: 'Internal server error' });
 		}
 	}
 };
@@ -99,16 +102,14 @@ export const handleGetAllUsers = async (req: Request, res: Response) => {
 export const handleGetOneUsers = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const id = req.params.id
-	
+
 		const users = await userService.getOneUser(id);
 		res.status(200).json({
 			message: "get user was successfully",
 			payload: users
 		});
 	} catch (error) {
-		console.log('====================================');
-		console.log(error);
-		console.log('====================================');
+
 		if (error instanceof FetchError) {
 			res.status(error.status).json({ message: error.message });
 		} else {
