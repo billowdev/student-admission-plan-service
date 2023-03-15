@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 // Import the necessary interfaces and models
 import db from '../database/models';
 
-import { JWT_SECRET } from '../common/constants/common.constants';
+import { JWT_EXPRIES, JWT_SECRET } from '../common/constants/common.constants';
 import userService from 'modules/user/services/user.service';
 
 const User = db.User
@@ -22,19 +22,18 @@ class AuthError extends Error {
   }
 }
 
-export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1] as string;
     if (!token) {
       res.status(401).json({ message: 'No token provided' });
     } else {
-      const decodedToken = jwt.verify(token, JWT_SECRET as string) as TokenPayload;
-
+      const decodedToken = jwt.verify(token,  JWT_SECRET as string) as TokenPayload;
       if (new Date().getTime() > decodedToken.exp * 1000) {
         throw new AuthError('Token expired');
       }
       const user = await User.findByPk(decodedToken.id, { raw: true });
-      
+
 
       if (!user) {
         throw new AuthError('Unauthorized');

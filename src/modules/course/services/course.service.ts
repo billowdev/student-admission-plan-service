@@ -52,9 +52,6 @@ export const getAllCourse = async (query: any): Promise<CourseAttributes[]> => {
 	}
 };
 
-
-
-
 export const getOneCourse = async (id: string): Promise<CourseAttributes | null> => {
 	try {
 		const response = await Course.findByPk(id);

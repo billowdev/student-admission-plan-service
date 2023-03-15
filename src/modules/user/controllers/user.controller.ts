@@ -20,14 +20,13 @@ export const handleCreateUser = async (req: Request, res: Response): Promise<voi
 };
 
 
-export const handleLogin = async (req: Request, res: Response): Promise<void> => {
+export const handleLogin = async (req: Request, res: Response) => {
 	const { username, password } = req.body;
 	try {
 		const { token } = await userService.login(username, password);
 		res.status(200).json({ message: "login was successfully", token });
 	} catch (error) {
 		console.error(error);
-
 		if (error instanceof AuthError) {
 			res.status(401).json({ message: error.message, token: "" });
 		} else if (error instanceof LoginError) {
@@ -75,15 +74,8 @@ export const handleUpdateUser = async (req: Request, res: Response): Promise<voi
 };
 
 
-export const handleGetAllUsers = async (req: Request, res: Response): Promise<void> => {
+export const handleGetAllUsers = async (req: Request, res: Response)=> {
 	const query = req.query;
-
-	// Validate input
-	// if (typeof query !== 'object' || query === null || Object.keys(query).length === 0) {
-	//   res.status(400).json({ message: 'Invalid query parameters' });
-	//   return;
-	// }
-
 	try {
 		const users = await userService.getAllUsers(query);
 		res.status(200).json({
@@ -126,6 +118,7 @@ export default {
 	handleGetAllUsers,
 	handleCreateUser,
 	handleDeleteUser,
-	handleUpdateUser
+	handleUpdateUser,
+	handleGetOneUsers
 
 }

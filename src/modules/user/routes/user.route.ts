@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post("/login", userControllers.handleLogin)
 router.get("/get-all", authMiddleware, roleMiddleware(UserRole.ADMIN), userControllers.handleGetAllUsers)
+router.get("/get-one", authMiddleware, roleMiddleware(UserRole.ADMIN), userControllers.handleGetOneUsers)
 router.post("/create", authMiddleware, roleMiddleware(UserRole.ADMIN), userControllers.handleCreateUser)
 router.patch("/update/:id", authMiddleware, userControllers.handleUpdateUser)
 router.delete("/delete/:id", authMiddleware, roleMiddleware(UserRole.ADMIN), validateUUID,userControllers.handleDeleteUser)

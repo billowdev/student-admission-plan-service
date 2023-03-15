@@ -3,9 +3,12 @@ import { createAuthError, LoginError, UserCreationError, UserExistsError, UserNo
 import { hashPassword, verifyPassword } from '../../../common/utils/password-hasher';
 import db from "../../../database/models"
 import { LoginResponse, UserAttributes, UserQueryInterface } from '../types/user.types';
-import { Op } from 'sequelize';
+import sequelize, { Op } from 'sequelize';
 import { FetchError } from '../../../common/exceptions/app.exception';
 import { createJwtToken } from '../../../middlewares/jwt.middleware.';
+import { isAllValuesUndefined } from '../../../common/utils';
+import { JWT_SECRET, JWT_EXPRIES } from '../../../common/constants/common.constants';
+import jwt from 'jsonwebtoken';
 
 
 const User = db.User
@@ -32,7 +35,7 @@ export const login = async (identifier: string, password: string): Promise<Login
 			const error = createAuthError('Invalid username or password');
 			throw error;
 		}
-
+		// const token = jwt.sign({ id: user.id, role: user.role, name: user.name }, "test", { expiresIn: '1h' });
 		const token: string = createJwtToken({ id: user.id, role: user.role, name: user.name })
 		return { token };
 	} catch (error) {
@@ -104,50 +107,89 @@ export const deleteUser = async (id: string): Promise<void> => {
 	await User.destroy({ where: { id } });
 };
 
-export const getAllUsers = async (query: UserQueryInterface): Promise<UserAttributes[]> => {
+export const getAllUsers = async (query: any): Promise<UserAttributes[]> => {
 	try {
-		if (Object.keys(query).length === 0) {
-			return await User.findAll({
-				attributes: {
-					exclude: ['password']
-				}
-			});
+		let whereClause = {};
+		const searchableFields = [
+			"email",
+			"username",
+			"name",
+			"surname",
+			"phone",
+			"role",
+			"faculty",
+		];
+
+		if (!isAllValuesUndefined(query)) {
+			whereClause = {
+				[Op.or]: searchableFields.map((field) => ({
+					[field]: {
+						[Op.like]: `%${query[field]}%`,
+					},
+				})),
+			};
+		};
+		if (query.keyword) {
+			whereClause = {
+				...whereClause,
+				[Op.or]: [
+					...searchableFields.map((field) => sequelize.where(sequelize.fn("LOWER", sequelize.col(field)), "LIKE", `%${query.keyword}%`)),
+				],
+			};
 		}
-		const { email, username, name, surname, phone, role, faculty } = query;
+
 		const response = await User.findAll({
-			where: {
-				[Op.and]: [
-					email && { email: { [Op.iLike]: `%${email}%` } },
-					username && { username: { [Op.iLike]: `%${username}%` } },
-					name && { name: { [Op.iLike]: `%${name}%` } },
-					surname && { surname: { [Op.iLike]: `%${surname}%` } },
-					phone && { phone: { [Op.iLike]: `%${phone}%` } },
-					role && { role: { [Op.eq]: role } },
-					faculty && { faculty: { [Op.iLike]: `%${faculty}%` } },
-				].filter(Boolean),
-			},
 			attribues: {
 				exclude: ['password']
 			},
-			raw: true,
 		});
+
 		return response;
 	} catch (error) {
 		throw new FetchError("Unable to fetch users", 500);
 	}
-};
+}
+
 
 export const getOneUser = async (id: string): Promise<UserAttributes> => {
 	try {
 		const response = await User.findByPk(id, {
 			attribues: {
 				exclude: ['password']
-			},
-			raw: true
+			}
 		})
 		return response
 	} catch (error) {
 		throw new FetchError('Unable to get user', 500)
+	}
+}
+
+export const getAllUser = async (query: any): Promise<UserAttributes[]> => {
+	try {
+		if (isAllValuesUndefined(query)) {
+			return await User.findAll({
+				attributes: { exclude: ['password'] },
+			});
+
+		}
+		const { username, name, surname, email, role } = query;
+
+		const response = await User.findAll({
+			where: {
+				[Op.or]: [
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("qty")), "LIKE", `%${username}%`),
+					sequelize.where(sequelize.fn("LOWER", sequelize.col("year")), "LIKE", `%${name}%`),
+					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${surname}%'`),
+					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${email}%'`),
+					sequelize.literal(`LOWER(CONCAT_WS(' ', "qty", "year", "courseId")) LIKE '%${role}%'`),
+				],
+
+			},
+			atrributes: { exclude: ["password"] },
+		});
+		return response;
+	} catch (error) {
+		throw new FetchError('Unable to get all user', 500)
 	}
 }
 
