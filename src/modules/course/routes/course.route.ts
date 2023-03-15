@@ -12,7 +12,7 @@ router.get("/get-one/:id", validateCourseId, courseControllers.handleGetOneCours
 router.get("/get-by-faculty/:faculty", courseControllers.handleGetAllCourseByFaculty)
 
 router.post("/create", validateCreateCourse, courseControllers.handleCreateCourse)
-router.patch("/update/:id", validateUpdateCourse, courseControllers.handleUpdateCourse)
+router.patch("/update/:id", validateUpdateCourse, authMiddleware, courseControllers.handleUpdateCourse)
 router.delete("/delete/:id", validateCourseId, authMiddleware, roleMiddleware(UserRole.ADMIN), courseControllers.handleDeleteCourse)
 
 export default router;
