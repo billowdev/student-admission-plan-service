@@ -39,9 +39,8 @@ export const handleLogin = async (req: Request, res: Response) => {
 
 
 export const handleDeleteUser = async (req: Request, res: Response): Promise<void> => {
-	const { id } = req.params;
-
 	try {
+		const { id } = req.params;
 		await userService.deleteUser(id);
 		res.status(200).json({ message: `User with id ${id} has been deleted successfully` });
 	} catch (error) {
@@ -56,10 +55,10 @@ export const handleDeleteUser = async (req: Request, res: Response): Promise<voi
 };
 
 export const handleUpdateUser = async (req: Request, res: Response): Promise<void> => {
-	const { id } = req.params;
-	const user = req.body;
 
 	try {
+		const { id } = req.params;
+		const user = req.body;
 		const updatedUser = await userService.updateUser(id, user);
 		res.status(200).json(updatedUser);
 	} catch (error) {
@@ -74,7 +73,7 @@ export const handleUpdateUser = async (req: Request, res: Response): Promise<voi
 };
 
 
-export const handleGetAllUsers = async (req: Request, res: Response)=> {
+export const handleGetAllUsers = async (req: Request, res: Response) => {
 	const query = req.query;
 	try {
 		const users = await userService.getAllUsers(query);

@@ -99,12 +99,16 @@ export const updateUser = async (id: string, user: UserAttributes): Promise<User
 
 
 export const deleteUser = async (id: string): Promise<void> => {
-	const user = await User.findOne({ where: { id } });
+	try {
+		const user = await User.findOne({ where: { id } });
 
 	if (!user) {
 		throw new UserNotFoundException(`User with id ${id} not found`);
 	}
 	await User.destroy({ where: { id } });
+	} catch (error) {
+		throw new Error();
+	}
 };
 
 export const getAllUsers = async (query: any): Promise<UserAttributes[]> => {
