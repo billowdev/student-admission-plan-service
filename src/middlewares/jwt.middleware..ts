@@ -8,7 +8,6 @@ export const createJwtToken = (claims: object): string => {
 		{
 			...claims
 		},
-
 		JWT_SECRET as string,
 		{
 			expiresIn: JWT_EXPRIES as string,

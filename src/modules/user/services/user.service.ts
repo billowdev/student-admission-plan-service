@@ -127,6 +127,7 @@ export const getAllUsers = async (query: any): Promise<UserAttributes[]> => {
 						[Op.like]: `%${query[field]}%`,
 					},
 				})),
+				
 			};
 		};
 		if (query.keyword) {
@@ -139,9 +140,10 @@ export const getAllUsers = async (query: any): Promise<UserAttributes[]> => {
 		}
 
 		const response = await User.findAll({
-			attribues: {
+			where: whereClause,
+			attributes: {
 				exclude: ['password']
-			},
+			}
 		});
 
 		return response;
