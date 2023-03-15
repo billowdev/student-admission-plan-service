@@ -60,9 +60,11 @@ export const handleUpdateUser = async (req: Request, res: Response): Promise<voi
 		const { id } = req.params;
 		const user = req.body;
 		const updatedUser = await userService.updateUser(id, user);
-		res.status(200).json(updatedUser);
+		res.status(200).json({
+			message: "update user was successfully",
+			payload: updatedUser
+		});
 	} catch (error) {
-		console.error(error);
 
 		if (error instanceof UserNotFoundException) {
 			res.status(404).json({ message: error.message });
@@ -97,15 +99,20 @@ export const handleGetAllUsers = async (req: Request, res: Response) => {
 export const handleGetOneUsers = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const id = req.params.id
+	
 		const users = await userService.getOneUser(id);
-		res.status(200).json(users);
+		res.status(200).json({
+			message: "get user was successfully",
+			payload: users
+		});
 	} catch (error) {
-		console.error(error);
-
+		console.log('====================================');
+		console.log(error);
+		console.log('====================================');
 		if (error instanceof FetchError) {
 			res.status(error.status).json({ message: error.message });
 		} else {
-			res.status(500).json({ message: 'Internal server error' });
+			res.status(400).json({ message: 'Internal server error' });
 		}
 	}
 };

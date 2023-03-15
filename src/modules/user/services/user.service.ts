@@ -79,7 +79,6 @@ export const createUser = async (user: UserAttributes): Promise<UserAttributes> 
 export const updateUser = async (id: string, user: UserAttributes): Promise<UserAttributes> => {
 	try {
 		const existingUser = await User.findOne({ where: { id } });
-
 		if (!existingUser) {
 			throw new UserNotFoundException(`User with id ${id} not found`);
 		}
@@ -90,8 +89,12 @@ export const updateUser = async (id: string, user: UserAttributes): Promise<User
 			throw new Error(`Failed to update user with id ${id}`);
 		}
 
-		const updatedUser = await User.findByPk(id);
-		return updatedUser.toJSON() as UserAttributes;
+		const updatedUser = await User.findByPk(id, {
+			attribute: {
+				exclude: ['password']
+			}
+		});
+		return updatedUser
 	} catch (error) {
 		throw error;
 	}
@@ -102,10 +105,10 @@ export const deleteUser = async (id: string): Promise<void> => {
 	try {
 		const user = await User.findOne({ where: { id } });
 
-	if (!user) {
-		throw new UserNotFoundException(`User with id ${id} not found`);
-	}
-	await User.destroy({ where: { id } });
+		if (!user) {
+			throw new UserNotFoundException(`User with id ${id} not found`);
+		}
+		await User.destroy({ where: { id } });
 	} catch (error) {
 		throw new Error();
 	}
@@ -131,7 +134,7 @@ export const getAllUsers = async (query: any): Promise<UserAttributes[]> => {
 						[Op.like]: `%${query[field]}%`,
 					},
 				})),
-				
+
 			};
 		};
 		if (query.keyword) {
@@ -164,9 +167,10 @@ export const getOneUser = async (id: string): Promise<UserAttributes> => {
 				exclude: ['password']
 			}
 		})
+		delete response['dataValues']['password']
 		return response
 	} catch (error) {
-		throw new FetchError('Unable to get user', 500)
+		throw new FetchError('Unable to get user', 400)
 	}
 }
 
